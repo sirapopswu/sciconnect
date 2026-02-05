@@ -65,12 +65,12 @@ User --> SM
 User --> FC
 User --> VD
 
-MM --> Admin
-MC --> Admin
-VM --> Admin
-SM --> Admin
-FC --> Admin
-VD --> Admin
+MM <-- Admin
+MC <-- Admin
+VM <-- Admin
+SM <-- Admin
+FC <-- Admin
+VD <-- Admin
 ```
 
  
