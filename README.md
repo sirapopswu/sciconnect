@@ -116,8 +116,8 @@ Interview Link : https://youtu.be/6iED8z5rUtI
 # เขียนสรุปการประชุม Retrospective และ Link (in the report) to Retrospective Youtube video  
 การเสนอความคิดเกี่ยวกับการทำโปรเจกต๋โดยแนะนำข้อมูลเบื้องต้นเกี่ยวกับเนื้อหาที่สนใจและอยากทำ โดยได้คุยรายละเอียดและขอบเขตที่จะทำ มีการอธิบายจุดประสงค์ของเว็บให้สมาชิกทุกคนเข้าใจตรงกัน และได้มีการแบ่งหน้าที่เบื้องต้นที่จะเป็นการเริ่มต้นในการทำโปรเจกต์ ได้แก่ การเก็บ Requirement ที่เกี่ยวข้องกับการทำเว็บ การสรุปสิ่งที่ได้จากการสอบถาม และการกำหนดขอบเขตของโปรเจกต์ ซึ่งจะนำมาใช้ประกอบการตัดสินใจร่วมกันในการเริ่มต้นทำโปรเจกต์
 
-<img width="1919" height="1079" alt="Screenshot 2026-02-05 235314" src="https://github.com/user-attachments/assets/51fd131f-b598-4afd-a3ae-a33f479a09ca" />
-<img width="1919" height="1079" alt="Screenshot 2026-02-05 235555" src="https://github.com/user-attachments/assets/c0cbbc9c-fab9-40ad-ad74-cdddd3fe6bb8" />
-<img width="1919" height="1079" alt="Screenshot 2026-02-05 235438" src="https://github.com/user-attachments/assets/df36213a-9f59-47e2-b44a-3ee76ca0999a" />
+<img width="1919" height="1079" alt="Screenshot 2026-02-05 235314" src="https://github.com/user-attachments/assets/c578bd6f-af42-4209-bf70-8745c8efe5ac" />
+<img width="1919" height="1079" alt="Screenshot 2026-02-05 235555" src="https://github.com/user-attachments/assets/92a5cacf-225a-4aef-a547-e4fef42a1f5b" />
+<img width="1919" height="1079" alt="Screenshot 2026-02-05 235438" src="https://github.com/user-attachments/assets/c7d749fc-4677-4b48-a488-39f1e007c09b" />
 
 
