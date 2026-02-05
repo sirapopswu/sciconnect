@@ -45,32 +45,34 @@
 2.เน้นโทนสีที่มีความสวยงาม สบายตา  
 
 # Use case diagram
-@startuml  
-left to right direction  
+```mermaid
+flowchart LR
 
-actor User  
-actor Admin  
+User[User]
+Admin[Admin]
 
-rectangle "Sci Connect System" {  
-    (View Member Details)  
-    (Filter by Category)  
-    (Search Members)  
-    (View Members)  
-    (Manage Member Info)  
-    (Manage Category)  
-}  
+subgraph Sci_Connect_System["Sci Connect System"]
+    VM(View Members)
+    SM(Search Members)
+    FC(Filter by Category)
+    VD(View Member Details)
+    MM(Manage Member Info)
+    MC(Manage Category)
+end
 
-User -- (View Members)  
-User -- (Search Members)  
-User -- (Filter by Category)  
-User -- (View Member Details)  
+User --> VM
+User --> SM
+User --> FC
+User --> VD
 
-(Manage Category) -- Admin  
-(Manage Member Info) -- Admin  
-(View Member Details)  =-- Admin  
-(Filter by Category)  =-- Admin  
-(Search Members)  =-- Admin  
-(View Members)  =-- Admin  
+Admin --> MM
+Admin --> MC
+Admin --> VM
+Admin --> SM
+Admin --> FC
+Admin --> VD
+```
+
 
 @enduml  
 # อธิบายกระบวนการทำงาน โดยใช้ process, methods, and tools อย่างไร  
