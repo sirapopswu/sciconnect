@@ -68,7 +68,7 @@ User --> VD
 MM --> Admin
 MC --> Admin
 VM -.-> Admin
-VM --> Admin
+Admin --> VM
 SM --> Admin
 FC --> Admin
 VD --> Admin
