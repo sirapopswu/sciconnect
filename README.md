@@ -40,6 +40,34 @@
 2.เน้นโทนสีที่มีความสวยงาม สบายตา  
 
 # Use case diagram
+@startuml  
+left to right direction  
+
+actor User  
+actor Admin  
+
+rectangle "Sci Connect System" {  
+    (View Member Details)  
+    (Filter by Category)  
+    (Search Members)  
+    (View Members)  
+    (Manage Member Info)  
+    (Manage Category)  
+}  
+
+User -- (View Members)  
+User -- (Search Members)  
+User -- (Filter by Category)  
+User -- (View Member Details)  
+
+(Manage Category) -- Admin  
+(Manage Member Info) -- Admin  
+(View Member Details)  =-- Admin  
+(Filter by Category)  =-- Admin  
+(Search Members)  =-- Admin  
+(View Members)  =-- Admin  
+
+@enduml  
 # อธิบายกระบวนการทำงาน โดยใช้ process, methods, and tools อย่างไร  
 ## 1. Process  
 ระบบถูกพัฒนาต่อยอดจากฟังก์ชัน Category เดิม โดยปรับเปลี่ยนวัตถุประสงค์จากการเก็บข้อมูลทั่วไป มาเป็นระบบ จัดเก็บและแสดงข้อมูลสมาชิก อย่างเป็นโครงสร้างชัดเจน ซึ่งกระบวนการทำงานหลักมีดังนี้  
