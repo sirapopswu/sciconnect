@@ -74,25 +74,116 @@ User[User]
 Admin[Admin]
 
 subgraph Sci_Connect_System["Sci Connect System"]
+
+    %% Auth
+    L(Login)
+    R(Register)
+    PDPA(Give PDPA Consent)
+
+    %% Core
     VM(View Members)
+    VD(View Member Details)
+
+    %% Search & Filter
     SM(Search Members)
     FC(Filter by Category)
-    VD(View Member Details)
+    FS(Filter by Skill)
+    FY(Filter by Year)
+
+    %% Profile
+    EP(Edit Profile)
+    SP(Set Profile Visibility)
+    SL(Add Social Media Links)
+    ST(Manage Skill Tags)
+
+    %% Admin
     MM(Manage Member Info)
     MC(Manage Category)
+
 end
 
+%% User
+User --> L
+User --> R
 User --> VM
 User --> SM
 User --> FC
+User --> FS
+User --> FY
 User --> VD
+User --> EP
+User --> SP
+User --> SL
+User --> ST
 
+%% Admin
 Admin --> MM
 Admin --> MC
-Admin --> VM
-Admin --> SM
-Admin --> FC
-Admin --> VD
+Admin --> ST
+
+%% Relationships
+R --> PDPA
+SM --> FC
+SM --> FS
+SM --> FY
+EP --> SL
+EP --> ST
+```
+
+# Architecture Diagram (MVC)  
+
+```mermaid
+flowchart LR
+ subgraph View["View"]
+        V1["HTML"]
+        V2["CSS"]
+        V3["JavaScript"]
+ end
+
+ subgraph Controller["Controller"]
+        C1["Auth Controller"]
+        C2["PDPA Controller"]
+        C3["Profile Controller"]
+        C4["Student Controller"]
+ end
+
+ subgraph Model["Model"]
+        M1["User Model"]
+        M2["Profile Model"]
+        M3["Category Model"]
+        M4["Consent Model"]
+ end
+
+ subgraph Database["Database"]
+        D1[("users")]
+        D2[("profiles")]
+        D3[("categories")]
+        D4[("consent_logs")]
+ end
+
+    U["User Browser"] --> V1
+
+    %% Register flow
+    V3 --> C1
+    C1 --> C2
+    C2 --> M4
+
+    %% Condition
+    C2 -->|Consent = YES| C1
+    C2 -->|Consent = NO| V1
+
+    %% Normal flow
+    C1 --> M1
+    C1 --> V1
+
+    C3 --> M2
+    C4 --> M1
+    C4 --> M3
+
+    M1 --> D1
+    M2 --> D2
+    M3 --> D3
+    M4 --> D4
 ```
 
  
