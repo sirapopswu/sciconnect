@@ -185,7 +185,8 @@ flowchart LR
     M3 --> D3
     M4 --> D4
 ```
-## Website Screenshot
+# Website Screenshot
+Figma - SciConnect (Draft)
 <img width="1097" height="731" alt="image" src="https://github.com/user-attachments/assets/e1de49ca-19b9-4d86-a34e-34f0d8b519ec" />
 
  
