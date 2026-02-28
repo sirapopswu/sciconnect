@@ -221,7 +221,7 @@ XAMPP สำหรับจำลองเซิร์ฟเวอร์แล�
 
 # Website Screenshot
 Figma - SciConnect (Draft)
-<img width="995" height="670" alt="image" src="https://github.com/user-attachments/assets/8cd3eafb-fdd0-4733-a4d5-996bb109962f" />
+<img width="991" height="664" alt="image" src="https://github.com/user-attachments/assets/bcc11b85-3c06-4746-8a86-ba748d76d9d1" />
 
 
 # Process, Methods, and Tools
