@@ -187,7 +187,7 @@ flowchart LR
 ```
 # Website Screenshot
 Figma - SciConnect (Draft)
-<img width="1097" height="731" alt="image" src="https://github.com/user-attachments/assets/e1de49ca-19b9-4d86-a34e-34f0d8b519ec" />
+<img width="995" height="670" alt="image" src="https://github.com/user-attachments/assets/8cd3eafb-fdd0-4733-a4d5-996bb109962f" />
 
  
 # อธิบายกระบวนการทำงาน โดยใช้ process, methods, and tools อย่างไร (ข้อมูลจาก phase 1)
