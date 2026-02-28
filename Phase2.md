@@ -185,10 +185,6 @@ flowchart LR
     M3 --> D3
     M4 --> D4
 ```
-# Website Screenshot
-Figma - SciConnect (Draft)
-<img width="995" height="670" alt="image" src="https://github.com/user-attachments/assets/8cd3eafb-fdd0-4733-a4d5-996bb109962f" />
-
  
 # อธิบายกระบวนการทำงาน โดยใช้ process, methods, and tools อย่างไร (ข้อมูลจาก phase 1)
 ## 1. Process  
@@ -223,7 +219,9 @@ XAMPP สำหรับจำลองเซิร์ฟเวอร์แล�
 
 # Phase 2
 
-
+# Website Screenshot
+Figma - SciConnect (Draft)
+<img width="995" height="670" alt="image" src="https://github.com/user-attachments/assets/8cd3eafb-fdd0-4733-a4d5-996bb109962f" />
 
 
 # Process, Methods, and Tools
