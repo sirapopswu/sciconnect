@@ -3,7 +3,7 @@
 2.พณพัฒน์ เขื่อนข่ายแก้ว 67102010522  
 3.วรากร สังข์ทอง 67102010528  
 
-# Phase 1
+# Phase 2
 
 # sciconnect
 ที่มาของปัญหาและความสำคัญ
@@ -217,7 +217,6 @@ phpMyAdminสำหรับจัดเก็บข้อมูล Category แ
 VS Code สำหรับเขียนและแก้ไขโค้ด  
 XAMPP สำหรับจำลองเซิร์ฟเวอร์และฐานข้อมูล  
 
-# Phase 2
 
 # Website Screenshot
 Figma - SciConnect (Draft)
