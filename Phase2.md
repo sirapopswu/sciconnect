@@ -270,6 +270,9 @@ Instagram / LINE กลุ่ม – ใช้สื่อสารทั่ว�
 Discord – ใช้ประชุมและสรุปงาน  
 GitHub Issues – ใช้สื่อสารเกี่ยวกับปัญหาทางเทคนิคและโค้ด
 
+# เขียนสรุปการประชุม Retrospective และ Link to Retrospective Youtube video
+https://youtu.be/BmSIIbYLIM8 
+
 
 
 
