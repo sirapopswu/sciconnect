@@ -1,14 +1,23 @@
-// routes/users.js
 const express = require('express');
+const fs = require('fs');
+const path = require('path');
 const router = express.Router();
-const { login, addUser, getUsers, searchUsers, updateUser, setVisibility } = require('../controllers/users');
 
-// Route mapping
-router.post('/login', login);          // เข้าระบบ
-router.post('/', addUser);             // เพิ่ม user
-router.get('/', getUsers);             // ดู user ทั้งหมด
-router.get('/search', searchUsers);    // Search / Filter
-router.put('/:id', updateUser);        // แก้ไขข้อมูลตัวเอง
-router.put('/:id/visibility', setVisibility); // ตั้ง visible true/false
+const filePath = path.join(__dirname, '../data/users.json');
+
+// GET all users
+router.get('/', (req, res) => {
+  const users = JSON.parse(fs.readFileSync(filePath, 'utf8'));
+  res.json(users);
+});
+
+// POST new user
+router.post('/', (req, res) => {
+  const users = JSON.parse(fs.readFileSync(filePath, 'utf8'));
+  const newUser = { id: users.length + 1, ...req.body };
+  users.push(newUser);
+  fs.writeFileSync(filePath, JSON.stringify(users, null, 2));
+  res.status(201).json(newUser);
+});
 
 module.exports = router;

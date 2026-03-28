@@ -1,5 +1,5 @@
 // controllers/users.js
-// แก้ไข Path จาก './connection' เป็น '../db/connection' เพื่อให้ชี้ไปยังไฟล์ที่ถูกต้อง
+// แก้ไข Path จาก './connection' เป็น '../db/connection' เพื่อถอยออกจากโฟลเดอร์ controllers แล้วเข้าไปที่ db
 const pool = require('../db/connection'); 
 
 // Login (admin hardcode + user)
