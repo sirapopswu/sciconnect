@@ -25,7 +25,7 @@ CREATE TABLE users (
 );
 
 **Connection Example (`db/connection.js`):**
-```js
+js
 const { Pool } = require('pg');
 const pool = new Pool({
   host: 'localhost',
@@ -36,7 +36,7 @@ const pool = new Pool({
 });
 module.exports = pool;
 
-## ข้อจำกัด / สิ่งที่ยังไม่ท
+## ข้อจำกัด / สิ่งที่ยังไม่ทำ
 
 Password ยัง plain text → ห้ามใช้ production จริง
 รูปภาพยัง ใช้ชื่อหลอก ๆ → ต้องทำระบบ upload จริงต่อ
