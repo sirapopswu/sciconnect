@@ -12,6 +12,7 @@ Backend ของโปรเจกต์ SciConnect ใช้ **Express.js** �
 **Database Name:** `sciconnect-server`  
 **Table:** `users`
 
+`
 CREATE TABLE users (
     id SERIAL PRIMARY KEY,
     username TEXT UNIQUE NOT NULL,
@@ -22,10 +23,11 @@ CREATE TABLE users (
     age INTEGER,
     photo TEXT,                   -- filename หรือ URL
     visible BOOLEAN DEFAULT TRUE  -- Soft delete, true=visible
-);
+);`
 
-**Connection Example (`db/connection.js`):**
-js
+## Connection Example (`db/connection.js`)
+
+`
 const { Pool } = require('pg');
 const pool = new Pool({
   host: 'localhost',
@@ -34,7 +36,7 @@ const pool = new Pool({
   user: 'postgres',
   password: 'your_password_here'
 });
-module.exports = pool;
+module.exports = pool; `
 
 ## ข้อจำกัด / สิ่งที่ยังไม่ทำ
 
