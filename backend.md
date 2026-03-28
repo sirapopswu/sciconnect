@@ -51,9 +51,8 @@ Delete / Security / Unit Test ยังต้องทำต่อ
 - ระวัง field ที่ยังไม่ได้ validation / hashing
 - สามารถทดสอบด้วย Thunder Client หรือ fetch API จาก frontend
 
-## 5️Running the server
+## Running the server
 
-```bash
 # ติดตั้ง dependencies
 npm install
 
