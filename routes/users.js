@@ -1,23 +1,29 @@
 const express = require('express');
-const fs = require('fs');
-const path = require('path');
 const router = express.Router();
+const { login, addUser, getUsers } = require('../controllers/users');
 
-const filePath = path.join(__dirname, '../data/users.json');
+router.post('/login', login);
+router.post('/', addUser);
+router.get('/', getUsers);
 
-// GET all users
-router.get('/', (req, res) => {
-  const users = JSON.parse(fs.readFileSync(filePath, 'utf8'));
-  res.json(users);
-});
+module.exports = router;
 
-// POST new user
-router.post('/', (req, res) => {
-  const users = JSON.parse(fs.readFileSync(filePath, 'utf8'));
-  const newUser = { id: users.length + 1, ...req.body };
-  users.push(newUser);
-  fs.writeFileSync(filePath, JSON.stringify(users, null, 2));
-  res.status(201).json(newUser);
-});
+// Login
+router.post('/login', login);
+
+// Add user
+router.post('/', addUser);
+
+// Get all users
+router.get('/', getUsers);
+
+// Search / Filter
+router.get('/search', searchUsers);
+
+// Update user
+router.put('/:id', updateUser);
+
+// Set visibility
+router.patch('/:id/visibility', setVisibility);
 
 module.exports = router;
