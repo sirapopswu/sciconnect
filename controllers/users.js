@@ -1,13 +1,27 @@
+// controllers/users.js
+const pool = require('../db/connection'); 
+
 // Add user
 const addUser = async (req, res) => {
-  const { username, password, email, faculty, gender, age, photo, bio } = req.body;
+  const { username, password, email, major, gender, age, photo, bio, skills } = req.body;
 
   try {
     const result = await pool.query(
       `INSERT INTO users 
-       (username, password, email, faculty, gender, age, photo, bio, visible)
-       VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9) RETURNING *`,
-      [username, password, email, faculty, gender, age, photo || 'default.png', bio || '', true]
+       (username, password, email, major, gender, age, photo, bio, skills, visible)
+       VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10) RETURNING *`,
+      [
+        username,
+        password,
+        email,
+        major,
+        gender,
+        age,
+        photo || 'default.png',
+        bio || '',
+        skills || '[]', // ถ้าไม่มี skills ให้เป็น array ว่าง
+        true
+      ]
     );
 
     res.status(201).json({ success: true, user: result.rows[0] });
@@ -23,7 +37,7 @@ const addUser = async (req, res) => {
 const getUsers = async (req, res) => {
   try {
     const result = await pool.query(
-      'SELECT id, username, email, faculty, gender, age, photo, bio FROM users WHERE visible=true ORDER BY age'
+      'SELECT id, username, email, major, gender, age, photo, bio, skills FROM users WHERE visible=true ORDER BY age'
     );
     res.json(result.rows);
   } catch (err) {
@@ -33,10 +47,10 @@ const getUsers = async (req, res) => {
 
 // Search / Filter users
 const searchUsers = async (req, res) => {
-  const { keyword, gender, faculty } = req.query;
+  const { keyword, gender, major } = req.query;
 
   try {
-    let query = 'SELECT id, username, email, faculty, gender, age, photo, bio FROM users WHERE visible=true';
+    let query = 'SELECT id, username, email, major, gender, age, photo, bio, skills FROM users WHERE visible=true';
     let params = [];
 
     if (keyword) {
@@ -47,9 +61,9 @@ const searchUsers = async (req, res) => {
       params.push(gender);
       query += ` AND gender=$${params.length}`;
     }
-    if (faculty) {
-      params.push(faculty);
-      query += ` AND faculty=$${params.length}`;
+    if (major) {
+      params.push(major);
+      query += ` AND major=$${params.length}`;
     }
 
     query += ' ORDER BY age';
@@ -64,13 +78,13 @@ const searchUsers = async (req, res) => {
 // Update user
 const updateUser = async (req, res) => {
   const { id } = req.params;
-  const { username, email, faculty, gender, age, photo, bio } = req.body;
+  const { username, email, major, gender, age, photo, bio, skills } = req.body;
 
   try {
     const result = await pool.query(
-      `UPDATE users SET username=$1, email=$2, faculty=$3, gender=$4, age=$5, photo=$6, bio=$7
-       WHERE id=$8 RETURNING *`,
-      [username, email, faculty, gender, age, photo, bio, id]
+      `UPDATE users SET username=$1, email=$2, major=$3, gender=$4, age=$5, photo=$6, bio=$7, skills=$8
+       WHERE id=$9 RETURNING *`,
+      [username, email, major, gender, age, photo, bio, skills || '[]', id]
     );
 
     if (result.rows.length === 0) {
@@ -81,3 +95,5 @@ const updateUser = async (req, res) => {
     res.status(500).json({ message: err.message });
   }
 };
+
+module.exports = { addUser, getUsers, searchUsers, updateUser };
