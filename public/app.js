@@ -57,8 +57,10 @@ document.addEventListener('DOMContentLoaded', () => {
                 const dBio = document.getElementById('displayBio');
                 const dSkills = document.getElementById('displaySkills');
                 const dAvatar = document.getElementById('displayAvatar');
+                const dGen = document.getElementById('displayGen');
                 
                 if (dUsername) dUsername.textContent = user.username || 'Admin';
+                if (dGen) dGen.textContent = user.age || 'ปี 1';
                 if (dMajor) dMajor.textContent = (user.major || '').toUpperCase();
                 if (dBio && user.bio) dBio.textContent = user.bio;
                 
@@ -185,12 +187,38 @@ document.addEventListener('DOMContentLoaded', () => {
                 
                 if (fileInput.files && fileInput.files[0]) {
                     const file = fileInput.files[0];
-                    if (file.size > 5 * 1024 * 1024) {
-                        return alert('ขนาดรูปภาพต้องไม่เกิน 5MB');
-                    }
-                    photoBase64 = await new Promise((resolve) => {
+                    photoBase64 = await new Promise((resolve, reject) => {
                         const reader = new FileReader();
-                        reader.onload = (ev) => resolve(ev.target.result);
+                        reader.onload = (ev) => {
+                            const img = new Image();
+                            img.onload = () => {
+                                const canvas = document.createElement('canvas');
+                                const MAX_WIDTH = 500;
+                                const MAX_HEIGHT = 500;
+                                let width = img.width;
+                                let height = img.height;
+
+                                if (width > height) {
+                                    if (width > MAX_WIDTH) {
+                                        height *= MAX_WIDTH / width;
+                                        width = MAX_WIDTH;
+                                    }
+                                } else {
+                                    if (height > MAX_HEIGHT) {
+                                        width *= MAX_HEIGHT / height;
+                                        height = MAX_HEIGHT;
+                                    }
+                                }
+                                canvas.width = width;
+                                canvas.height = height;
+                                const ctx = canvas.getContext('2d');
+                                ctx.drawImage(img, 0, 0, width, height);
+                                resolve(canvas.toDataURL('image/jpeg', 0.8));
+                            };
+                            img.onerror = reject;
+                            img.src = ev.target.result;
+                        };
+                        reader.onerror = reject;
                         reader.readAsDataURL(file);
                     });
                 }
@@ -217,7 +245,10 @@ document.addEventListener('DOMContentLoaded', () => {
                         body: JSON.stringify(updateData)
                     });
                     
-                    if (!res.ok) throw new Error('ไม่สามารถบันทึกข้อมูลได้');
+                    if (!res.ok) {
+                        const errData = await res.json().catch(() => ({}));
+                        throw new Error(errData.message || 'ไม่สามารถบันทึกข้อมูลได้');
+                    }
                     
                     const updatedData = await res.json();
                     

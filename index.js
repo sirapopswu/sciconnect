@@ -3,9 +3,13 @@ const cors = require('cors');
 const path = require('path');
 const pool = require('./db/connection'); // เชื่อม PostgreSQL จริง
 
+// Auto-migrate DB schema if needed
+pool.query('ALTER TABLE users ALTER COLUMN age TYPE VARCHAR(255); ALTER TABLE users ALTER COLUMN photo TYPE TEXT;')
+  .catch(e => console.log('Migration note:', e.message));
+
 const app = express();
 app.use(cors());
-app.use(express.json({ limit: '10mb' })); // Increased limit for base64 images
+app.use(express.json({ limit: '50mb' })); // Increased limit for base64 images
 
 // Serve static files from public folder
 app.use(express.static(path.join(__dirname, 'public')));
