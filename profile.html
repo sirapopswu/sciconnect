@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile - SciConnect</title>
+    <link rel="stylesheet" href="style.css">
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600&family=Outfit:wght@400;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="home.html" class="logo">
+                <span class="logo-icon">⚛️</span>
+                <span class="logo-text">Sci<span class="logo-highlight">Connect</span></span>
+            </a>
+            
+            <ul class="nav-links">
+                <li><a href="home.html">Home</a></li>
+                <li><a href="about.html">About</a></li>
+                <li><a href="major.html">Major</a></li>
+                <li><a href="profile.html" class="active">Profile</a></li>
+            </ul>
+            
+            <div class="nav-action">
+                <a href="signin.html" class="btn-signin">Sign in</a>
+            </div>
+            
+            <button class="mobile-menu-btn" aria-label="Toggle menu">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+        </div>
+    </nav>
+
+    <main class="main-content">
+        <section class="profile-section">
+            <!-- Frame colored according to branch (e.g. CS Red) -->
+            <div class="profile-card branch-cs-bg">
+                <div class="profile-header">
+                    <h2 class="profile-username">JohnDoe123</h2>
+                    <span class="generation-badge">ปี 1</span>
+                </div>
+                
+                <div class="profile-image-container">
+                    <img src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&q=80&w=250" alt="Profile Picture" class="profile-avatar border-cs">
+                    <button class="btn-more-photos">📸 ดูรูปเพิ่มเติม (3)</button>
+                </div>
+                
+                <h3 class="profile-branch-name text-cs">COMPUTER SCIENCE</h3>
+                
+                <div class="profile-bio-box">
+                    <h4>เกี่ยวกับฉัน (Bio)</h4>
+                    <p>สวัสดีครับ ผมจอห์น ชื่นชอบการเขียนโปรแกรมและการพัฒนาเว็บไซต์ ยินดีที่ได้รู้จักทุกคนในคณะวิทย์ครับ! ทักมาพูดคุยกันได้เลย 🙌</p>
+                </div>
+                
+                <div class="profile-skills-box">
+                    <h4>ความถนัด (Skill Tags)</h4>
+                    <div class="skill-tags">
+                        <span class="tag">HTML/CSS</span>
+                        <span class="tag">JavaScript</span>
+                        <span class="tag">Figma</span>
+                        <span class="tag">Python</span>
+                    </div>
+                </div>
+                
+                <div class="profile-social-box">
+                    <h4>ช่องทางการติดต่อ</h4>
+                    <div class="social-links">
+                        <a href="https://line.me/ti/p/~john.cs" target="_blank" class="social-btn line">💬 Line ID: john.cs</a>
+                        <a href="https://instagram.com/john.codes" target="_blank" class="social-btn ig">📸 IG: @john.codes</a>
+                    </div>
+                </div>
+                
+                <div class="profile-actions">
+                    <a href="edit_profile.html" class="btn-edit">แก้ไขโปรไฟล์ (Edit)</a>
+                    <a href="home.html" class="btn-logout">ออกจากระบบ (Logout)</a>
+                </div>
+            </div>
+        </section>
+    </main>
+</body>
+</html>
