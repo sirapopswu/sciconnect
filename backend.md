@@ -22,7 +22,7 @@ CREATE TABLE IF NOT EXISTS users (
     gender VARCHAR(10),
     age INT,
     photo VARCHAR(255),
-    bio TEXT,                -- เพิ่มช่องสำหรับแนะนำตัว
+    bio TEXT,             
     visible BOOLEAN DEFAULT TRUE
 );
 
