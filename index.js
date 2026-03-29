@@ -52,24 +52,51 @@ app.post('/api/users', async (req, res) => {
 
 // POST /api/users/login => login
 app.post('/api/users/login', async (req, res) => {
-  const { username, password } = req.body;
+  const { email, password } = req.body;
 
-  if (username === 'admin' && password === 'hardcode') {
+  if (email === 'admin@gmail.com' && password === 'hardcode') {
     return res.json({ success: true, role: 'admin' });
   }
 
   try {
-    const result = await pool.query(
-      'SELECT * FROM users WHERE username=$1 AND password=$2 AND visible=true',
-      [username, password]
-    );
-    if (result.rows.length > 0) {
-      res.json({ success: true, user: result.rows[0] });
-    } else {
-      res.status(401).json({ success: false, message: 'Invalid credentials' });
+    // 1. Check if user exists by email
+    const userExist = await pool.query('SELECT * FROM users WHERE email=$1', [email]);
+    if (userExist.rows.length === 0) {
+      return res.status(401).json({ success: false, message: 'ไม่พบอีเมลนี้ในระบบ' });
     }
+
+    const user = userExist.rows[0];
+
+    // 2. Check if password matches
+    if (user.password !== password) {
+      return res.status(401).json({ success: false, message: 'รหัสไม่ถูกต้อง' });
+    }
+
+    // 3. Check visibility (optional, but keep consistent with previous logic)
+    if (!user.visible) {
+      return res.status(403).json({ success: false, message: 'บัญชีนี้ถูกระงับหรือตั้งค่าเป็นไม่เปิดเผย' });
+    }
+
+    res.json({ success: true, user: user });
   } catch (err) {
     res.status(500).json({ success: false, message: err.message });
+  }
+});
+
+// GET /api/users/:id => ดึงข้อมูล user คนเดียว
+app.get('/api/users/:id', async (req, res) => {
+  const { id } = req.params;
+  try {
+    const result = await pool.query(
+      'SELECT id, username, email, faculty, gender, age, photo, visible FROM users WHERE id=$1',
+      [id]
+    );
+    if (result.rows.length === 0) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+    res.json(result.rows[0]);
+  } catch (err) {
+    res.status(500).json({ message: err.message });
   }
 });
 
