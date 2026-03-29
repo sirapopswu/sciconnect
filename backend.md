@@ -22,7 +22,8 @@ CREATE TABLE IF NOT EXISTS users (
     gender VARCHAR(10),
     age INT,
     photo VARCHAR(255),
-    bio TEXT,                
+    bio TEXT,
+    skills JSON DEFAULT '[]',       
     visible BOOLEAN DEFAULT TRUE
 );
 
