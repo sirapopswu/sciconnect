@@ -18,11 +18,11 @@ CREATE TABLE IF NOT EXISTS users (
     username VARCHAR(50) UNIQUE NOT NULL,
     password VARCHAR(255) NOT NULL,
     email VARCHAR(100) UNIQUE,
-    faculty VARCHAR(50),
+    major VARCHAR(50),
     gender VARCHAR(10),
     age INT,
     photo VARCHAR(255),
-    bio TEXT,             
+    bio TEXT,                
     visible BOOLEAN DEFAULT TRUE
 );
 
