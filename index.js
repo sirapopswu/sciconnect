@@ -5,7 +5,7 @@ const pool = require('./db/connection'); // เชื่อม PostgreSQL จร
 
 const app = express();
 app.use(cors());
-app.use(express.json());
+app.use(express.json({ limit: '10mb' })); // Increased limit for base64 images
 
 // Serve static files from public folder
 app.use(express.static(path.join(__dirname, 'public')));
@@ -88,13 +88,13 @@ app.post('/api/users/login', async (req, res) => {
 // PUT update user
 app.put('/api/users/:id', async (req, res) => {
   const { id } = req.params;
-  const { username, password, email, major, gender, age, photo } = req.body;
+  const { username, password, email, major, gender, age, photo, bio, skills } = req.body;
 
   try {
     const result = await pool.query(
-      `UPDATE users SET username=$1, password=$2, email=$3, major=$4, gender=$5, age=$6, photo=$7
-       WHERE id=$8 RETURNING *`,
-      [username, password, email, major, gender, age, photo, id]
+      `UPDATE users SET username=$1, password=$2, email=$3, major=$4, gender=$5, age=$6, photo=$7, bio=$8, skills=$9
+       WHERE id=$10 RETURNING *`,
+      [username, password, email, major, gender, age, photo, bio, skills || '[]', id]
     );
 
     if (result.rows.length === 0) return res.status(404).json({ message: 'User not found' });

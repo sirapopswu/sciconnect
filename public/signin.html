@@ -25,7 +25,7 @@
                 <div class="auth-form-container">
                     <h2>WELCOME TO<br><span class="highlight-text">Sci Connect</span></h2>
                     
-                    <form action="home.html" class="auth-form">
+                    <form id="signinForm" class="auth-form">
                         <div class="input-group">
                             <label for="email">อีเมล (Email / Gmail)</label>
                             <input type="email" id="email" placeholder="example@gmail.com" required>
@@ -38,7 +38,6 @@
                         
                         <div class="auth-actions">
                             <button type="submit" class="auth-btn-signin">SIGN IN</button>
-                            <!-- Note: Link should eventually go to signup.html -->
                             <a href="signup.html" class="auth-btn-signup">SIGN UP</a>
                         </div>
                     </form>
@@ -46,6 +45,45 @@
             </div>
         </div>
     </div>
-    <script src="app.js"></script>
+
+    <script>
+    document.getElementById('signinForm').addEventListener('submit', async (e) => {
+        e.preventDefault();
+
+        const email = document.getElementById('email').value.trim();
+        const password = document.getElementById('password').value;
+
+        if (!email || !password) {
+            alert('กรุณากรอกอีเมลและรหัสผ่านให้ครบ');
+            return;
+        }
+
+        try {
+            // ส่ง request ไป backend /api/users/login
+            const res = await fetch('http://localhost:3000/api/users/login', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ email, password })
+            });
+
+            const data = await res.json();
+
+            if (res.ok) {
+                // บันทึกข้อมูล user ลง localStorage
+                localStorage.setItem('user', JSON.stringify(data.user || { role: data.role }));
+
+                // ใช้ studentid แทน username ซึ่งตอนสมัครถูกแมปไปที่ username
+                const displayId = data.user ? (data.user.username || data.user.id) : data.role;
+                alert(`ยินดีต้อนรับ นิสิตรหัส ${displayId}`);
+                window.location.href = 'home.html';
+            } else {
+                alert(data.message || 'อีเมลหรือรหัสผ่านไม่ถูกต้อง');
+            }
+        } catch (err) {
+            console.error(err);
+            alert('เกิดข้อผิดพลาดในการเชื่อมต่อ server');
+        }
+    });
+    </script>
 </body>
 </html>

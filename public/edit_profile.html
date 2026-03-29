@@ -43,7 +43,7 @@
                 <p style="color: #64748b; margin-top: 0.5rem; font-size: 1.1rem;">ปรับปรุงข้อมูลของคุณเพื่อรู้จักเพื่อนร่วมคณะได้มากขึ้น</p>
             </div>
             
-            <form action="profile.html" class="edit-form">
+            <form id="editProfileFormPage" class="edit-form">
                 
                 <!-- Basic Info -->
                 <div class="edit-section">
@@ -90,18 +90,8 @@
                 <div class="edit-section">
                     <h3>📸 อัปโหลดรูปภาพโปรไฟล์</h3>
                     <div class="input-group">
-                        <label for="photo1">URL รูปภาพหลัก</label>
-                        <input type="url" id="photo1" value="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&q=80&w=250">
-                    </div>
-                    <div class="form-grid">
-                        <div class="input-group">
-                            <label for="photo2">URL รูปภาพสำรอง 1 (Optional)</label>
-                            <input type="url" id="photo2" placeholder="https://...">
-                        </div>
-                        <div class="input-group">
-                            <label for="photo3">URL รูปภาพสำรอง 2 (Optional)</label>
-                            <input type="url" id="photo3" placeholder="https://...">
-                        </div>
+                        <label for="editAvatarInput">อัปโหลดรูปภาพหลัก (Main Profile Picture)</label>
+                        <input type="file" id="editAvatarInput" accept="image/*" class="form-input" style="padding: 0.5rem;">
                     </div>
                 </div>
 
@@ -123,7 +113,7 @@
                 <!-- Form actions -->
                 <div class="edit-actions">
                     <a href="profile.html" class="btn-cancel">ยกเลิก (Cancel)</a>
-                    <button type="submit" class="btn-save">บันทึกข้อมูลโพรไฟล์ (Save)</button>
+                    <button type="submit" class="btn-save" id="btnSaveProfile">บันทึกข้อมูลโพรไฟล์ (Save)</button>
                 </div>
             </form>
         </div>
