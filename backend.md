@@ -18,7 +18,7 @@ CREATE TABLE users (
     username TEXT UNIQUE NOT NULL,
     password TEXT NOT NULL,        -- ตอนนี้ยังเป็น plain text
     email TEXT UNIQUE NOT NULL,
-    faculty TEXT,
+    major TEXT,
     gender TEXT,
     age INTEGER,
     photo TEXT,                   -- filename หรือ URL

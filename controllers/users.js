@@ -19,7 +19,7 @@ const addUser = async (req, res) => {
         age,
         photo || 'default.png',
         bio || '',
-        skills || '[]', // ถ้าไม่มี skills ให้เป็น array ว่าง
+        skills || '[]', 
         true
       ]
     );
