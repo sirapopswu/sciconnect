@@ -60,6 +60,21 @@
                                 <option value="phy">Physics (ฟิสิกส์)</option>
                             </select>
                         </div>
+
+                        <div class="input-group">
+                            <label for="gender">เพศ (Gender)</label>
+                            <select id="gender" class="form-select" required>
+                                <option value="" disabled selected>-- เลือกเพศ --</option>
+                                <option value="ชาย">ชาย (Male)</option>
+                                <option value="หญิง">หญิง (Female)</option>
+                                <option value="อื่นๆ">อื่นๆ (Other)</option>
+                            </select>
+                        </div>
+
+                        <div class="input-group">
+                            <label for="gen">รุ่น (Generation / Year)</label>
+                            <input type="text" id="gen" placeholder="เช่น 68, 67, 66" required>
+                        </div>
                         
                         <div class="auth-actions">
                             <button type="submit" class="auth-btn-signup" style="width: 100%; font-size: 1.1rem; background: #10b981; color: white; border: none; padding: 0.8rem; border-radius: 0.5rem; cursor: pointer; font-weight: 600;">REGISTER (PDPA)</button>

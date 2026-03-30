@@ -26,10 +26,12 @@ if (pdpaForm) {
                     'Content-Type': 'application/json'
                 },
                 body: JSON.stringify({
-                    username: signupData.studentId,  // ใช้ Student ID เป็น username
+                    username: signupData.studentId,
                     password: signupData.password,
                     email: signupData.email,
                     major: signupData.major,
+                    gender: signupData.gender,
+                    age: signupData.gen,
                     photo: 'default.png'
                 })
             });

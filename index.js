@@ -33,6 +33,38 @@ app.get('/api/users', async (req, res) => {
   }
 });
 
+// GET search/filter users
+app.get('/api/users/search', async (req, res) => {
+  const { keyword, gender, major, age } = req.query;
+  try {
+    let query = 'SELECT id, username, email, major, gender, age, photo, bio, skills FROM users WHERE visible=true';
+    let params = [];
+
+    if (keyword) {
+      params.push(`%${keyword}%`);
+      query += ` AND (username ILIKE $${params.length} OR bio ILIKE $${params.length})`;
+    }
+    if (gender) {
+      params.push(gender);
+      query += ` AND gender=$${params.length}`;
+    }
+    if (major) {
+      params.push(major);
+      query += ` AND major=$${params.length}`;
+    }
+    if (age) {
+      params.push(age);
+      query += ` AND age=$${params.length}`;
+    }
+
+    query += ' ORDER BY id DESC';
+    const result = await pool.query(query, params);
+    res.json(result.rows);
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+});
+
 // GET single user by id
 app.get('/api/users/:id', async (req, res) => {
   const { id } = req.params;
@@ -81,7 +113,6 @@ app.post('/api/users/login', async (req, res) => {
 
     const user = userExist.rows[0];
     if (user.password !== password) return res.status(401).json({ success: false, message: 'รหัสไม่ถูกต้อง' });
-    if (!user.visible) return res.status(403).json({ success: false, message: 'บัญชีนี้ถูกระงับหรือตั้งค่าเป็นไม่เปิดเผย' });
 
     res.json({ success: true, user });
   } catch (err) {
