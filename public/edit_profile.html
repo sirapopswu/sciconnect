@@ -57,10 +57,7 @@
                                 <label for="display-name">ชื่อ (Full Name)</label>
                                 <input type="text" id="display-name" placeholder="ชื่อ-นามสกุล" required>
                             </div>
-                            <div class="input-group">
-                                <label for="gen">รุ่น / ปี (YEAR / GENERATION)</label>
-                                <input type="text" id="gen" placeholder="เช่น 68">
-                            </div>
+                            <!-- Generation/Year is auto-derived from name/id -->
                             <div class="input-group">
                                 <label for="gender">เพศ (GENDER)</label>
                                 <select id="gender" class="form-select">
@@ -68,6 +65,10 @@
                                     <option value="หญิง">หญิง (Female)</option>
                                     <option value="อื่นๆ">อื่นๆ (Other)</option>
                                 </select>
+                            </div>
+                            <div class="input-group">
+                                <label for="age">อายุ (AGE)</label>
+                                <input type="number" id="age" placeholder="ระบุอายุของคุณ">
                             </div>
                             <div class="input-group">
                                 <label for="branch">สาขาวิชา (MAJOR)</label>

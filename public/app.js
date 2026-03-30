@@ -5,16 +5,17 @@ if (signupForm) {
     signupForm.addEventListener('submit', (e) => {
         e.preventDefault();
 
+        const usernameValue = document.getElementById('username').value.trim();
         const studentId = document.getElementById('studentid').value.trim();
         const email = document.getElementById('email').value.trim();
         const password = document.getElementById('password').value;
         const confirmPassword = document.getElementById('confirm-password').value;
         const major = document.getElementById('branch').value;
 
-        const gender = document.getElementById('gender').value;
-        const gen = document.getElementById('gen').value.trim();
+        const age = document.getElementById('age').value;
+        const gen = studentId.substring(0, 2); // Always derive from ID
 
-        if (!studentId || !email || !password || !confirmPassword || !major || !gender || !gen) {
+        if (!studentId || !email || !password || !confirmPassword || !major || !gender || !age) {
             alert('กรุณากรอกฟอร์มให้ครบ');
             return;
         }
@@ -29,20 +30,16 @@ if (signupForm) {
             return;
         }
 
-        // auto-fill gen from studentId if not filled
-        if (!gen && studentId.length >= 2) {
-             const derivedGen = studentId.substring(0, 2);
-             // Proceed with derivedGen
-        }
-
         // เก็บข้อมูลไว้ชั่วคราว
         localStorage.setItem('signupData', JSON.stringify({
+            username: usernameValue,
             studentId,
             email,
             password,
             major,
             gender,
-            gen: gen || studentId.substring(0, 2)
+            age,
+            gen: studentId.substring(0, 2)
         }));
 
         // redirect ไปหน้า pdpa
@@ -89,16 +86,20 @@ document.addEventListener('DOMContentLoaded', () => {
                 const dBio = document.getElementById('displayBio');
                 const dSkills = document.getElementById('displaySkills');
                 const dAvatar = document.getElementById('displayAvatar');
-                const dGen = document.getElementById('displayGen');
+                const dAge = document.getElementById('displayAge');
+                
+                // Use generation from API (derived by backend) or fallback to ID
+                const derivedGen = user.generation || (user.student_id ? user.student_id.substring(0, 2) : '-');
                 
                 const dEmail = document.getElementById('displayEmail');
                 const dGender = document.getElementById('displayGender');
                 
                 if (dUsername) dUsername.textContent = user.username || 'Admin';
-                if (dGen) dGen.textContent = user.age || '-';
+                if (dGen) dGen.textContent = derivedGen;
                 if (dMajor) dMajor.textContent = (user.major || '').toUpperCase();
                 if (dEmail) dEmail.textContent = user.email || '';
                 if (dGender) dGender.textContent = user.gender || '-';
+                if (dAge) dAge.textContent = user.age || '-';
                 if (dBio && user.bio) dBio.textContent = user.bio;
                 
                 if (dSkills && user.skills) {
@@ -128,6 +129,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
                 // Apply dynamic theme color based on major
                 const profileCard = document.getElementById('profileCard');
+                const dStudentId = document.getElementById('displayStudentId');
+                const privateBox = document.getElementById('privateIdBox');
+
                 if (profileCard && user.major) {
                     // Remove existing themes
                     profileCard.classList.remove('branch-cs-bg', 'branch-math-bg', 'branch-bio-bg', 'branch-chem-bg', 'branch-gen-bg', 'branch-mat-bg', 'branch-micro-bg', 'branch-phy-bg');
@@ -135,6 +139,12 @@ document.addEventListener('DOMContentLoaded', () => {
                     
                     if (dAvatar) dAvatar.className = `profile-avatar themed border-${user.major}`;
                     if (dMajor) dMajor.className = `profile-branch-name themed text-${user.major}`;
+                }
+
+                // Show Student ID only if owner (on private profile page)
+                if (dStudentId && privateBox && window.location.pathname.includes('profile.html')) {
+                    dStudentId.textContent = user.student_id || user.username;
+                    privateBox.style.display = 'block';
                 }
             }
         }
@@ -207,11 +217,11 @@ document.addEventListener('DOMContentLoaded', () => {
                 return;
             }
             
-            // Pre-fill form
+            // Pre-fill form (Generation is auto-derived from username)
             document.getElementById('display-name').value = user.username || '';
-            document.getElementById('gen').value = user.age || '';
             document.getElementById('branch').value = user.major || 'cs';
             document.getElementById('gender').value = user.gender || 'ชาย';
+            document.getElementById('age').value = user.age || '';
             document.getElementById('bio').value = user.bio || '';
             
             let skillsStr = '';
@@ -224,8 +234,9 @@ document.addEventListener('DOMContentLoaded', () => {
             editFormPage.addEventListener('submit', async (e) => {
                 e.preventDefault();
                 
-                const username = document.getElementById('display-name').value.trim();
-                const age = document.getElementById('gen').value.trim();
+                const displayName = document.getElementById('display-name').value.trim();
+                const studentId = user.student_id; 
+                const age = document.getElementById('age').value;
                 const major = document.getElementById('branch').value;
                 const gender = document.getElementById('gender').value;
                 const bio = document.getElementById('bio').value.trim();
@@ -278,7 +289,8 @@ document.addEventListener('DOMContentLoaded', () => {
                     if (saveBtn) { saveBtn.textContent = 'กำลังบันทึก...'; saveBtn.disabled = true; }
                     
                     const updateData = {
-                        username,
+                        username: displayName,
+                        student_id: studentId,
                         age,
                         major,
                         bio,
@@ -324,6 +336,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const keyword = document.getElementById('searchKeyword').value.trim();
             const major = document.getElementById('searchMajor').value;
             const gender = document.getElementById('searchGender').value;
+            const gen = document.getElementById('searchGen').value.trim();
             const age = document.getElementById('searchAge').value.trim();
 
             const searchResults = document.getElementById('searchResults');
@@ -334,6 +347,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (keyword) params.append('keyword', keyword);
                 if (major) params.append('major', major);
                 if (gender) params.append('gender', gender);
+                if (gen) params.append('gen', gen);
                 if (age) params.append('age', age);
 
                 const res = await fetch(`http://localhost:3000/api/users/search?${params.toString()}`);
@@ -475,11 +489,12 @@ function openProfileModal(user) {
     }
 
     const avatar = user.photo && user.photo !== 'default.png' ? user.photo : `https://ui-avatars.com/api/?name=${user.username}&background=random`;
+    const derivedGen = user.generation || (user.student_id ? user.student_id.substring(0, 2) : '-');
 
     content.innerHTML = `
         <img src="${avatar}" alt="Avatar" class="modal-avatar">
         <h3 class="modal-name">${user.username}</h3>
-        <div class="modal-meta">รุ่น ${user.age} | ${user.gender} | ${(user.major || '').toUpperCase()}</div>
+        <div class="modal-meta">รุ่น ${derivedGen} | อายุ ${user.age || '-'} | ${user.gender} | ${(user.major || '').toUpperCase()}</div>
         <p class="modal-bio">${user.bio || 'ไม่มีรายละเอียดแนะนำตัว'}</p>
         <div class="modal-skills-title">ความสามารถ (Skills)</div>
         <div class="modal-skills">
@@ -530,7 +545,11 @@ function createStudentCard(user) {
     card.style.padding = '1.5rem';
     card.style.gap = '0.5rem';
 
-    const avatar = user.photo && user.photo !== 'default.png' ? user.photo : `https://ui-avatars.com/api/?name=${user.username}&background=random`;
+    const avatarName = encodeURIComponent(user.username || 'U');
+    const avatar = user.photo && user.photo !== 'default.png' ? user.photo : `https://ui-avatars.com/api/?name=${avatarName}&background=random&color=fff&size=128`;
+    
+    // Derivation logic: prioritize generation from API, then student_id
+    const derivedGen = user.generation || (user.student_id ? user.student_id.substring(0, 2) : '-');
     
     let skills = [];
     try {
@@ -540,7 +559,7 @@ function createStudentCard(user) {
     card.innerHTML = `
         <img src="${avatar}" alt="Avatar" class="member-avatar" style="width: 80px; height: 80px; border-radius: 50%; object-fit: cover; border: 3px solid white;">
         <span class="member-name" style="font-weight: 700; color: #1e293b;">${user.username}</span>
-        <span class="member-badge" style="font-size: 0.8rem; background: rgba(255,255,255,0.5); padding: 0.2rem 0.6rem; border-radius: 20px;">รุ่น ${user.age} | ${user.gender}</span>
+        <span class="member-badge" style="font-size: 0.8rem; background: rgba(255,255,255,0.5); padding: 0.2rem 0.6rem; border-radius: 20px;">รุ่น ${derivedGen} | ${user.gender}</span>
         <p style="font-size: 0.85rem; color: #475569; margin-top: 0.5rem; text-align: center; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;">${user.bio || 'สายวิทย์หน้าตาดี...'}</p>
         <div style="display: flex; flex-wrap: wrap; gap: 4px; justify-content: center; margin-top: 0.5rem;">
             ${(skills || []).slice(0, 3).map(s => `<span style="font-size: 0.7rem; background: white; padding: 2px 6px; border-radius: 4px; border: 1px solid #e2e8f0;">${s}</span>`).join('')}
