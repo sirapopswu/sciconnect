@@ -15,3 +15,7 @@ app.put('/users/:id', updateUser);
 // Start server
 const PORT = 3000;
 app.listen(PORT, () => console.log(`Server running at http://localhost:${PORT}`));
+
+
+console.log('login:', login)
+console.log('type:', typeof login)
