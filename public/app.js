@@ -87,6 +87,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 const dSkills = document.getElementById('displaySkills');
                 const dAvatar = document.getElementById('displayAvatar');
                 const dAge = document.getElementById('displayAge');
+                const dGen = document.getElementById('displayGen');
                 
                 // Use generation from API (derived by backend) or fallback to ID
                 const derivedGen = user.generation || (user.student_id ? user.student_id.substring(0, 2) : '-');
@@ -219,6 +220,7 @@ document.addEventListener('DOMContentLoaded', () => {
             
             // Pre-fill form (Generation is auto-derived from username)
             document.getElementById('display-name').value = user.username || '';
+            document.getElementById('studentid').value = user.student_id || '';
             document.getElementById('branch').value = user.major || 'cs';
             document.getElementById('gender').value = user.gender || 'ชาย';
             document.getElementById('age').value = user.age || '';
@@ -235,7 +237,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 e.preventDefault();
                 
                 const displayName = document.getElementById('display-name').value.trim();
-                const studentId = user.student_id; 
+                const studentId = document.getElementById('studentid').value.trim();
                 const age = document.getElementById('age').value;
                 const major = document.getElementById('branch').value;
                 const gender = document.getElementById('gender').value;

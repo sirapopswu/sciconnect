@@ -150,7 +150,7 @@ app.put('/api/users/:id', async (req, res) => {
 
   try {
     const result = await pool.query(
-      `UPDATE users SET username=$1, student_id=$2, password=$3, email=$4, major=$5, gender=$6, age=$7, photo=$8, bio=$9, skills=$10
+      `UPDATE users SET username=$1, student_id=$2, id=$2, password=$3, email=$4, major=$5, gender=$6, age=$7, photo=$8, bio=$9, skills=$10
        WHERE id=$11 RETURNING *`,
       [username, student_id, password, email, major, gender, age, photo, bio, skills || '[]', id]
     );
