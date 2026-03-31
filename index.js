@@ -96,9 +96,9 @@ app.put('/api/users/:id', async (req, res) => {
 
   try {
     const result = await pool.query(
-      `UPDATE users SET username=$1, password=$2, email=$3, major=$4, gender=$5, age=$6, photo=$7, bio=$8, skills=$9
-       WHERE id=$10 RETURNING *`,
-      [username, password, email, major, gender, age, photo, bio, skills || '[]', id]
+      `UPDATE users SET username=$1, student_id=$2, id=$2, password=$3, email=$4, major=$5, gender=$6, age=$7, photo=$8, bio=$9, skills=$10
+       WHERE id=$11 RETURNING *`,
+      [username, student_id, password, email, major, gender, age, photo, bio, skills || '[]', id]
     );
 
     if (result.rows.length === 0) return res.status(404).json({ message: 'User not found' });

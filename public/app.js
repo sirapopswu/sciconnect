@@ -57,7 +57,14 @@ document.addEventListener('DOMContentLoaded', () => {
                 const dBio = document.getElementById('displayBio');
                 const dSkills = document.getElementById('displaySkills');
                 const dAvatar = document.getElementById('displayAvatar');
+                const dAge = document.getElementById('displayAge');
                 const dGen = document.getElementById('displayGen');
+                
+                // Use generation from API (derived by backend) or fallback to ID
+                const derivedGen = user.generation || (user.student_id ? user.student_id.substring(0, 2) : '-');
+                
+                const dEmail = document.getElementById('displayEmail');
+                const dGender = document.getElementById('displayGender');
                 
                 if (dUsername) dUsername.textContent = user.username || 'Admin';
                 if (dGen) dGen.textContent = user.age || 'ปี 1';
@@ -161,7 +168,7 @@ document.addEventListener('DOMContentLoaded', () => {
             
             // Pre-fill form
             document.getElementById('display-name').value = user.username || '';
-            document.getElementById('gen').value = user.age || '';
+            document.getElementById('studentid').value = user.student_id || '';
             document.getElementById('branch').value = user.major || 'cs';
             document.getElementById('bio').value = user.bio || '';
             
@@ -175,8 +182,9 @@ document.addEventListener('DOMContentLoaded', () => {
             editFormPage.addEventListener('submit', async (e) => {
                 e.preventDefault();
                 
-                const username = document.getElementById('display-name').value.trim();
-                const age = document.getElementById('gen').value.trim();
+                const displayName = document.getElementById('display-name').value.trim();
+                const studentId = document.getElementById('studentid').value.trim();
+                const age = document.getElementById('age').value;
                 const major = document.getElementById('branch').value;
                 const bio = document.getElementById('bio').value.trim();
                 const skillsInput = document.getElementById('skills').value;
