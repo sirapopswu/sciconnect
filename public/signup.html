@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Up - SciConnect</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600&family=Outfit:wght@400;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body class="auth-bg">
+    <div class="auth-container" style="max-width: 1000px;">
+        <div class="auth-card" style="min-height: 600px;">
+            <!-- Left Side: Branding -->
+            <div class="auth-left">
+                <div class="auth-brand">
+                    <span class="auth-icon">⚛️</span>
+                    <h1>Sci<span>Connect</span></h1>
+                    <p>"มาเป็นส่วนหนึ่งของเครือข่ายวิชาคณะวิทยาศาสตร์ไปด้วยกัน"</p>
+                </div>
+                <a href="home.html" class="back-home">← กลับหน้าหลัก</a>
+            </div>
+            
+            <!-- Right Side: Form -->
+            <div class="auth-right">
+                <div class="auth-form-container" id="signupFormContainer" style="max-width: 450px;">
+                    <h2>CREATE NEW<br><span class="highlight-text" style="color: #10b981;">ACCOUNT</span></h2>
+                    
+                    <form action="pdpa.html" class="auth-form" id="signupForm">
+                        <div class="input-group">
+                            <label for="studentid">รหัสนิสิต (Student ID)</label>
+                            <input type="text" id="studentid" placeholder="รหัสนิสิต 11 หลัก" required>
+                        </div>
+
+                        <div class="input-group">
+                            <label for="email">อีเมล (Email)</label>
+                            <input type="email" id="email" placeholder="example@g.swu.ac.th" required>
+                        </div>
+                        
+                        <div class="input-group">
+                            <label for="password">รหัสผ่าน (Password)</label>
+                            <input type="password" id="password" placeholder="ตั้งรหัสผ่าน 8 ตัวอักษรขึ้นไป" required>
+                        </div>
+
+                        <div class="input-group">
+                            <label for="confirm-password">ยืนยันรหัสผ่าน (Confirm Password)</label>
+                            <input type="password" id="confirm-password" placeholder="กรอกรหัสผ่านอีกครั้ง" required>
+                        </div>
+
+                        <div class="input-group">
+                            <label for="branch">สาขาวิชา (Major)</label>
+                            <select id="branch" class="form-select" required>
+                                <option value="" disabled selected>-- เลือกสาขาวิชา --</option>
+                                <option value="cs">Computer Science (วิทยาการคอมพิวเตอร์)</option>
+                                <option value="math">Math-Stat (คณิตศาสตร์และสถิติ)</option>
+                                <option value="bio">Biology (ชีววิทยา)</option>
+                                <option value="chem">Chemistry (เคมี)</option>
+                                <option value="gen">General Science (วิทยาศาสตร์ทั่วไป)</option>
+                                <option value="mat">Material Science (วัสดุศาสตร์)</option>
+                                <option value="micro">Micro Biology (จุลชีววิทยา)</option>
+                                <option value="phy">Physics (ฟิสิกส์)</option>
+                            </select>
+                        </div>
+                        
+                        <div class="auth-actions">
+                            <button type="submit" class="auth-btn-signup" style="width: 100%; font-size: 1.1rem; background: #10b981; color: white; border: none; padding: 0.8rem; border-radius: 0.5rem; cursor: pointer; font-weight: 600;">REGISTER (PDPA)</button>
+                        </div>
+                    </form>
+                </div>
+
+                <!-- Success Message (Hidden by default) -->
+                <div class="auth-form-container" id="signupSuccessContainer" style="max-width: 450px; display: none; text-align: center; padding: 3rem 2rem;">
+                    <div style="font-size: 4rem; margin-bottom: 1.5rem;">🎉</div>
+                    <h2 style="color: #10b981; font-size: 1.8rem; margin-bottom: 1rem;">FINISH CREATE ACCOUNT</h2>
+                    <p id="welcomeMessage" style="color: #475569; font-size: 1.2rem; margin-bottom: 2.5rem;">WELCOME ......</p>
+                    <a href="signin.html" class="auth-btn-signup" style="display: block; width: 100%; text-decoration: none; background: var(--primary); color: white; padding: 1rem; border-radius: 0.5rem; font-weight: 600;">ไปหน้าเข้าสู่ระบบ (Go to Sign In)</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="app.js"></script>
+</body>
+</html>

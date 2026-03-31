@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign In - SciConnect</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600&family=Outfit:wght@400;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body class="auth-bg">
+    <div class="auth-container">
+        <div class="auth-card">
+            <!-- Left Side: Branding -->
+            <div class="auth-left">
+                <div class="auth-brand">
+                    <span class="auth-icon">⚛️</span>
+                    <h1>Sci<span>Connect</span></h1>
+                    <p>"เชื่อมต่อชาววิทย์ ชิดใกล้กว่าที่เคย"</p>
+                </div>
+                <a href="home.html" class="back-home">← กลับหน้าหลัก</a>
+            </div>
+            
+            <!-- Right Side: Form -->
+            <div class="auth-right">
+                <div class="auth-form-container">
+                    <h2>WELCOME TO<br><span class="highlight-text">Sci Connect</span></h2>
+                    
+                    <form id="signinForm" class="auth-form">
+                        <div class="input-group">
+                            <label for="email">อีเมล (Email / Gmail)</label>
+                            <input type="email" id="email" placeholder="example@gmail.com" required>
+                        </div>
+                        
+                        <div class="input-group">
+                            <label for="password">รหัสผ่าน (Password)</label>
+                            <input type="password" id="password" placeholder="••••••••" required>
+                        </div>
+                        
+                        <div class="auth-actions">
+                            <button type="submit" class="auth-btn-signin">SIGN IN</button>
+                            <a href="signup.html" class="auth-btn-signup">SIGN UP</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+    document.getElementById('signinForm').addEventListener('submit', async (e) => {
+        e.preventDefault();
+
+        const email = document.getElementById('email').value.trim();
+        const password = document.getElementById('password').value;
+
+        if (!email || !password) {
+            alert('กรุณากรอกอีเมลและรหัสผ่านให้ครบ');
+            return;
+        }
+
+        try {
+            // ส่ง request ไป backend /api/users/login
+            const res = await fetch('http://localhost:3000/api/users/login', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ email, password })
+            });
+
+            const data = await res.json();
+
+            if (res.ok) {
+                // บันทึกข้อมูล user ลง localStorage
+                localStorage.setItem('user', JSON.stringify(data.user || { role: data.role }));
+
+                // ใช้ studentid แทน username ซึ่งตอนสมัครถูกแมปไปที่ username
+                const displayId = data.user ? (data.user.username || data.user.id) : data.role;
+                alert(`ยินดีต้อนรับ นิสิตรหัส ${displayId}`);
+                window.location.href = 'home.html';
+            } else {
+                alert(data.message || 'อีเมลหรือรหัสผ่านไม่ถูกต้อง');
+            }
+        } catch (err) {
+            console.error(err);
+            alert('เกิดข้อผิดพลาดในการเชื่อมต่อ server');
+        }
+    });
+    </script>
+</body>
+</html>

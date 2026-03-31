@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile - SciConnect</title>
+    <link rel="stylesheet" href="style.css">
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600&family=Outfit:wght@400;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="home.html" class="logo">
+                <span class="logo-icon">⚛️</span>
+                <span class="logo-text">Sci<span class="logo-highlight">Connect</span></span>
+            </a>
+            
+            <ul class="nav-links">
+                <li><a href="home.html">Home</a></li>
+                <li><a href="about.html">About</a></li>
+                <li><a href="major.html">Major</a></li>
+                <li><a href="profile.html" class="active">Profile</a></li>
+            </ul>
+            
+            <div class="nav-action">
+                <a href="signin.html" class="btn-signin">Sign in</a>
+            </div>
+            
+            <button class="mobile-menu-btn" aria-label="Toggle menu">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+        </div>
+    </nav>
+
+    <main class="main-content">
+        <section class="profile-section">
+            <!-- Frame colored according to branch (e.g. CS Red) -->
+            <div class="profile-card branch-cs-bg" id="profileCard">
+                <div class="profile-header">
+                    <h2 class="profile-username" id="displayUsername">Username</h2>
+                    <span class="generation-badge" id="displayGen">ปี 1</span>
+                </div>
+                
+                <div class="profile-image-container">
+                    <img src="https://ui-avatars.com/api/?name=User&background=random" alt="Profile Picture" class="profile-avatar border-cs" id="displayAvatar">
+                </div>
+                
+                <h3 class="profile-branch-name text-cs" id="displayMajor">MAJOR NAME</h3>
+                
+                <div class="profile-bio-box">
+                    <h4>เกี่ยวกับฉัน (Bio)</h4>
+                    <p id="displayBio">ยังไม่มีข้อมูลแนะนำตัว (No bio added yet)</p>
+                </div>
+                
+                <div class="profile-skills-box">
+                    <h4>ความถนัด (Skill Tags)</h4>
+                    <div class="skill-tags" id="displaySkills">
+                        <span class="tag">Skills appear here</span>
+                    </div>
+                </div>
+                
+
+                <div class="profile-privacy-box" style="margin-top: 1.5rem;">
+                    <div style="display: flex; justify-content: space-between; align-items: center; padding: 1rem; background: var(--white); border-radius: var(--radius-md); box-shadow: var(--shadow-sm);">
+                        <div style="display: flex; flex-direction: column;">
+                            <span style="font-weight: 600; color: var(--text-dark);">แสดงโปรไฟล์ในหน้าสาขา</span>
+                            <span style="font-size: 0.85rem; color: #64748b;">เปิดเพื่อให้เพื่อนๆ ค้นพบคุณในสาขา</span>
+                        </div>
+                        <label class="switch">
+                            <input type="checkbox" id="profileVisibilityStandalone" checked>
+                            <span class="slider round"></span>
+                        </label>
+                    </div>
+                </div>
+                
+                <div class="profile-actions">
+                    <a href="edit_profile.html" class="btn-edit">แก้ไขโปรไฟล์ (Edit)</a>
+                    <a href="home.html" class="btn-logout">ออกจากระบบ (Logout)</a>
+                </div>
+            </div>
+        </section>
+    </main>
+    <script src="app.js"></script>
+</body>
+</html>

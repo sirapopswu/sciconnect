@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SciConnect</title>
+    <link rel="stylesheet" href="style.css">
+    
+    <!-- Google Fonts: Outfit for English/Branding, Kanit for Thai -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600&family=Outfit:wght@400;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="#" class="logo">
+                <span class="logo-icon">⚛️</span>
+                <span class="logo-text">Sci<span class="logo-highlight">Connect</span></span>
+            </a>
+            
+            <ul class="nav-links">
+                <li><a href="home.html" class="active">Home</a></li>
+                <li><a href="about.html">About</a></li>
+                <li><a href="major.html">Major</a></li>
+                <li><a href="profile.html">Profile</a></li>
+            </ul>
+            
+            <div class="nav-action">
+                <a href="signin.html" class="btn-signin">Sign in</a>
+            </div>
+            
+            <!-- Mobile Menu Toggle -->
+            <button class="mobile-menu-btn" aria-label="Toggle menu">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+        </div>
+    </nav>
+
+    <main class="main-content">
+        <!-- Hero Section -->
+        <section class="hero-wrapper">
+            <div class="hero-container">
+                <div class="hero-brand-card">
+                    <div class="hero-brand-content">
+                        <div class="brand-icon-large">⚛️</div>
+                        <h1 class="brand-title-large">Sci<span class="logo-highlight">Connect</span></h1>
+                        <p class="brand-slogan">"เชื่อมต่อความสัมพันธ์ พัฒนาสู่อนาคต"</p>
+                        <div class="brand-decorations">
+                            <div class="circle-sm"></div>
+                            <div class="circle-md"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="hero-image-card">
+                    <!-- Image describing science students in university -->
+                    <img src="https://images.unsplash.com/photo-1523240795612-9a054b0db644?auto=format&fit=crop&q=80&w=1470" alt="Students Gathering">
+                    <div class="image-overlay">
+                        <span class="overlay-tag">We are Sci 💙</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Branches Section -->
+        <section class="branches-section">
+            <div class="branches-grid">
+                <!-- Computer Science -->
+                <a href="comsci.html" class="branch-card cs">
+                    <span class="branch-name">COMPUTER<br>SCIENCE</span>
+                </a>
+                
+                <!-- Math-Stat -->
+                <a href="mathstat.html" class="branch-card math">
+                    <span class="branch-name">MATH-STAT</span>
+                </a>
+                
+                <!-- Biology -->
+                <a href="bio.html" class="branch-card bio">
+                    <span class="branch-name">BIOLOGY</span>
+                </a>
+                
+                <!-- Chemistry -->
+                <a href="chem.html" class="branch-card chem">
+                    <span class="branch-name">CHEMISTRY</span>
+                </a>
+                
+                <!-- General Science -->
+                <a href="gensci.html" class="branch-card gen">
+                    <span class="branch-name">GENERAL<br>SCIENCE</span>
+                </a>
+                
+                <!-- Material Science -->
+                <a href="matsci.html" class="branch-card mat">
+                    <span class="branch-name">MATERIAL<br>SCIENCE</span>
+                </a>
+                
+                <!-- Micro Biology -->
+                <a href="micro.html" class="branch-card micro">
+                    <span class="branch-name">MICRO<br>BIOLOGY</span>
+                </a>
+                
+                <!-- Physics -->
+                <a href="physics.html" class="branch-card phy">
+                    <span class="branch-name">PHYSICS</span>
+                </a>
+            </div>
+        </section>
+    </main>
+    <script src="app.js"></script>
+</body>
+</html>

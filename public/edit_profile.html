@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Profile - SciConnect</title>
+    <link rel="stylesheet" href="style.css">
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600&family=Outfit:wght@400;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body class="auth-bg" style="padding: 0; align-items: start;">
+    <!-- Navbar -->
+    <nav class="navbar" style="position: sticky; top: 0; z-index: 1000;">
+        <div class="nav-container">
+            <a href="home.html" class="logo">
+                <span class="logo-icon">⚛️</span>
+                <span class="logo-text">Sci<span class="logo-highlight">Connect</span></span>
+            </a>
+            
+            <ul class="nav-links">
+                <li><a href="home.html">Home</a></li>
+                <li><a href="about.html">About</a></li>
+                <li><a href="major.html">Major</a></li>
+                <li><a href="profile.html" class="active">Profile</a></li>
+            </ul>
+            
+            <div class="nav-action">
+                <a href="signin.html" class="btn-signin">Sign in</a>
+            </div>
+            
+            <button class="mobile-menu-btn" aria-label="Toggle menu">
+                <span></span><span></span><span></span>
+            </button>
+        </div>
+    </nav>
+
+    <main class="main-content" style="padding-top: 2rem; width: 100%;">
+        <div class="edit-container">
+            <div class="edit-header">
+                <h2>ตั้งค่าและแก้ไขโปรไฟล์</h2>
+                <p style="color: #64748b; margin-top: 0.5rem; font-size: 1.1rem;">ปรับปรุงข้อมูลของคุณเพื่อรู้จักเพื่อนร่วมคณะได้มากขึ้น</p>
+            </div>
+            
+            <form id="editProfileFormPage" class="edit-form">
+                
+                <!-- Basic Info -->
+                <div class="edit-section">
+                    <h3>👤 ข้อมูลพื้นฐาน (Basic Info)</h3>
+                    <div class="form-grid">
+                        <div class="input-group">
+                            <label for="display-name">ชื่อที่แสดง (Display Name)</label>
+                            <input type="text" id="display-name" value="JohnDoe123" required>
+                        </div>
+                        <div class="input-group">
+                            <label for="gen">ระบุรุ่น (Generation)</label>
+                            <input type="text" id="gen" value="ปี 1 (68)">
+                        </div>
+                    </div>
+                    <div class="input-group">
+                        <label for="branch">สาขาวิชา (Major)</label>
+                        <select id="branch" class="form-select">
+                            <option value="cs" selected>Computer Science (วิทยาการคอมพิวเตอร์)</option>
+                            <option value="math">Math-Stat (คณิตศาสตร์และสถิติ)</option>
+                            <option value="bio">Biology (ชีววิทยา)</option>
+                            <option value="chem">Chemistry (เคมี)</option>
+                            <option value="gen">General Science (วิทยาศาสตร์ทั่วไป)</option>
+                            <option value="mat">Material Science (วัสดุศาสตร์)</option>
+                            <option value="micro">Micro Biology (จุลชีววิทยา)</option>
+                            <option value="phy">Physics (ฟิสิกส์)</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Bio -->
+                <div class="edit-section">
+                    <h3>📝 เกี่ยวกับคุณ (About You)</h3>
+                    <div class="input-group">
+                        <label for="bio">แนะนำตัวสั้นๆ (Bio)</label>
+                        <textarea id="bio" class="form-input">สวัสดีครับ ผมจอห์น ชื่นชอบการเขียนโปรแกรมและการพัฒนาเว็บไซต์ ยินดีที่ได้รู้จักทุกคนในคณะวิทย์ครับ! ทักมาพูดคุยกันได้เลย 🙌</textarea>
+                    </div>
+                    <div class="input-group">
+                        <label for="skills">ทักษะความถนัด (Skills) <span style="font-weight: 300; font-size: 0.9rem;">คั่นด้วยคอมม่า (,)</span></label>
+                        <input type="text" id="skills" value="HTML/CSS, JavaScript, Figma, Python">
+                    </div>
+                </div>
+
+                <!-- Photos -->
+                <div class="edit-section">
+                    <h3>📸 อัปโหลดรูปภาพโปรไฟล์</h3>
+                    <div class="input-group">
+                        <label for="editAvatarInput">อัปโหลดรูปภาพหลัก (Main Profile Picture)</label>
+                        <input type="file" id="editAvatarInput" accept="image/*" class="form-input" style="padding: 0.5rem;">
+                    </div>
+                </div>
+
+
+                <!-- Form actions -->
+                <div class="edit-actions">
+                    <a href="profile.html" class="btn-cancel">ยกเลิก (Cancel)</a>
+                    <button type="submit" class="btn-save" id="btnSaveProfile">บันทึกข้อมูลโพรไฟล์ (Save)</button>
+                </div>
+            </form>
+        </div>
+    </main>
+    <script src="app.js"></script>
+</body>
+</html>

@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PDPA Consent - SciConnect</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600&family=Outfit:wght@400;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body class="auth-bg">
+    <div class="pdpa-card" style="margin: 2rem;">
+        <div class="pdpa-header">
+            <span class="auth-icon" style="font-size: 3rem; margin-bottom: 1rem;">🛡️</span>
+            <h2>ข้อตกลงและนโยบายความเป็นส่วนตัว (PDPA)</h2>
+            <p>โครงการเชื่อมโยงข้อมูลและเครือข่ายนิสิตคณะวิทยาศาสตร์ (SciConnect)</p>
+        </div>
+        
+        <div class="pdpa-content">
+            <h3>1. วัตถุประสงค์ของการจัดเก็บข้อมูล</h3>
+            <p>ระบบรวบรวมและจัดเก็บข้อมูลของท่านเพื่อใช้เป็นฐานข้อมูลหลักบนเว็บไซต์ "SciConnect" ...</p>
+            
+            <h3>2. ข้อมูลส่วนบุคคลที่จะถูกจัดเก็บและแสดงผล</h3>
+            <p>สิ่งที่ผู้ใช้งานยินยอมให้นำขึ้นแสดงแก่สมาชิกภายในระบบ ได้แก่: <br>
+            - ข้อมูลพื้นฐาน: รหัสนิสิต, สาขาวิชา, รุ่นปีการศึกษา <br>
+            - ข้อมูลโปรไฟล์: ชื่อหรือนามแฝง, รูปถ่าย (Profile Picture), ทักษะความถนัด (Skill Tags), ช่องทางการติดต่อ และประวัติย่อส่วนตัว (Bio)</p>
+            
+            <h3>3. สิทธิของเจ้าของข้อมูล</h3>
+            <p>ท่านมีสิทธิทุกประการที่จะเข้าสู่ระบบและเปลี่ยนแปลง แก้ไข ปรับปรุง หรือแม้กระทั่งลบข้อมูลส่วนบุคคลต่างๆ และซ่อนโปรไฟล์ของท่านได้ตลอดเวลาผ่านเมนู "จัดการโปรไฟล์"</p>
+            
+            <h3>4. การรักษาความปลอดภัยของข้อมูล</h3>
+            <p>ข้อมูลจะถูกจัดเก็บด้วยมาตรการรักษาความปลอดภัยสูงสุด และจะไม่มีการเปิดเผยข้อมูลใด ๆ ให้กับบุคคลภายนอกระบบ หรือนำไปใช้เชิงพาณิชย์</p>
+
+            <br>
+            <p><strong>การคลิกปุ่ม "ยินยอม" ถือว่าท่านได้อ่านทำความเข้าใจและยอมรับข้อกำหนดข้างต้น</strong></p>
+        </div>
+        
+        <div class="pdpa-actions">
+            <!-- Decline กลับหน้า signup -->
+            <a href="signup.html" class="btn-decline">ปฏิเสธ (Decline)</a>
+            
+            <!-- Accept เป็น button ยิง request -->
+            <button id="acceptBtn" class="btn-accept">ยินยอม (Accept)</button>
+        </div>
+    </div>
+
+    <script>
+    document.getElementById('acceptBtn').addEventListener('click', async () => {
+        // ดึงข้อมูล signup จาก localStorage
+        const signupData = JSON.parse(localStorage.getItem('signupData') || '{}');
+
+        // ตรวจสอบว่ามีครบ
+        if (!signupData.studentId || !signupData.password || !signupData.email || !signupData.major) {
+            alert('ไม่มีข้อมูลสำหรับสมัคร กรุณากรอกแบบฟอร์มใหม่');
+            window.location.href = 'signup.html';
+            return;
+        }
+
+        try {
+            const res = await fetch('http://localhost:3000/api/users', {  
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    username: signupData.studentId, 
+                    password: signupData.password,
+                    email: signupData.email,
+                    major: signupData.major,
+                    photo: 'default.png'
+                })
+            });
+
+            const data = await res.json();
+
+            if (res.ok) {
+                // ล้าง localStorage
+                localStorage.removeItem('signupData');
+
+                // แสดง success alert แล้ว redirect
+                alert(`สมัครสำเร็จ! ยินดีต้อนรับ ${signupData.studentId}`);
+                window.location.href = 'signin.html';
+            } else {
+                alert(data.message || 'เกิดข้อผิดพลาดในการสมัคร');
+            }
+        } catch (err) {
+            console.error(err);
+            alert('เกิดข้อผิดพลาดในการเชื่อมต่อ server');
+        }
+    });
+    </script>
+</body>
+</html>
