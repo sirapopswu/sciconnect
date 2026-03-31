@@ -60,13 +60,10 @@
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
-                    username: signupData.username, 
-                    student_id: signupData.studentId,
+                    username: signupData.studentId, 
                     password: signupData.password,
                     email: signupData.email,
                     major: signupData.major,
-                    gender: signupData.gender,
-                    age: signupData.age,
                     photo: 'default.png'
                 })
             });
