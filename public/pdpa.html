@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>PDPA Consent - SciConnect</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="css/style.css">
     <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600&family=Outfit:wght@400;600;700;800&display=swap" rel="stylesheet">
 </head>
 <body class="auth-bg">
@@ -60,13 +60,10 @@
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
-                    username: signupData.username, 
-                    student_id: signupData.studentId,
+                    username: signupData.studentId, 
                     password: signupData.password,
                     email: signupData.email,
                     major: signupData.major,
-                    gender: signupData.gender,
-                    age: signupData.age,
                     photo: 'default.png'
                 })
             });
