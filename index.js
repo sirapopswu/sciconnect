@@ -4,23 +4,7 @@ const path = require('path');
 const pool = require('./db/connection'); // เชื่อม PostgreSQL จริง
 
 // Auto-migrate DB schema if needed
-pool.query(`
-  ALTER TABLE users ALTER COLUMN age TYPE VARCHAR(255); 
-  ALTER TABLE users ALTER COLUMN photo TYPE TEXT; 
-  ALTER TABLE users ADD COLUMN IF NOT EXISTS student_id VARCHAR(255);
-  
-  -- Migrate primary key to student_id if needed
-  DO $$ 
-  BEGIN 
-    IF (SELECT data_type FROM information_schema.columns WHERE table_name = 'users' AND column_name = 'id') = 'integer' THEN 
-      ALTER TABLE users RENAME COLUMN id TO id_old;
-      ALTER TABLE users ADD COLUMN id VARCHAR(255) UNIQUE;
-      UPDATE users SET id = student_id;
-      ALTER TABLE users DROP CONSTRAINT IF EXISTS users_pkey CASCADE;
-      ALTER TABLE users ADD PRIMARY KEY (id);
-    END IF;
-  END $$;
-`)
+pool.query('ALTER TABLE users ALTER COLUMN age TYPE VARCHAR(255); ALTER TABLE users ALTER COLUMN photo TYPE TEXT;')
   .catch(e => console.log('Migration note:', e.message));
 
 const app = express();
@@ -41,44 +25,8 @@ app.get('/', (req, res) => {
 app.get('/api/users', async (req, res) => {
   try {
     const result = await pool.query(
-      'SELECT id, username, student_id, LEFT(student_id, 2) AS generation, email, major, gender, age, photo FROM users WHERE visible=true ORDER BY id DESC'
+      'SELECT id, username, email, major, gender, age, photo FROM users WHERE visible=true ORDER BY id DESC'
     );
-    res.json(result.rows);
-  } catch (err) {
-    res.status(500).json({ message: err.message });
-  }
-});
-
-// GET search/filter users
-app.get('/api/users/search', async (req, res) => {
-  const { keyword, gender, major, age, gen } = req.query;
-  try {
-    let query = 'SELECT id, username, email, major, gender, age, LEFT(student_id, 2) AS generation, photo, bio, skills FROM users WHERE visible=true';
-    let params = [];
-
-    if (keyword) {
-      params.push(`%${keyword}%`);
-      query += ` AND (username ILIKE $${params.length} OR bio ILIKE $${params.length})`;
-    }
-    if (gender) {
-      params.push(gender);
-      query += ` AND gender=$${params.length}`;
-    }
-    if (major) {
-      params.push(major);
-      query += ` AND major=$${params.length}`;
-    }
-    if (age) {
-      params.push(age);
-      query += ` AND age=$${params.length}`;
-    }
-    if (gen) {
-      params.push(gen);
-      query += ` AND LEFT(student_id, 2) = $${params.length}`;
-    }
-
-    query += ' ORDER BY id DESC';
-    const result = await pool.query(query, params);
     res.json(result.rows);
   } catch (err) {
     res.status(500).json({ message: err.message });
@@ -90,7 +38,7 @@ app.get('/api/users/:id', async (req, res) => {
   const { id } = req.params;
   try {
     const result = await pool.query(
-      'SELECT id, username, student_id, LEFT(student_id, 2) AS generation, email, major, gender, age, photo, bio, skills, visible FROM users WHERE id=$1',
+      'SELECT id, username, email, major, gender, age, photo, visible FROM users WHERE id=$1',
       [id]
     );
     if (result.rows.length === 0) return res.status(404).json({ message: 'User not found' });
@@ -102,17 +50,14 @@ app.get('/api/users/:id', async (req, res) => {
 
 // POST add user
 app.post('/api/users', async (req, res) => {
-  const { username, student_id, password, email, major, gender, age, photo } = req.body;
-  if (!username) return res.status(400).json({ message: 'Missing username' });
-  if (!password) return res.status(400).json({ message: 'Missing password' });
-  if (!student_id) return res.status(400).json({ message: 'Missing student_id' });
-  if (!gender) return res.status(400).json({ message: 'Missing gender' });
+  const { username, password, email, major, gender, age, photo } = req.body;
+  if (!username || !password) return res.status(400).json({ message: 'Missing username or password' });
 
   try {
     const result = await pool.query(
-      `INSERT INTO users (id, username, student_id, password, email, major, gender, age, photo, visible)
-       VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10) RETURNING *`,
-      [student_id, username, student_id, password, email, major, gender, age, photo || 'default.png', true]
+      `INSERT INTO users (username, password, email, major, gender, age, photo, visible)
+       VALUES ($1,$2,$3,$4,$5,$6,$7,$8) RETURNING *`,
+      [username, password, email, major, gender, age, photo || 'default.png', true]
     );
     res.status(201).json({ success: true, user: result.rows[0] });
   } catch (err) {
@@ -136,6 +81,7 @@ app.post('/api/users/login', async (req, res) => {
 
     const user = userExist.rows[0];
     if (user.password !== password) return res.status(401).json({ success: false, message: 'รหัสไม่ถูกต้อง' });
+    if (!user.visible) return res.status(403).json({ success: false, message: 'บัญชีนี้ถูกระงับหรือตั้งค่าเป็นไม่เปิดเผย' });
 
     res.json({ success: true, user });
   } catch (err) {
@@ -146,13 +92,13 @@ app.post('/api/users/login', async (req, res) => {
 // PUT update user
 app.put('/api/users/:id', async (req, res) => {
   const { id } = req.params;
-  const { username, student_id, password, email, major, gender, age, photo, bio, skills } = req.body;
+  const { username, password, email, major, gender, age, photo, bio, skills } = req.body;
 
   try {
     const result = await pool.query(
-      `UPDATE users SET username=$1, student_id=$2, id=$2, password=$3, email=$4, major=$5, gender=$6, age=$7, photo=$8, bio=$9, skills=$10
-       WHERE id=$11 RETURNING *`,
-      [username, student_id, password, email, major, gender, age, photo, bio, skills || '[]', id]
+      `UPDATE users SET username=$1, password=$2, email=$3, major=$4, gender=$5, age=$6, photo=$7, bio=$8, skills=$9
+       WHERE id=$10 RETURNING *`,
+      [username, password, email, major, gender, age, photo, bio, skills || '[]', id]
     );
 
     if (result.rows.length === 0) return res.status(404).json({ message: 'User not found' });
