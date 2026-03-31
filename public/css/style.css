@@ -1485,3 +1485,186 @@ input:checked + .slider:before {
 .btn-modal-close:hover {
     background: #e2e8f0;
 }
+
+
+/* --- Profile Modal (Popup) --- */
+.modal-backdrop {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(15, 23, 42, 0.6);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    z-index: 2000;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.modal-backdrop.active {
+    display: flex;
+    opacity: 1;
+}
+
+.profile-modal {
+    background: white;
+    width: 90%;
+    max-width: 500px;
+    border-radius: 24px;
+    position: relative;
+    padding: 2.5rem 2rem;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+    transform: scale(0.9);
+    transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+    overflow: hidden;
+}
+
+.modal-backdrop.active .profile-modal {
+    transform: scale(1);
+}
+
+.modal-close {
+    position: absolute;
+    top: 1.5rem;
+    right: 1.5rem;
+    font-size: 1.5rem;
+    cursor: pointer;
+    color: #64748b;
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    transition: all 0.2s;
+    background: #f1f5f9;
+}
+
+.modal-close:hover {
+    background: #e2e8f0;
+    color: #1e293b;
+    transform: rotate(90deg);
+}
+
+.modal-body {
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.25rem;
+}
+
+.modal-avatar {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 4px solid var(--white);
+    box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1);
+}
+
+.modal-name {
+    font-family: 'Outfit', sans-serif;
+    font-size: 1.75rem;
+    font-weight: 800;
+    color: #1e293b;
+}
+
+.modal-meta {
+    background: #f8fafc;
+    padding: 0.5rem 1rem;
+    border-radius: 9999px;
+    font-weight: 600;
+    color: #475569;
+    font-size: 0.9rem;
+}
+
+.modal-bio {
+    color: #475569;
+    font-size: 1rem;
+    line-height: 1.6;
+    max-width: 400px;
+}
+
+.modal-skills-title {
+    font-weight: 700;
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    color: #94a3b8;
+    letter-spacing: 0.05em;
+    margin-top: 0.5rem;
+}
+
+.modal-skills {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    justify-content: center;
+}
+
+.modal-skill-tag {
+    background: #f1f5f9;
+    color: #1e293b;
+    padding: 0.4rem 1rem;
+    border-radius: 8px;
+    font-size: 0.85rem;
+    font-weight: 500;
+}
+
+
+
+/* --- Floating Edit Window (Modal) --- */
+.edit-container {
+    max-width: 900px;
+    margin: 2rem auto;
+    position: relative;
+    background: white;
+    padding: 3rem;
+    border-radius: 2rem;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.1);
+    border-top: 10px solid var(--primary);
+}
+
+.auth-bg {
+    background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+    min-height: 100vh;
+    display: block; /* Overriding previous flex if any */
+}
+
+/* --- Theme Variables and Classes for Major Coloring --- */
+:root {
+    --theme-color: #1e293b; /* Default */
+}
+
+.theme-cs { --theme-color: var(--color-cs); }
+.theme-math { --theme-color: var(--color-math); }
+.theme-bio { --theme-color: var(--color-bio); }
+.theme-chem { --theme-color: var(--color-chem); }
+.theme-gen { --theme-color: var(--color-gen); }
+.theme-mat { --theme-color: var(--color-mat); }
+.theme-micro { --theme-color: var(--color-micro); }
+.theme-phy { --theme-color: var(--color-phy); }
+
+.profile-card.themed {
+    border-top-color: var(--theme-color) !important;
+}
+
+.profile-avatar.themed {
+    border-color: var(--theme-color) !important;
+}
+
+.profile-branch-name.themed {
+    color: var(--theme-color) !important;
+}
+
+/* Navbar Connect Active Style */
+.nav-links a.connect-active {
+    background: #cbd5e1;
+    color: var(--primary);
+    font-weight: 600;
+}
+
