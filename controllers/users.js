@@ -1,6 +1,45 @@
 // controllers/users.js
 const pool = require('../db/connection'); 
 
+//Login (fix)
+const login = (req, res) => {
+  const { email, password } = req.body
+
+  if (!email || !password) {
+    return res.status(400).json({
+      message: 'Email and password are required'
+    })
+  }
+
+  const users = [
+    { id: 1, email: 'test@test.com', password: '1234' }
+  ]
+
+  const user = users.find(u => u.email === email)
+
+  if (!user) {
+    return res.status(404).json({
+      message: 'User not found'
+    })
+  }
+
+  if (user.password !== password) {
+    return res.status(401).json({
+      message: 'Invalid password'
+    })
+  }
+
+  return res.status(200).json({
+    message: 'Login successful',
+    user: {
+      id: user.id,
+      email: user.email
+    }
+  })
+}
+
+// module.exports = { login }
+
 // Add user
 const addUser = async (req, res) => {
   const { username, password, email, major, gender, age, photo, bio, skills } = req.body;
@@ -96,4 +135,4 @@ const updateUser = async (req, res) => {
   }
 };
 
-module.exports = { addUser, getUsers, searchUsers, updateUser };
+module.exports = { login, addUser, getUsers, searchUsers, updateUser };
