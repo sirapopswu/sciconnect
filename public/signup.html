@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sign Up - SciConnect</title>
-    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="style.css">
     <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600&family=Outfit:wght@400;600;700;800&display=swap" rel="stylesheet">
 </head>
 <body class="auth-bg">
@@ -27,15 +27,7 @@
                     
                     <form action="pdpa.html" class="auth-form" id="signupForm">
                         <div class="input-group">
-                            <label for="username">ชื่อที่แสดงให้คนอื่นเห็น (Public Username)</label>
-                            <input type="text" id="username" placeholder="เช่น พี่เห็ด, Admin_Sci" required>
-                        </div>
-
-                        <div class="input-group">
-                            <label for="studentid" style="display: flex; justify-content: space-between;">
-                                <span>รหัสนิสิต (Student ID)</span>
-                                <span style="font-size: 0.75rem; color: #64748b; font-weight: 400;">*ไม่แสดงให้คนอื่นเห็น</span>
-                            </label>
+                            <label for="studentid">รหัสนิสิต (Student ID)</label>
                             <input type="text" id="studentid" placeholder="รหัสนิสิต 11 หลัก" required>
                         </div>
 
@@ -68,21 +60,6 @@
                                 <option value="phy">Physics (ฟิสิกส์)</option>
                             </select>
                         </div>
-
-                        <div class="input-group">
-                            <label for="gender">เพศ (Gender)</label>
-                            <select id="gender" class="form-select" required>
-                                <option value="" disabled selected>-- เลือกเพศ --</option>
-                                <option value="ชาย">ชาย (Male)</option>
-                                <option value="หญิง">หญิง (Female)</option>
-                                <option value="อื่นๆ">อื่นๆ (Other)</option>
-                            </select>
-                        <div class="input-group">
-                            <label for="age">อายุ (Age)</label>
-                            <input type="number" id="age" placeholder="ระบุอายุของคุณ" required>
-                        </div>
-
-                        <!-- Generation is auto-derived from Student ID -->
                         
                         <div class="auth-actions">
                             <button type="submit" class="auth-btn-signup" style="width: 100%; font-size: 1.1rem; background: #10b981; color: white; border: none; padding: 0.8rem; border-radius: 0.5rem; cursor: pointer; font-weight: 600;">REGISTER (PDPA)</button>
