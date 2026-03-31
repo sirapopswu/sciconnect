@@ -359,3 +359,4 @@ new : ตัด Responsive Web Design เนื่องจากมีควา
 บันทึกบั๊กผ่าน GitHub Issues พร้อมแนบ Stack Trace และเชื่อม Commit กับ Issue เพื่อให้ตรวจสอบย้อนหลังได้ง่าย
 
 # เขียนสรุปการประชุม Retrospective และ Link to Retrospective Youtube video
+LINK : https://youtu.be/vYX8VEisZUs
