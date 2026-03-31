@@ -93,7 +93,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 
                 const dEmail = document.getElementById('displayEmail');
                 const dGender = document.getElementById('displayGender');
-                
+                const dGen = document.getElementById('displayGen');
+
                 if (dUsername) dUsername.textContent = user.username || 'Admin';
                 if (dGen) dGen.textContent = derivedGen;
                 if (dMajor) dMajor.textContent = (user.major || '').toUpperCase();

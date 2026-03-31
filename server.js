@@ -1,7 +1,7 @@
 // server.js
 const express = require('express');
 const bodyParser = require('body-parser');
-const { login, addUser, getUsers, updateUser } = require('./controllers/users');
+const { login, addUser, getUsers, updateUser } = require('../controllers/users');
 
 const app = express();
 app.use(bodyParser.json());
