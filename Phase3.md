@@ -304,5 +304,56 @@ new : นิสิตที่อยู่ระหว่างการศึ�
 old : เพิ่ม Responsive Web Design: หน้าเว็บไซต์ต้องแสดงผลได้พอดีกับหน้าจอโทรศัพท์มือถือ
 new : ตัด Responsive Web Design เนื่องจากมีความเกินขอบเขตของผู้พัฒนา ซึ่งอาจจะมีมีการพัฒนาในอนาคต
 
+# อธิบายการทำงานของ Program
 
+**Method ที่ใช้งานในระบบทั้งหมด:**
+- **GET Methods :**
+  1. `GET /` - ส่งหน้า `home.html` (Static file) กลับไปยังผู้ใช้
+  2. `GET /api/users` - ดึงข้อมูลผู้ใช้งานที่ตั้งค่าเป็นสาธารณะทั้งหมด
+  3. `GET /api/users/search` - ค้นหาและคัดกรองผู้ใช้งานตามเงื่อนไข 
+  4. `GET /api/users/:id` - ดึงข้อมูลรายละเอียดของผู้ใช้แต่ละบุคคลด้วย ID
+- **POST Methods :**
+  1. `POST /api/users` - เพิ่มข้อมูลผู้ใช้ใหม่ 
+  2. `POST /api/users/login` - ตรวจสอบการเข้าสู่ระบบ 
+- **Method อื่นๆ :**
+  1. `PUT /api/users/:id` - อัปเดตข้อมูลส่วนตัว 
+  2. `PATCH /api/users/:id/visibility` - อัปเดตสถานะการแสดงผลโปรไฟล์ 
 
+**การใช้งาน Template:**
+- ระบบไม่ได้ใช้ Server-side Template Engine แต่ใช้วิธี **Static HTML** ร่วมกับ **Vanilla JavaScript** 
+- ฝั่ง Frontend จะทำการเรียกใช้งาน API และนำข้อมูล JSON ล่าสุดมาสร้าง Element ผ่าน JavaScript ทันที
+
+**การเรียก API (API Integration):**
+- **Internal API:** มีการเรียกใช้ HTTP Request ไปยัง Backend RESTful API ของตัวเอง 
+- **External API:** ระบบมีการดึง API ภายนอกเพื่อนำมาสร้างรูปภาพโปรไฟล์เริ่มต้นแบบอัตโนมัติ สำหรับผู้ที่ไม่ได้อัปโหลดภาพ โดยแสดงเป็นภาพตัวอักษรแรกของชื่อ
+
+**การคำนวณและการแสดง Graph:**
+- **การคำนวณชั้นปี/รุ่น (Generation Extraction):** ระบบจะคำนวณด้วยการตัดข้อความ 2 ตัวอักษรแรกจากสายอักขระ `student_id` ทั้งหน้าบ้าน (`substring(0, 2)`) และฝั่งฐานข้อมูลด้วย SQL Function (`LEFT(student_id, 2) AS generation`)
+- **การคำนวณลดขนาดภาพ (Image Resizing Engine):** หน้าบ้านมีการคำนวณอัตราส่วนภาพด้วย Canvas 2D API เพื่อคงอัตราส่วนรูปให้ถูกต้อง แต่จำกัดความละเอียดภาพไม่ให้เกิน 500x500px ก่อนนำไปเข้ารหัสเป็น Base64 String 
+
+# Test Coverage Report
+
+รายงานการทดสอบ Unit Testing โครงสร้างจัดเก็บข้อมูลและ Data Structure (เป้าหมาย 80% Statement Coverage)
+
+หมวดการวัด	ค่า Coverage
+Statements	86.48%
+Branches	81.25%
+Functions	88.88%
+Lines	       87.09%
+
+# Process, Methods, and Tools ที่เพิ่มเติมจาก Phase 1 และ 2
+
+## 1. การบริหาร Project
+
+ปรับจากการคุยงานในแชท มาใช้ Kanban Board เพื่อจัดลำดับงาน ตรวจสอบ Backlog และดูสถานะงานแบบชัดเจน
+ใช้ GitHub Projects / Issues Board เป็นเครื่องมือหลักในการจัดการ Task และความคืบหน้า
+
+## 2. การตรวจสอบระบบก่อนพัฒนา (Monitor Build)
+
+กำหนดขั้นตอน Sanity Check ก่อนทำงานทุกครั้ง โดยรัน node index.js เพื่อตรวจสอบการเชื่อมต่อฐานข้อมูลและดู log บน terminal
+ใช้ VS Code Terminal และ Nodemon (ถ้ามี) เพื่อช่วยตรวจจับ Error แบบ Real-time
+
+## 3. การจัดการบั๊กอย่างเป็นระบบ
+
+ใช้กระบวนการ Reproduce → วิเคราะห์สาเหตุ → แก้เฉพาะจุด เพื่อลดผลกระทบต่อโค้ดส่วนอื่น
+บันทึกบั๊กผ่าน GitHub Issues พร้อมแนบ Stack Trace และเชื่อม Commit กับ Issue เพื่อให้ตรวจสอบย้อนหลังได้ง่าย
