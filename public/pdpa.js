@@ -20,18 +20,25 @@ if (pdpaForm) {
         }
 
         try {
+            const payload = {
+                username: signupData.username,
+                student_id: signupData.studentId,
+                password: signupData.password,
+                email: signupData.email,
+                major: signupData.major,
+                gender: signupData.gender,
+                age: signupData.gen,
+                photo: 'default.png'
+            };
+            
+            console.log('Final registration payload:', payload);
+
             const res = await fetch('http://localhost:3000/api/users', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify({
-                    username: signupData.studentId,  // ใช้ Student ID เป็น username
-                    password: signupData.password,
-                    email: signupData.email,
-                    major: signupData.major,
-                    photo: 'default.png'
-                })
+                body: JSON.stringify(payload)
             });
 
             const data = await res.json();
