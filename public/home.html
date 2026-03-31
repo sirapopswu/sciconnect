@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SciConnect</title>
-    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="style.css">
     
     <!-- Google Fonts: Outfit for English/Branding, Kanit for Thai -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -62,49 +62,6 @@
                         <span class="overlay-tag">We are Sci 💙</span>
                     </div>
                 </div>
-            </div>
-        </section>
-
-        <!-- Search Table Section -->
-        <section class="search-section" style="padding: 2rem 0; background: #f8fafc;">
-            <div class="search-container" style="max-width: 1200px; margin: 0 auto; padding: 1.5rem; background: white; border-radius: 16px; box-shadow: 0 10px 25px -5px rgba(0,0,0,0.05); display: flex; flex-wrap: wrap; gap: 1rem; align-items: flex-end; justify-content: center;">
-                <div class="search-group" style="flex: 1; min-width: 200px;">
-                    <label style="display: block; margin-bottom: 0.5rem; font-weight: 600; color: #475569;">ค้นหา (Keyword)</label>
-                    <input type="text" id="searchKeyword" placeholder="ชื่อ หรือ Bio..." style="width: 100%; padding: 0.75rem; border: 1px solid #e2e8f0; border-radius: 8px;">
-                </div>
-                <div class="search-group" style="flex: 1; min-width: 150px;">
-                    <label style="display: block; margin-bottom: 0.5rem; font-weight: 600; color: #475569;">สาขา (Major)</label>
-                    <select id="searchMajor" style="width: 100%; padding: 0.75rem; border: 1px solid #e2e8f0; border-radius: 8px;">
-                        <option value="">ทั้งหมด</option>
-                        <option value="cs">Com-Sci</option>
-                        <option value="math">Math-Stat</option>
-                        <option value="bio">Biology</option>
-                        <option value="chem">Chemistry</option>
-                        <option value="gen">Gen-Sci</option>
-                        <option value="mat">Mat-Sci</option>
-                        <option value="micro">Micro-Bio</option>
-                        <option value="phy">Physics</option>
-                    </select>
-                </div>
-                <div class="search-group" style="flex: 1; min-width: 120px;">
-                    <label style="display: block; margin-bottom: 0.5rem; font-weight: 600; color: #475569;">เพศ (Gender)</label>
-                    <select id="searchGender" style="width: 100%; padding: 0.75rem; border: 1px solid #e2e8f0; border-radius: 8px;">
-                        <option value="">ทั้งหมด</option>
-                        <option value="ชาย">ชาย</option>
-                        <option value="หญิง">หญิง</option>
-                        <option value="อื่นๆ">อื่นๆ</option>
-                    </select>
-                </div>
-                <div class="search-group" style="flex: 1; min-width: 100px;">
-                    <label style="display: block; margin-bottom: 0.5rem; font-weight: 600; color: #475569;">รุ่น (Gen)</label>
-                    <input type="text" id="searchAge" placeholder="เช่น 68" style="width: 100%; padding: 0.75rem; border: 1px solid #e2e8f0; border-radius: 8px;">
-                </div>
-                <button id="btnSearch" style="padding: 0.75rem 2rem; background: #2563eb; color: white; border: none; border-radius: 8px; font-weight: 600; cursor: pointer; transition: all 0.2s;">ค้นหา</button>
-            </div>
-            
-            <!-- Result Area -->
-            <div id="searchResults" class="members-grid" style="max-width: 1200px; margin: 2rem auto; display: none;">
-                <!-- Result cards will be injected here -->
             </div>
         </section>
 

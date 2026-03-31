@@ -12,18 +12,17 @@ Backend ของโปรเจกต์ SciConnect ใช้ **Express.js** �
 **Database Name:** `sciconnect-server`  
 **Table:** `users`
 
-CREATE TABLE IF NOT EXISTS users (
+
+CREATE TABLE users (
     id SERIAL PRIMARY KEY,
-    username VARCHAR(50) UNIQUE NOT NULL,
-    password VARCHAR(255) NOT NULL,
-    email VARCHAR(100) UNIQUE,
-    major VARCHAR(50),
-    gender VARCHAR(10),
-    age INT,
-    photo VARCHAR(255),
-    bio TEXT,
-    skills JSON DEFAULT '[]',       
-    visible BOOLEAN DEFAULT TRUE
+    username TEXT UNIQUE NOT NULL,
+    password TEXT NOT NULL,        -- ตอนนี้ยังเป็น plain text
+    email TEXT UNIQUE NOT NULL,
+    major TEXT,
+    gender TEXT,
+    age INTEGER,
+    photo TEXT,                   -- filename หรือ URL
+    visible BOOLEAN DEFAULT TRUE  -- Soft delete, true=visible
 );
 
 ## Connection Example (`db/connection.js`)

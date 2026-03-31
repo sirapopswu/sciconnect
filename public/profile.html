@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Profile - SciConnect</title>
-    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="style.css">
     
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -43,35 +43,14 @@
             <!-- Frame colored according to branch (e.g. CS Red) -->
             <div class="profile-card branch-cs-bg" id="profileCard">
                 <div class="profile-header">
-                    <h2 class="profile-username" id="displayUsername" style="font-size: 1.8rem; font-weight: 800; letter-spacing: -0.5px;">ชื่อผู้ใช้งาน (Username)</h2>
-                    <span class="generation-badge" id="displayGen">Gen</span>
-                </div>
-                
-                <!-- Private ID Box (Only visible to owner) -->
-                <div id="privateIdBox" style="display: none; background: #f1f5f9; border-left: 4px solid #10b981; padding: 0.5rem 1rem; margin-bottom: 1rem; border-radius: 4px;">
-                    <small style="color: #64748b; font-weight: 600; display: block;">STUDENT ID (PRIVATE)</small>
-                    <span id="displayStudentId" style="font-family: monospace; font-size: 1.1rem; color: #1e293b; font-weight: 700;">-</span>
+                    <h2 class="profile-username" id="displayUsername">Username</h2>
+                    <span class="generation-badge" id="displayGen">ปี 1</span>
                 </div>
                 
                 <div class="profile-image-container">
                     <img src="https://ui-avatars.com/api/?name=User&background=random" alt="Profile Picture" class="profile-avatar border-cs" id="displayAvatar">
                 </div>
                 
-                <div class="profile-info-grid" style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1rem; margin: 1rem 0; text-align: left; background: rgba(255,255,255,0.8); padding: 1rem; border-radius: 8px;">
-                    <div>
-                        <small style="color: #64748b; font-weight: 600;">GENDER</small>
-                        <p id="displayGender" style="font-weight: 500;">-</p>
-                    </div>
-                    <div>
-                        <small style="color: #64748b; font-weight: 600;">AGE</small>
-                        <p id="displayAge" style="font-weight: 500;">-</p>
-                    </div>
-                    <div>
-                        <small style="color: #64748b; font-weight: 600;">EMAIL</small>
-                        <p id="displayEmail" style="font-weight: 500; font-size: 0.9rem;">-</p>
-                    </div>
-                </div>
-
                 <h3 class="profile-branch-name text-cs" id="displayMajor">MAJOR NAME</h3>
                 
                 <div class="profile-bio-box">
