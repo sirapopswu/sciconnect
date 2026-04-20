@@ -193,11 +193,17 @@ ul {
     left: 0;
     right: 0;
     bottom: 0;
-    background-image: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRb7AvYoaxQv06BvacPJ7lod15nbNlsv1-eVA&s');
+    background-image: url('https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEiYyNLC0MKU4yvG55s5xgmlHrZc65_2ESxXHekfoFMsQxF7aisAe4dlfw-oripj0BbEQQfZ9B7BM7Pi8GF_-ZdB12O8Vh8whREfuKxYZpFsFSqGktSFHgKX-GoEXWYja-UQWK1bPvIXbNfO/s1600/227627_200757369961017_100000802663703_479062_3300076_n.jpg');
     background-size: cover;
     background-position: center;
-    opacity: 0.7; /* Adjusted to 70% image / 30% yellow background */
+    opacity: 0.7;
     z-index: 1;
+    transition: transform 0.8s ease; /* Add transition for smooth zoom */
+}
+
+/* Add zoom effect on hover */
+.hero-brand-card:hover::before {
+    transform: scale(1.05);
 }
 
 .hero-brand-content {
