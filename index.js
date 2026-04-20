@@ -58,7 +58,7 @@ app.get('/api/users/search', async (req, res) => {
 
     if (keyword) {
       params.push(`%${keyword}%`);
-      query += ` AND (username ILIKE $${params.length} OR bio ILIKE $${params.length})`;
+      query += ` AND (LOWER(username) LIKE LOWER($${params.length}) OR LOWER(bio) LIKE LOWER($${params.length}))`;
     }
     if (gender) {
       params.push(gender);

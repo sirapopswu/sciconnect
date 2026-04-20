@@ -11,7 +11,7 @@ if (signupForm) {
         const password = document.getElementById('password').value;
         const confirmPassword = document.getElementById('confirm-password').value;
         const major = document.getElementById('branch').value;
-
+        const gender = document.getElementById('gender').value;
         const age = document.getElementById('age').value;
         const gen = studentId.substring(0, 2); // Always derive from ID
 
@@ -51,9 +51,9 @@ if (signupForm) {
 document.addEventListener('DOMContentLoaded', () => {
     // Inject Profile Modal to body
     injectProfileModal();
-    
-    // Inject 'Connect' to navbar
-    injectConnectLink();
+
+    // Inject Search Modal and Icon
+    injectSearchUI();
 
     const userStr = localStorage.getItem('user');
     const signinBtns = document.querySelectorAll('.btn-signin');
@@ -154,6 +154,16 @@ document.addEventListener('DOMContentLoaded', () => {
         if (window.location.pathname.includes('profile.html')) {
             alert('กรุณาเข้าสู่ระบบเพื่อดูโปรไฟล์');
             window.location.href = 'signin.html';
+        }
+    }
+
+    // Check for URL parameters to auto-trigger search (for redirects from other pages)
+    const urlParams = new URLSearchParams(window.location.search);
+    if (urlParams.has('keyword') || urlParams.has('major') || urlParams.has('gender') || urlParams.has('gen') || urlParams.has('age')) {
+        const searchResults = document.getElementById('searchResults');
+        if (searchResults) {
+            // Wait a bit for other initialization or trigger immediately
+            setTimeout(() => performSearch(true), 100);
         }
     }
 
@@ -330,48 +340,8 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    // --- Search & Student Listing Logic ---
-    const btnSearch = document.getElementById('btnSearch');
-    if (btnSearch) {
-        btnSearch.addEventListener('click', async () => {
-            const keyword = document.getElementById('searchKeyword').value.trim();
-            const major = document.getElementById('searchMajor').value;
-            const gender = document.getElementById('searchGender').value;
-            const gen = document.getElementById('searchGen').value.trim();
-            const age = document.getElementById('searchAge').value.trim();
-
-            const searchResults = document.getElementById('searchResults');
-            const branchesSection = document.querySelector('.branches-section');
-
-            try {
-                const params = new URLSearchParams();
-                if (keyword) params.append('keyword', keyword);
-                if (major) params.append('major', major);
-                if (gender) params.append('gender', gender);
-                if (gen) params.append('gen', gen);
-                if (age) params.append('age', age);
-
-                const res = await fetch(`http://localhost:3000/api/users/search?${params.toString()}`);
-                const users = await res.json();
-
-                if (searchResults) {
-                    searchResults.innerHTML = '';
-                    searchResults.style.display = 'grid';
-                    
-                    if (users.length === 0) {
-                        searchResults.innerHTML = '<div style="grid-column: 1/-1; text-align: center; padding: 3rem; color: #64748b;">ไม่พบข้อมูลนิสิตที่ค้นหา</div>';
-                    } else {
-                        users.forEach(u => searchResults.appendChild(createStudentCard(u)));
-                    }
-                    
-                    // Hide branches if searching
-                    if (branchesSection) branchesSection.style.display = (keyword || major || gender || age) ? 'none' : 'block';
-                }
-            } catch (err) {
-                console.error('Search failed:', err);
-            }
-        });
-    }
+    // The main search logic is now moved to performSearch function
+    // used by the search modal injected via injectSearchUI().
 
     // Major Page Dynamic Loading
     const membersGrid = document.querySelector('.members-grid');
@@ -416,26 +386,28 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         });
     }
-});
 
-function injectConnectLink() {
-    const navLinks = document.querySelector('.nav-links');
-    if (navLinks && !navLinks.querySelector('.link-connect')) {
-        const li = document.createElement('li');
-        const isActive = window.location.pathname.includes('major.html') || 
-                        (!window.location.pathname.includes('home.html') && 
-                         !window.location.pathname.includes('profile.html') && 
-                         !window.location.pathname.includes('about.html'));
+    // Rename 'Major' link to 'Connect' if on relevant pages
+    const majorLink = Array.from(document.querySelectorAll('.nav-links a')).find(a => a.getAttribute('href') === 'major.html');
+    if (majorLink) {
+        const path = window.location.pathname.toLowerCase();
+        const isConnectPage = path.includes('major.html') || 
+                             path.includes('comsci.html') || 
+                             path.includes('mathstat.html') || 
+                             path.includes('bio.html') || 
+                             path.includes('chem.html') || 
+                             path.includes('gensci.html') || 
+                             path.includes('matsci.html') || 
+                             path.includes('micro.html') || 
+                             path.includes('physics.html');
         
-        li.innerHTML = `<a href="major.html" class="${isActive ? 'connect-active' : ''} link-connect">Connect</a>`;
-        // Insert after Home (index 0) or at the end
-        if (navLinks.children.length > 1) {
-            navLinks.insertBefore(li, navLinks.children[1]);
-        } else {
-            navLinks.appendChild(li);
+        if (isConnectPage) {
+            majorLink.textContent = 'Connect';
+            majorLink.classList.add('active'); // Ensure it stays active
         }
     }
-}
+});
+
 
 function filterGridByGen(grid, gen) {
     const cards = grid.querySelectorAll('.member-card');
@@ -568,3 +540,176 @@ function createStudentCard(user) {
     `;
     return card;
 }
+
+function injectSearchUI() {
+    if (document.getElementById('searchModalBackdrop')) return;
+
+    // 1. Inject Magnifying Glass Icon to Navbar (as the last link in nav-links)
+    const navLinks = document.querySelector('.nav-links');
+    if (navLinks) {
+        const li = document.createElement('li');
+        const searchBtn = document.createElement('button');
+        searchBtn.className = 'nav-search-btn';
+        searchBtn.innerHTML = `
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="11" cy="11" r="8"></circle>
+                <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+            </svg>
+        `;
+        searchBtn.title = 'ค้นหานิสิต';
+        searchBtn.onclick = toggleSearchModal;
+        li.appendChild(searchBtn);
+        navLinks.appendChild(li);
+    }
+
+    // 2. Inject Search Modal to Body
+    const modalHTML = `
+        <div id="searchModalBackdrop" class="search-modal-backdrop">
+            <div class="search-modal">
+                <div class="search-modal-close" onclick="closeSearchModal()">&times;</div>
+                <div class="search-modal-header">
+                    <h2>ค้นหานิสิต (Search)</h2>
+                </div>
+                <div class="search-modal-grid">
+                    <div class="search-modal-group full">
+                        <label>ค้นหา (Keyword)</label>
+                        <input type="text" id="mSearchKeyword" class="search-modal-input" placeholder="ชื่อ หรือ Bio...">
+                    </div>
+                    <div class="search-modal-group">
+                        <label>สาขา (Major)</label>
+                        <select id="mSearchMajor" class="search-modal-input">
+                            <option value="">ทั้งหมด</option>
+                            <option value="cs">Com-Sci</option>
+                            <option value="math">Math-Stat</option>
+                            <option value="bio">Biology</option>
+                            <option value="chem">Chemistry</option>
+                            <option value="gen">Gen-Sci</option>
+                            <option value="mat">Mat-Sci</option>
+                            <option value="micro">Micro-Bio</option>
+                            <option value="phy">Physics</option>
+                        </select>
+                    </div>
+                    <div class="search-modal-group">
+                        <label>เพศ (Gender)</label>
+                        <select id="mSearchGender" class="search-modal-input">
+                            <option value="">ทั้งหมด</option>
+                            <option value="ชาย">ชาย</option>
+                            <option value="หญิง">หญิง</option>
+                            <option value="อื่นๆ">อื่นๆ</option>
+                        </select>
+                    </div>
+                    <div class="search-modal-group">
+                        <label>รุ่น (Gen)</label>
+                        <input type="text" id="mSearchGen" class="search-modal-input" placeholder="เช่น 68">
+                    </div>
+                    <div class="search-modal-group">
+                        <label>อายุ (Age)</label>
+                        <input type="number" id="mSearchAge" class="search-modal-input" placeholder="ระบุอายุ">
+                    </div>
+                    <button class="search-modal-btn" onclick="performSearch()">ค้นหา (Search Now)</button>
+                </div>
+            </div>
+        </div>
+    `;
+    document.body.insertAdjacentHTML('beforeend', modalHTML);
+
+    // Close on backdrop click
+    document.getElementById('searchModalBackdrop').addEventListener('click', (e) => {
+        if (e.target.id === 'searchModalBackdrop') closeSearchModal();
+    });
+}
+
+function toggleSearchModal() {
+    const backdrop = document.getElementById('searchModalBackdrop');
+    if (backdrop) {
+        backdrop.classList.add('active');
+        document.body.style.overflow = 'hidden';
+    }
+}
+
+function closeSearchModal() {
+    const backdrop = document.getElementById('searchModalBackdrop');
+    if (backdrop) {
+        backdrop.classList.remove('active');
+        document.body.style.overflow = '';
+    }
+}
+
+async function performSearch(fromUrl = false) {
+    let keyword, major, gender, gen, age;
+
+    if (fromUrl) {
+        const params = new URLSearchParams(window.location.search);
+        keyword = params.get('keyword') || '';
+        major = params.get('major') || '';
+        gender = params.get('gender') || '';
+        gen = params.get('gen') || '';
+        age = params.get('age') || '';
+        
+        // Optionally pre-fill modal inputs
+        if (document.getElementById('mSearchKeyword')) {
+            document.getElementById('mSearchKeyword').value = keyword;
+            document.getElementById('mSearchMajor').value = major;
+            document.getElementById('mSearchGender').value = gender;
+            document.getElementById('mSearchGen').value = gen;
+            document.getElementById('mSearchAge').value = age;
+        }
+    } else {
+        keyword = document.getElementById('mSearchKeyword').value.trim();
+        major = document.getElementById('mSearchMajor').value;
+        gender = document.getElementById('mSearchGender').value;
+        gen = document.getElementById('mSearchGen').value.trim();
+        age = document.getElementById('mSearchAge').value.trim();
+    }
+
+    const searchResults = document.getElementById('searchResults');
+    const branchesSection = document.querySelector('.branches-section');
+
+    // If we are on a page WITHOUT search results (e.g. About), redirect to major.html
+    if (!searchResults && !fromUrl) {
+        const query = new URLSearchParams({ keyword, major, gender, gen, age }).toString();
+        window.location.href = `major.html?${query}`;
+        return;
+    }
+
+    if (searchResults) {
+        // Close modal if searching from modal
+        if (!fromUrl) closeSearchModal();
+
+        searchResults.style.display = 'grid';
+        searchResults.innerHTML = '<div style="grid-column: 1/-1; text-align: center; padding: 3rem; color: #64748b;">⚛️ กำลังดำเนินการค้นหา...</div>';
+        
+        // Scroll to results
+        searchResults.scrollIntoView({ behavior: 'smooth', block: 'start' });
+
+        try {
+            const params = new URLSearchParams();
+            if (keyword) params.append('keyword', keyword);
+            if (major) params.append('major', major);
+            if (gender) params.append('gender', gender);
+            if (gen) params.append('gen', gen);
+            if (age) params.append('age', age);
+
+            const res = await fetch(`http://localhost:3000/api/users/search?${params.toString()}`);
+            const users = await res.json();
+
+            searchResults.innerHTML = '';
+            if (users.length === 0) {
+                searchResults.innerHTML = '<div style="grid-column: 1/-1; text-align: center; padding: 3rem; color: #64748b;">ไม่พบข้อมูลนิสิตที่ค้นหา</div>';
+            } else {
+                users.forEach(u => searchResults.appendChild(createStudentCard(u)));
+            }
+            
+            const isSearching = !!(keyword || major || gender || gen || age);
+            if (branchesSection) branchesSection.style.display = isSearching ? 'none' : 'block';
+
+            // Clean up URL if we came from a redirect
+            if (fromUrl) {
+                window.history.replaceState({}, document.title, window.location.pathname);
+            }
+        } catch (err) {
+            console.error('Search failed:', err);
+            searchResults.innerHTML = '<div style="grid-column: 1/-1; text-align: center; padding: 3rem; color: #ef4444;">เกิดข้อผิดพลาดในการโหลดข้อมูล</div>';
+        }
+    }
+}

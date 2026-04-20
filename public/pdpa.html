@@ -8,7 +8,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600&family=Outfit:wght@400;600;700;800&display=swap" rel="stylesheet">
 </head>
 <body class="auth-bg">
-    <div class="pdpa-card" style="margin: 2rem;">
+    <div class="pdpa-card">
         <div class="pdpa-header">
             <span class="auth-icon" style="font-size: 3rem; margin-bottom: 1rem;">🛡️</span>
             <h2>ข้อตกลงและนโยบายความเป็นส่วนตัว (PDPA)</h2>
@@ -49,7 +49,7 @@
         const signupData = JSON.parse(localStorage.getItem('signupData') || '{}');
 
         // ตรวจสอบว่ามีครบ
-        if (!signupData.studentId || !signupData.password || !signupData.email || !signupData.major) {
+        if (!signupData.studentId || !signupData.password || !signupData.email || !signupData.major || !signupData.gender || !signupData.age) {
             alert('ไม่มีข้อมูลสำหรับสมัคร กรุณากรอกแบบฟอร์มใหม่');
             window.location.href = 'signup.html';
             return;
@@ -60,10 +60,13 @@
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
-                    username: signupData.studentId, 
+                    username: signupData.username, 
+                    student_id: signupData.studentId,
                     password: signupData.password,
                     email: signupData.email,
                     major: signupData.major,
+                    gender: signupData.gender,
+                    age: signupData.age,
                     photo: 'default.png'
                 })
             });
