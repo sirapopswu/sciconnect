@@ -382,7 +382,7 @@ document.addEventListener('DOMContentLoaded', () => {
         console.log('Detected major:', major, 'from path:', path);
 
         if (major) {
-            membersGrid.innerHTML = '<div style="grid-column: 1/-1; text-align: center; padding: 2rem; color: #64748b; font-size: 1.2rem;">⚛️ กำลังดึงข้อมูลเพื่อนๆ สาขา ' + major.toUpperCase() + '...</div>';
+            membersGrid.innerHTML = '<div style="grid-column: 1/-1; text-align: center; padding: 2rem; color: #64748b; font-size: 1.2rem;"><svg class="sci-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"></circle><ellipse cx="12" cy="12" rx="10" ry="4" transform="rotate(45 12 12)"></ellipse><ellipse cx="12" cy="12" rx="10" ry="4" transform="rotate(-45 12 12)"></ellipse></svg> กำลังดึงข้อมูลเพื่อนๆ สาขา ' + major.toUpperCase() + '...</div>';
             loadMajorStudents(major, membersGrid);
         }
 
@@ -799,7 +799,7 @@ async function performSearch(fromUrl = false) {
         if (!fromUrl) closeSearchModal();
 
         searchResults.style.display = 'grid';
-        searchResults.innerHTML = '<div style="grid-column: 1/-1; text-align: center; padding: 3rem; color: #64748b;">⚛️ กำลังดำเนินการค้นหา...</div>';
+        searchResults.innerHTML = '<div style="grid-column: 1/-1; text-align: center; padding: 3rem; color: #64748b;"><svg class="sci-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"></circle><ellipse cx="12" cy="12" rx="10" ry="4" transform="rotate(45 12 12)"></ellipse><ellipse cx="12" cy="12" rx="10" ry="4" transform="rotate(-45 12 12)"></ellipse></svg> กำลังดำเนินการค้นหา...</div>';
         
         // Scroll to results
         searchResults.scrollIntoView({ behavior: 'smooth', block: 'start' });
@@ -883,7 +883,7 @@ function initAlertModal() {
                     <span id="alertIcon" class="alert-icon"></span>
                     <h3 id="alertTitle" class="alert-title"></h3>
                     <p id="alertMessage" class="alert-message"></p>
-                    <button id="alertBtn" class="alert-btn">ตกลง (OK)</button>
+                    <button id="alertBtn" class="alert-btn">ตกลง</button>
                 </div>
             </div>
         `;
@@ -953,4 +953,4 @@ function initPasswordToggles() {
         }
     });
 }
-
+

@@ -7,47 +7,51 @@
     <link rel="stylesheet" href="css/style.css">
     <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600&family=Outfit:wght@400;600;700;800&display=swap" rel="stylesheet">
 </head>
+
 <body class="auth-bg">
     <div class="auth-container">
         <div class="auth-card">
             <!-- Left Side: Branding -->
             <div class="auth-left">
                 <div class="auth-brand">
-                    <span class="auth-icon">⚛️</span>
+                    <span class="auth-icon"><svg class="sci-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"></circle><ellipse cx="12" cy="12" rx="10" ry="4" transform="rotate(45 12 12)"></ellipse><ellipse cx="12" cy="12" rx="10" ry="4" transform="rotate(-45 12 12)"></ellipse></svg></span>
                     <h1>Sci<span>Connect</span></h1>
-                    <p>"มาเป็นส่วนหนึ่งของเครือข่ายวิชาคณะวิทยาศาสตร์ไปด้วยกัน"</p>
+                    <p>"เชื่อมต่อชาววิทย์ ให้ใกล้ชิดกันมากขึ้น"</p>
                 </div>
-                <a href="home.html" class="back-home">← กลับหน้าหลัก</a>
+                <a href="home.html" class="back-home">← ย้อนกลับ</a>
             </div>
             
             <!-- Right Side: Form -->
             <div class="auth-right">
                 <div class="auth-form-container" id="signupFormContainer">
-                    <h2>CREATE NEW<br><span class="highlight-text" style="color: #10b981;">ACCOUNT</span></h2>
+                    <h2>CREATE NEW<br><span class="highlight-text" style="color: #facc15;">ACCOUNT</span></h2>
                     
                     <form action="pdpa.html" class="auth-form" id="signupForm">
                         <div class="input-group">
-                            <label for="username">ชื่อที่แสดงให้คนอื่นเห็น (Public Username)</label>
-                            <input type="text" id="username" placeholder="เช่น พี่เห็ด, Admin_Sci" required>
+                            <label for="username">ชื่อผู้ใช้ (Username)</label>
+                            <input type="text" id="username" placeholder="เช่น ขอเกรดเอSE" required>
                         </div>
 
                         <div class="input-group">
                             <label for="studentid" style="display: flex; justify-content: space-between;">
                                 <span>รหัสนิสิต (Student ID)</span>
-                                <span style="font-size: 0.75rem; color: #64748b; font-weight: 400;">*ไม่แสดงให้คนอื่นเห็น</span>
+                                <span style="font-size: 0.75rem; color: rgb(237, 51, 51); font-weight: 400;">*ไม่แสดงให้ผู้ใช้อื่นเห็น</span>
                             </label>
                             <input type="text" id="studentid" placeholder="รหัสนิสิต 11 หลัก" required>
                         </div>
 
                         <div class="input-group">
-                            <label for="email">อีเมล (Email)</label>
+                            <label for="email" style="display: flex; justify-content: space-between;">
+                                <span>อีเมล (Gmail)</span>
+                                <span style="font-size: 0.75rem; color: rgb(237, 51, 51); font-weight: 400;">*ใช้ @g.swu เท่านั้น</span>
+                            </label>
                             <input type="email" id="email" placeholder="example@g.swu.ac.th" required>
                         </div>
                         
                         <div class="input-group">
                             <label for="password">รหัสผ่าน (Password)</label>
                             <div class="password-wrapper">
-                                <input type="password" id="password" placeholder="ตั้งรหัสผ่าน 8 ตัวอักษรขึ้นไป" required>
+                                <input type="password" id="password" required>
                                 <button type="button" class="password-toggle" data-target="password" aria-label="แสดงรหัสผ่าน">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"></path><line x1="1" y1="1" x2="23" y2="23"></line></svg>
                                 </button>
@@ -57,7 +61,7 @@
                         <div class="input-group">
                             <label for="confirm-password">ยืนยันรหัสผ่าน (Confirm Password)</label>
                             <div class="password-wrapper">
-                                <input type="password" id="confirm-password" placeholder="กรอกรหัสผ่านอีกครั้ง" required>
+                                <input type="password" id="confirm-password" placeholder="ยืนยันรหัสผ่านอีกครั้ง" required>
                                 <button type="button" class="password-toggle" data-target="confirm-password" aria-label="แสดงรหัสผ่าน">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"></path><line x1="1" y1="1" x2="23" y2="23"></line></svg>
                                 </button>
@@ -74,7 +78,7 @@
                                 <option value="chem">Chemistry (เคมี)</option>
                                 <option value="gen">General Science (วิทยาศาสตร์ทั่วไป)</option>
                                 <option value="mat">Material Science (วัสดุศาสตร์)</option>
-                                <option value="micro">Micro Biology (จุลชีววิทยา)</option>
+                                <option value="micro">Microbiology (จุลชีววิทยา)</option>
                                 <option value="phy">Physics (ฟิสิกส์)</option>
                             </select>
                         </div>
@@ -85,7 +89,7 @@
                                 <option value="" disabled selected>-- เลือกเพศ --</option>
                                 <option value="ชาย">ชาย (Male)</option>
                                 <option value="หญิง">หญิง (Female)</option>
-                                <option value="อื่นๆ">อื่นๆ (Other)</option>
+                                <option value="อื่นๆ">ไม่ระบุ (Other)</option>
                             </select>
                         </div>
                         <div class="input-group">
@@ -96,21 +100,16 @@
                         <!-- Generation is auto-derived from Student ID -->
                         
                         <div class="auth-actions">
-                            <button type="submit" class="auth-btn-signup" style="width: 100%; font-size: 1.1rem; background: #10b981; color: white; border: none; padding: 0.8rem; border-radius: 0.5rem; cursor: pointer; font-weight: 600;">REGISTER (PDPA)</button>
+                            <button type="submit" class="auth-btn-signup" style="width: 100%; font-size: 1.1rem; 
+                            background: #10b981; color: white; border: none; padding: 0.8rem; border-radius: 0.5rem; 
+                            cursor: pointer; font-weight: 600;">REGISTER (Go to PDPA Form)</button>
                         </div>
                     </form>
-                </div>
-
-                <!-- Success Message (Hidden by default) -->
-                <div class="auth-form-container" id="signupSuccessContainer" style="max-width: 450px; display: none; text-align: center; padding: 3rem 2rem;">
-                    <div style="font-size: 4rem; margin-bottom: 1.5rem;">🎉</div>
-                    <h2 style="color: #10b981; font-size: 1.8rem; margin-bottom: 1rem;">FINISH CREATE ACCOUNT</h2>
-                    <p id="welcomeMessage" style="color: #475569; font-size: 1.2rem; margin-bottom: 2.5rem;">WELCOME ......</p>
-                    <a href="signin.html" class="auth-btn-signup" style="display: block; width: 100%; text-decoration: none; background: var(--primary); color: white; padding: 1rem; border-radius: 0.5rem; font-weight: 600;">ไปหน้าเข้าสู่ระบบ (Go to Sign In)</a>
                 </div>
             </div>
         </div>
     </div>
+    
     <script src="app.js"></script>
     <script>
     document.getElementById('signupForm').addEventListener('submit', async (e) => {

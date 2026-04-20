@@ -161,7 +161,9 @@ ul {
     background: var(--white);
     border-radius: 2rem;
     padding: 1.5rem;
-    box-shadow: 0 25px 50px -12px rgba(0,0,0,0.1); /* Stronger shadow */
+    box-shadow: 
+        0 25px 50px -12px rgba(0,0,0,0.1), 
+        0 0 20px rgba(250, 204, 21, 0.15); /* Soft yellow glow */
 }
 
 .hero-container {
@@ -174,7 +176,7 @@ ul {
 .hero-brand-card {
     flex: 1;
     min-width: 300px;
-    background: linear-gradient(135deg, #fde047 0%, #facc15 100%);
+    background: linear-gradient(135deg, #fefce8 0%, #fef9c3 100%);
     border-radius: 1.5rem;
     display: flex;
     justify-content: center;
@@ -184,6 +186,20 @@ ul {
     overflow: hidden;
 }
 
+.hero-brand-card::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-image: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRb7AvYoaxQv06BvacPJ7lod15nbNlsv1-eVA&s');
+    background-size: cover;
+    background-position: center;
+    opacity: 0.7; /* Adjusted to 70% image / 30% yellow background */
+    z-index: 1;
+}
+
 .hero-brand-content {
     position: relative;
     z-index: 2;
@@ -191,10 +207,13 @@ ul {
 }
 
 .brand-icon-large {
-    font-size: 5rem;
-    margin-bottom: 1rem;
-    animation: rotate 12s linear infinite;
-    display: inline-block;
+    width: 8rem;
+    height: 8rem;
+    margin-bottom: 1.5rem;
+    color: var(--primary);
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .brand-title-large {
@@ -289,22 +308,38 @@ ul {
 .branch-card {
     background: var(--white);
     border-radius: 1.25rem;
-    padding: 1.5rem;
+    padding: 1.25rem 1.5rem;
     text-align: center;
-    border: 2px solid rgba(0, 0, 0, 0.08); /* More visible border */
+    border: 2px solid rgba(0, 0, 0, 0.08);
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    box-shadow: 0 10px 20px -5px rgba(0, 0, 0, 0.1), 0 8px 8px -8px rgba(0, 0, 0, 0.1); 
+    box-shadow: 0 10px 20px -5px rgba(0, 0, 0, 0.1); 
     display: flex;
+    flex-direction: row; /* Horizontal layout */
     justify-content: center;
     align-items: center;
-    min-height: 115px;
+    min-height: 90px;
+    gap: 0.75rem;
+}
+
+.branch-icon {
+    width: 28px; /* Slightly smaller for inline */
+    height: 28px;
+    color: currentColor; /* Matches text and border */
+    stroke-width: 2;
+    transition: all 0.3s ease;
+    flex-shrink: 0;
+}
+
+/* On hover, make icon clearer */
+.branch-card:hover .branch-icon {
+    color: var(--white);
+    transform: scale(1.1);
 }
 
 .branch-name {
     font-weight: 800;
-    font-size: 1.1rem; /* Slightly larger */
-    letter-spacing: 0.06em;
-    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.15); /* Stronger text shadow */
+    font-size: 1rem;
+    letter-spacing: 0.05em;
     transition: all 0.3s ease;
 }
 
