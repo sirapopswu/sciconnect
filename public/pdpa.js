@@ -8,14 +8,16 @@ if (pdpaForm) {
 
         const consent = document.getElementById('pdpaConsent').checked;
         if (!consent) {
-            alert('คุณต้องยอมรับ PDPA ก่อน');
+            showToast('คุณต้องยอมรับ PDPA ก่อน', 'error');
             return;
         }
 
         const signupData = JSON.parse(localStorage.getItem('signupData'));
         if (!signupData) {
-            alert('ไม่มีข้อมูลสำหรับสมัคร กรุณากรอกแบบฟอร์ม Signup ใหม่');
-            window.location.href = 'signup.html';
+            showToast('ไม่มีข้อมูลสำหรับสมัคร กรุณากรอกแบบฟอร์ม Signup ใหม่', 'error');
+            setTimeout(() => {
+                window.location.href = 'signup.html';
+            }, 2000);
             return;
         }
 
@@ -48,11 +50,12 @@ if (pdpaForm) {
                 localStorage.removeItem('signupData');
                 pdpaForm.style.display = 'none';
                 successMessage.style.display = 'block';
+                showToast('ลงทะเบียนสำเร็จ!', 'success');
             } else {
-                alert(data.message || 'เกิดข้อผิดพลาด');
+                showToast(data.message || 'เกิดข้อผิดพลาด', 'error');
             }
         } catch (err) {
-            alert('เกิดข้อผิดพลาด: ' + err.message);
+            showToast('เกิดข้อผิดพลาด: ' + err.message, 'error');
         }
     });
-}
+}

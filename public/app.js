@@ -16,17 +16,17 @@ if (signupForm) {
         const gen = studentId.substring(0, 2); // Always derive from ID
 
         if (!studentId || !email || !password || !confirmPassword || !major || !gender || !age) {
-            alert('กรุณากรอกฟอร์มให้ครบ');
+            showToast('กรุณากรอกฟอร์มให้ครบ', 'error');
             return;
         }
 
         if (!email.toLowerCase().endsWith('@g.swu.ac.th')) {
-            alert('ต้องใช้อีเมล @g.swu.ac.th เท่านั้นสำหรับการสมัคร');
+            showToast('ต้องใช้อีเมล @g.swu.ac.th เท่านั้นสำหรับการสมัคร', 'error');
             return;
         }
 
         if (password !== confirmPassword) {
-            alert('รหัสผ่านไม่ตรงกัน');
+            showToast('รหัสผ่านไม่ตรงกัน', 'error');
             return;
         }
 
@@ -54,6 +54,18 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Inject Search Modal and Icon
     injectSearchUI();
+
+    // Inject Auth Required Modal
+    injectAuthRequiredModal();
+
+    // Initialize Toast Container
+    initToastContainer();
+
+    // Initialize Alert Modal
+    initAlertModal();
+
+    // Initialize Password Toggles
+    initPasswordToggles();
 
     const userStr = localStorage.getItem('user');
     const signinBtns = document.querySelectorAll('.btn-signin');
@@ -152,8 +164,8 @@ document.addEventListener('DOMContentLoaded', () => {
     } else {
         // Not logged in. If on profile.html, redirect
         if (window.location.pathname.includes('profile.html')) {
-            alert('กรุณาเข้าสู่ระบบเพื่อดูโปรไฟล์');
-            window.location.href = 'signin.html';
+            showAuthRequiredModal();
+            // Optional: Redirect after a delay or on modal close
         }
     }
 
@@ -190,7 +202,7 @@ document.addEventListener('DOMContentLoaded', () => {
             visibilityToggle.checked = user.visible !== false;
             visibilityToggle.addEventListener('change', async (e) => {
                 if (!user.id) {
-                    alert('บัญชีพิเศษไม่สามารถตั้งค่าได้');
+                    showToast('บัญชีพิเศษไม่สามารถตั้งค่าได้', 'info');
                     e.target.checked = !e.target.checked;
                     return;
                 }
@@ -207,8 +219,9 @@ document.addEventListener('DOMContentLoaded', () => {
                     
                     user.visible = updated.user.visible;
                     localStorage.setItem('user', JSON.stringify(user));
+                    showToast('อัปเดตสถานะการมองเห็นสำเร็จ');
                 } catch (err) {
-                    alert('เกิดข้อผิดพลาดในการตั้งค่า: ' + err.message);
+                    showToast('เกิดข้อผิดพลาดในการตั้งค่า: ' + err.message, 'error');
                     e.target.checked = !e.target.checked;
                 }
             });
@@ -223,7 +236,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const editFormPage = document.getElementById('editProfileFormPage');
         if (editFormPage && user) {
             if (!user.id) {
-                alert('บัญชีพิเศษไม่สามารถแก้ไขได้');
+                showToast('บัญชีพิเศษไม่สามารถแก้ไขได้', 'info');
                 window.location.href = 'profile.html';
                 return;
             }
@@ -318,21 +331,22 @@ document.addEventListener('DOMContentLoaded', () => {
                         body: JSON.stringify(updateData)
                     });
                     
-                    if (!res.ok) {
-                        const errData = await res.json().catch(() => ({}));
-                        throw new Error(errData.message || 'ไม่สามารถบันทึกข้อมูลได้');
+                    const data = await res.json();
+                    if (res.ok) {
+                        // Combine and save
+                        const finalUser = { ...data.user, visible: user.visible };
+                        localStorage.setItem('user', JSON.stringify(finalUser));
+                        
+                        showToast('อัปเดตข้อมูลสำเร็จ!', 'success');
+                        setTimeout(() => window.location.href = 'profile.html', 2000);
+                    } else {
+                        showToast('เกิดข้อผิดพลาด: ' + (data.message || 'Unknown error'), 'error');
+                        const saveBtn = editFormPage.querySelector('.btn-save');
+                        if (saveBtn) { saveBtn.textContent = 'บันทึกข้อมูลโพรไฟล์ (Save)'; saveBtn.disabled = false; }
                     }
-                    
-                    const updatedData = await res.json();
-                    
-                    // Combine and save
-                    const finalUser = { ...updatedData.user, visible: user.visible };
-                    localStorage.setItem('user', JSON.stringify(finalUser));
-                    
-                    alert('อัปเดตข้อมูลสำเร็จ!');
-                    window.location.href = 'profile.html';
                 } catch (err) {
-                    alert('เกิดข้อผิดพลาด: ' + err.message);
+                    console.error(err);
+                    showToast('เกิดข้อผิดพลาด: ' + err.message, 'error');
                     const saveBtn = editFormPage.querySelector('.btn-save');
                     if (saveBtn) { saveBtn.textContent = 'บันทึกข้อมูลโพรไฟล์ (Save)'; saveBtn.disabled = false; }
                 }
@@ -372,20 +386,74 @@ document.addEventListener('DOMContentLoaded', () => {
             loadMajorStudents(major, membersGrid);
         }
 
-        // Gen filtering logic
-        const genBtns = document.querySelectorAll('.gen-btn');
-        genBtns.forEach(btn => {
-            btn.addEventListener('click', (e) => {
-                genBtns.forEach(b => b.classList.remove('active'));
-                btn.classList.add('active');
-                
-                const selectedGenText = btn.textContent.trim();
-                const genValue = selectedGenText.includes('ทั้งหมด') ? null : selectedGenText.replace('รุ่น ', '').trim();
-                
-                filterGridByGen(membersGrid, genValue);
+        // --- Dynamic Gen Filter Upgrade ---
+        const genFilter = document.querySelector('.gen-filter');
+        if (genFilter) {
+            genFilter.innerHTML = `
+                <button class="gen-btn active" id="btnGenAll">ทั้งหมด (All)</button>
+                <div class="gen-input-wrapper">
+                    <span style="font-size: 0.9rem; color: #64748b; font-weight: 500;">รุ่น:</span>
+                    <input type="text" class="gen-type-input" id="inputGenValue" placeholder="ระบุเลขรุ่น...">
+                    <button class="btn-gen-confirm" id="btnGenConfirm">ตกลง</button>
+                </div>
+            `;
+
+            const btnAll = document.getElementById('btnGenAll');
+            const inputGen = document.getElementById('inputGenValue');
+            const btnConfirm = document.getElementById('btnGenConfirm');
+
+            const executeFilter = () => {
+                const val = inputGen.value.trim();
+                if (val) {
+                    btnAll.classList.remove('active');
+                } else {
+                    btnAll.classList.add('active');
+                }
+                filterGridByGen(membersGrid, val);
+            };
+
+            btnAll.addEventListener('click', () => {
+                inputGen.value = '';
+                btnAll.classList.add('active');
+                filterGridByGen(membersGrid, null);
             });
-        });
+
+            // Prevent non-numeric input
+            inputGen.addEventListener('input', (e) => {
+                e.target.value = e.target.value.replace(/[^0-9]/g, '');
+            });
+
+            // Handle confirmation
+            btnConfirm.addEventListener('click', executeFilter);
+            inputGen.addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') executeFilter();
+            });
+        }
     }
+
+    // Global Authentication Guard for Major/Branch pages
+    document.addEventListener('click', (e) => {
+        const userStr = localStorage.getItem('user');
+        if (userStr) return; // User is logged in, allow all
+
+        // 1. Check for Major/Connect links
+        const link = e.target.closest('a');
+        if (link) {
+            const href = link.getAttribute('href') || '';
+            if (href.includes('major.html') || href.includes('profile.html')) {
+                e.preventDefault();
+                showAuthRequiredModal();
+                return;
+            }
+        }
+
+        // 2. Check for Branch Cards (Home page)
+        const branchCard = e.target.closest('.branch-card');
+        if (branchCard) {
+            e.preventDefault();
+            showAuthRequiredModal();
+        }
+    });
 
     // Rename 'Major' link to 'Connect' if on relevant pages
     const majorLink = Array.from(document.querySelectorAll('.nav-links a')).find(a => a.getAttribute('href') === 'major.html');
@@ -447,6 +515,11 @@ function injectProfileModal() {
 }
 
 function openProfileModal(user) {
+    const userStr = localStorage.getItem('user');
+    if (!userStr) {
+        showAuthRequiredModal();
+        return;
+    }
     const backdrop = document.getElementById('profileModalBackdrop');
     const content = document.getElementById('modalContent');
     if (!backdrop || !content) return;
@@ -474,9 +547,6 @@ function openProfileModal(user) {
             ${(skills || []).length > 0 
                 ? skills.map(s => `<span class="modal-skill-tag">${s}</span>`).join('')
                 : '<span style="color: #94a3b8; font-style: italic;">ไม่มีข้อมูลสกิล</span>'}
-        </div>
-        <div style="margin-top: 1.5rem; display: flex; gap: 1rem;">
-             <a href="mailto:${user.email}" style="padding: 0.6rem 1.2rem; background: #e2e8f0; border-radius: 8px; color: #1e293b; font-weight: 600; font-size: 0.85rem;">Email Me</a>
         </div>
     `;
 
@@ -533,7 +603,7 @@ function createStudentCard(user) {
         <img src="${avatar}" alt="Avatar" class="member-avatar" style="width: 80px; height: 80px; border-radius: 50%; object-fit: cover; border: 3px solid white;">
         <span class="member-name" style="font-weight: 700; color: #1e293b;">${user.username}</span>
         <span class="member-badge" style="font-size: 0.8rem; background: rgba(255,255,255,0.5); padding: 0.2rem 0.6rem; border-radius: 20px;">รุ่น ${derivedGen} | ${user.gender}</span>
-        <p style="font-size: 0.85rem; color: #475569; margin-top: 0.5rem; text-align: center; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;">${user.bio || 'สายวิทย์หน้าตาดี...'}</p>
+        <p style="font-size: 0.85rem; color: #475569; margin-top: 0.5rem; text-align: center; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;">${user.bio || 'ไม่มีรายละเอียดแนะนำตัว'}</p>
         <div style="display: flex; flex-wrap: wrap; gap: 4px; justify-content: center; margin-top: 0.5rem;">
             ${(skills || []).slice(0, 3).map(s => `<span style="font-size: 0.7rem; background: white; padding: 2px 6px; border-radius: 4px; border: 1px solid #e2e8f0;">${s}</span>`).join('')}
         </div>
@@ -620,6 +690,11 @@ function injectSearchUI() {
 }
 
 function toggleSearchModal() {
+    const userStr = localStorage.getItem('user');
+    if (!userStr) {
+        showAuthRequiredModal();
+        return;
+    }
     const backdrop = document.getElementById('searchModalBackdrop');
     if (backdrop) {
         backdrop.classList.add('active');
@@ -629,6 +704,53 @@ function toggleSearchModal() {
 
 function closeSearchModal() {
     const backdrop = document.getElementById('searchModalBackdrop');
+    if (backdrop) {
+        backdrop.classList.remove('active');
+        document.body.style.overflow = '';
+    }
+}
+
+function injectAuthRequiredModal() {
+    if (document.getElementById('authRequiredModalBackdrop')) return;
+    const modalHTML = `
+        <div id="authRequiredModalBackdrop" class="auth-modal-backdrop">
+            <div class="auth-modal">
+                <div class="auth-modal-icon-wrapper">
+                    <svg width="80" height="80" viewBox="0 0 24 24" fill="none" stroke="#1e293b" stroke-width="1" stroke-linecap="round" stroke-linejoin="round">
+                        <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                        <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+                    </svg>
+                </div>
+                <h3 style="font-weight: 700; font-size: 1.75rem; margin-bottom: 0.5rem;">ต้องเข้าสู่ระบบก่อน</h3>
+                <p style="font-size: 1rem; color: #64748b; margin-bottom: 2rem;">กรุณาเข้าสู่ระบบเพื่อเข้าใช้งานฟีเจอร์ค้นหาและดูโปรไฟล์ของเพื่อนๆ ครับ</p>
+                <div class="auth-modal-btns">
+                    <a href="signin.html" class="btn-auth-signin">เข้าสู่ระบบตอนนี้</a>
+                    <button class="btn-auth-close" onclick="closeAuthRequiredModal()">ไว้ทีหลัง</button>
+                </div>
+            </div>
+        </div>
+    `;
+    document.body.insertAdjacentHTML('beforeend', modalHTML);
+
+    // Close on backdrop click
+    const backdrop = document.getElementById('authRequiredModalBackdrop');
+    if (backdrop) {
+        backdrop.addEventListener('click', (e) => {
+            if (e.target.id === 'authRequiredModalBackdrop') closeAuthRequiredModal();
+        });
+    }
+}
+
+function showAuthRequiredModal() {
+    const backdrop = document.getElementById('authRequiredModalBackdrop');
+    if (backdrop) {
+        backdrop.classList.add('active');
+        document.body.style.overflow = 'hidden';
+    }
+}
+
+function closeAuthRequiredModal() {
+    const backdrop = document.getElementById('authRequiredModalBackdrop');
     if (backdrop) {
         backdrop.classList.remove('active');
         document.body.style.overflow = '';
@@ -712,4 +834,123 @@ async function performSearch(fromUrl = false) {
             searchResults.innerHTML = '<div style="grid-column: 1/-1; text-align: center; padding: 3rem; color: #ef4444;">เกิดข้อผิดพลาดในการโหลดข้อมูล</div>';
         }
     }
-}
+}
+
+/* --- Toast System --- */
+function initToastContainer() {
+    if (!document.querySelector('.toast-container')) {
+        const container = document.createElement('div');
+        container.className = 'toast-container';
+        document.body.appendChild(container);
+    }
+}
+
+function showToast(message, type = 'info', duration = 3000) {
+    initToastContainer();
+    const container = document.querySelector('.toast-container');
+    
+    const toast = document.createElement('div');
+    toast.className = `toast toast-${type}`;
+    
+    let icon = '✨';
+    if (type === 'success') icon = '✅';
+    if (type === 'error') icon = '❌';
+    if (type === 'info') icon = 'ℹ️';
+
+    toast.innerHTML = `
+        <span class="toast-icon">${icon}</span>
+        <span class="toast-message">${message}</span>
+    `;
+
+    container.appendChild(toast);
+
+    // Fade in
+    setTimeout(() => toast.classList.add('show'), 10);
+
+    // Remove
+    setTimeout(() => {
+        toast.classList.remove('show');
+        setTimeout(() => toast.remove(), 400);
+    }, duration);
+}
+
+/* --- Alert Modal (Popup) System --- */
+function initAlertModal() {
+    if (!document.getElementById('alertModalBackdrop')) {
+        const modalHTML = `
+            <div id="alertModalBackdrop" class="alert-modal-backdrop">
+                <div class="alert-modal">
+                    <span id="alertIcon" class="alert-icon"></span>
+                    <h3 id="alertTitle" class="alert-title"></h3>
+                    <p id="alertMessage" class="alert-message"></p>
+                    <button id="alertBtn" class="alert-btn">ตกลง (OK)</button>
+                </div>
+            </div>
+        `;
+        document.body.insertAdjacentHTML('beforeend', modalHTML);
+    }
+}
+
+/**
+ * Show a centered Popup alert
+ */
+function showAlert(message, type = 'info', title = 'แจ้งเตือน') {
+    initAlertModal();
+    const backdrop = document.getElementById('alertModalBackdrop');
+    const iconEl = document.getElementById('alertIcon');
+    const titleEl = document.getElementById('alertTitle');
+    const msgEl = document.getElementById('alertMessage');
+    const btn = document.getElementById('alertBtn');
+
+    titleEl.textContent = title;
+    msgEl.textContent = message;
+
+    btn.className = 'alert-btn';
+    let icon = '✨';
+    if (type === 'success') {
+        icon = '✅';
+        btn.classList.add('alert-btn-success');
+    } else if (type === 'error') {
+        icon = '❌';
+        btn.classList.add('alert-btn-error');
+    } else {
+        icon = 'ℹ️';
+    }
+    iconEl.textContent = icon;
+
+    backdrop.classList.add('active');
+    document.body.style.overflow = 'hidden';
+
+    return new Promise((resolve) => {
+        btn.onclick = () => {
+            backdrop.classList.remove('active');
+            document.body.style.overflow = '';
+            resolve();
+        };
+    });
+}
+
+/* --- Password Toggle System --- */
+function initPasswordToggles() {
+    const toggles = document.querySelectorAll('.password-toggle');
+    toggles.forEach(toggle => {
+        if (toggle.dataset.initialized) return;
+        const targetId = toggle.dataset.target;
+        const input = document.getElementById(targetId);
+        if (input) {
+            toggle.onclick = (e) => {
+                e.preventDefault();
+                const isPassword = input.type === 'password';
+                input.type = isPassword ? 'text' : 'password';
+                
+                // If it was dots (password), it's now text -> show OPEN eye
+                // If it was text, it's now dots (password) -> show CLOSED eye
+                toggle.innerHTML = isPassword 
+                    ? `<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>` // Eye (open)
+                    : `<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"></path><line x1="1" y1="1" x2="23" y2="23"></line></svg>`; // Eye-off (closed)
+            };
+            toggle.dataset.initialized = 'true';
+        }
+    });
+}
+

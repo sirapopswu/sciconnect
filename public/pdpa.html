@@ -50,7 +50,7 @@
 
         // ตรวจสอบว่ามีครบ
         if (!signupData.studentId || !signupData.password || !signupData.email || !signupData.major || !signupData.gender || !signupData.age) {
-            alert('ไม่มีข้อมูลสำหรับสมัคร กรุณากรอกแบบฟอร์มใหม่');
+            await showAlert('ไม่มีข้อมูลสำหรับสมัคร กรุณากรอกแบบฟอร์มใหม่', 'error');
             window.location.href = 'signup.html';
             return;
         }
@@ -78,16 +78,17 @@
                 localStorage.removeItem('signupData');
 
                 // แสดง success alert แล้ว redirect
-                alert(`สมัครสำเร็จ! ยินดีต้อนรับ ${signupData.studentId}`);
+                await showAlert(`สมัครสำเร็จ! ยินดีต้อนรับ ${signupData.studentId}`, 'success', 'ลงทะเบียนสำเร็จ');
                 window.location.href = 'signin.html';
             } else {
-                alert(data.message || 'เกิดข้อผิดพลาดในการสมัคร');
+                await showAlert(data.message || 'เกิดข้อผิดพลาดในการสมัคร', 'error');
             }
         } catch (err) {
             console.error(err);
-            alert('เกิดข้อผิดพลาดในการเชื่อมต่อ server');
+            await showAlert('เกิดข้อผิดพลาดในการเชื่อมต่อ server', 'error');
         }
     });
     </script>
+    <script src="app.js"></script>
 </body>
 </html>
