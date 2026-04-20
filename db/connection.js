@@ -6,7 +6,7 @@ const pool = new Pool({
   user: 'postgres',        // ชื่อ user ของ PostgreSQL
   host: 'localhost',       // host ของ DB
   database: 'sciconnect',  // ชื่อ database จริงที่สร้างใน pgAdmin
-  password: '392547',// รหัสผ่าน PostgreSQL ของคุณ
+  password: '17112548',// รหัสผ่าน PostgreSQL ของคุณ
   port: 5432,              // port ปกติของ PostgreSQL
 });
 

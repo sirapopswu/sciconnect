@@ -140,6 +140,53 @@ document.addEventListener('DOMContentLoaded', () => {
                     }
                 }
 
+                // Render social links
+                const dSocialBox = document.getElementById('displaySocialBox');
+                const dSocialLinksContainer = document.getElementById('socialLinksContainer');
+
+                if (dSocialBox && dSocialLinksContainer) {
+                    let hasSocial = false;
+                    let socialHTML = '';
+
+                    if (user.facebook_url && user.facebook_url.trim() !== '') {
+                        hasSocial = true;
+                        socialHTML += `
+                            <a href="${user.facebook_url}" target="_blank" class="social-btn fb">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path></svg>
+                                Facebook
+                            </a>`;
+                    }
+                    if (user.instagram_url && user.instagram_url.trim() !== '') {
+                        hasSocial = true;
+                        socialHTML += `
+                            <a href="${user.instagram_url}" target="_blank" class="social-btn ig">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg>
+                                Instagram
+                            </a>`;
+                    }
+                    if (user.line_url && user.line_url.trim() !== '') {
+                        hasSocial = true;
+                        let lineHref = user.line_url;
+                        if (!lineHref.startsWith('http') && !lineHref.startsWith('https')) {
+                            // If it's potentially an ID, link to line.me. Could also just leave it as text. 
+                            // Using line://ti/p/~ or https://line.me/ti/p/~ as default if no http is present
+                            lineHref = `https://line.me/ti/p/~${lineHref}`;
+                        }
+                        socialHTML += `
+                            <a href="${lineHref}" target="_blank" class="social-btn line">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path></svg>
+                                Line
+                            </a>`;
+                    }
+
+                    if (hasSocial) {
+                        dSocialLinksContainer.innerHTML = socialHTML;
+                        dSocialBox.style.display = 'block';
+                    } else {
+                        dSocialBox.style.display = 'none';
+                    }
+                }
+
                 // Apply dynamic theme color based on major
                 const profileCard = document.getElementById('profileCard');
                 const dStudentId = document.getElementById('displayStudentId');
@@ -248,6 +295,14 @@ document.addEventListener('DOMContentLoaded', () => {
             document.getElementById('age').value = user.age || '';
             document.getElementById('bio').value = user.bio || '';
             
+            // Prefill new social fields
+            const fbid = document.getElementById('facebook_url');
+            if (fbid) fbid.value = user.facebook_url || '';
+            const igid = document.getElementById('instagram_url');
+            if (igid) igid.value = user.instagram_url || '';
+            const lineid = document.getElementById('line_url');
+            if (lineid) lineid.value = user.line_url || '';
+            
             let skillsStr = '';
             try {
                 const parsed = typeof user.skills === 'string' ? JSON.parse(user.skills) : user.skills;
@@ -266,6 +321,10 @@ document.addEventListener('DOMContentLoaded', () => {
                 const bio = document.getElementById('bio').value.trim();
                 const skillsInput = document.getElementById('skills').value;
                 const skillsArray = skillsInput.split(',').map(s => s.trim()).filter(s => s);
+                
+                const facebook_url = document.getElementById('facebook_url') ? document.getElementById('facebook_url').value.trim() : '';
+                const instagram_url = document.getElementById('instagram_url') ? document.getElementById('instagram_url').value.trim() : '';
+                const line_url = document.getElementById('line_url') ? document.getElementById('line_url').value.trim() : '';
                 
                 const fileInput = document.getElementById('editAvatarInput');
                 let photoBase64 = user.photo;
@@ -322,7 +381,10 @@ document.addEventListener('DOMContentLoaded', () => {
                         photo: photoBase64,
                         email: user.email,
                         password: user.password,
-                        gender: gender
+                        gender: gender,
+                        facebook_url,
+                        instagram_url,
+                        line_url
                     };
                     
                     const res = await fetch(`http://localhost:3000/api/users/${user.id}`, {
@@ -537,11 +599,43 @@ function openProfileModal(user) {
     const avatar = user.photo && user.photo !== 'default.png' ? user.photo : `https://ui-avatars.com/api/?name=${user.username}&background=random`;
     const derivedGen = user.generation || (user.student_id ? user.student_id.substring(0, 2) : '-');
 
+    let socialHTMLStr = '';
+    
+    if (user.facebook_url && user.facebook_url.trim() !== '') {
+        socialHTMLStr += `
+            <a href="${user.facebook_url}" target="_blank" title="Facebook" style="color: #1877F2; text-decoration: none;">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.469h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.469h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+            </a>`;
+    }
+    if (user.instagram_url && user.instagram_url.trim() !== '') {
+        socialHTMLStr += `
+            <a href="${user.instagram_url}" target="_blank" title="Instagram" style="color: #E1306C; text-decoration: none;">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg>
+            </a>`;
+    }
+    if (user.line_url && user.line_url.trim() !== '') {
+        let lineHref = user.line_url;
+        if (!lineHref.startsWith('http') && !lineHref.startsWith('https')) {
+            lineHref = `https://line.me/ti/p/~${lineHref}`;
+        }
+        socialHTMLStr += `
+            <a href="${lineHref}" target="_blank" title="Line" style="color: #00C300; text-decoration: none;">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M19.365 9.863c.349 0 .63.285.63.631 0 .345-.281.63-.63.63H17.61v1.125h1.755c.349 0 .63.283.63.63 0 .344-.281.629-.63.629h-2.386c-.345 0-.627-.285-.627-.629V8.108c0-.345.282-.63.63-.63h2.386c.346 0 .627.285.627.63 0 .349-.281.63-.63.63H17.61v1.125h1.755zm-3.855 3.016c0 .26-.156.514-.438.586-.06.014-.114.024-.166.024-.205 0-.401-.096-.527-.264l-1.567-2.183v2.091c0 .344-.282.629-.629.629-.345 0-.628-.285-.628-.629V8.108c0-.264.156-.516.44-.588.058-.012.115-.022.169-.022.203 0 .399.098.525.266l1.565 2.181V7.854c0-.345.283-.63.63-.63.344 0 .629.285.629.63v4.469zm-5.074-3.647h-1.55v3.018c0 .344-.28.629-.628.629-.346 0-.629-.285-.629-.629V8.108c0-.345.283-.63.629-.63h2.178c.346 0 .629.285.629.63 0 .349-.283.63-.629.63m-4.321 4.276H5.485c-.344 0-.628-.285-.628-.629V8.108c0-.345.284-.63.628-.63.348 0 .63.285.63.63v3.754h.631c.348 0 .629.283.629.63 0 .344-.281.629-.629.629M24 10.314C24 4.943 18.615.572 12 .572S0 4.943 0 10.314c0 4.811 4.27 8.842 10.035 9.608.391.082.923.258 1.058.59.12.295.079.756.038 1.08l-.164 1.02c-.045.301-.24 1.186 1.049.645 1.291-.539 6.916-4.078 9.436-6.967C23.189 14.507 24 12.49 24 10.314"/></svg>
+            </a>`;
+    }
+
     content.innerHTML = `
         <img src="${avatar}" alt="Avatar" class="modal-avatar">
         <h3 class="modal-name">${user.username}</h3>
         <div class="modal-meta">รุ่น ${derivedGen} | อายุ ${user.age || '-'} | ${user.gender} | ${(user.major || '').toUpperCase()}</div>
         <p class="modal-bio">${user.bio || 'ไม่มีรายละเอียดแนะนำตัว'}</p>
+        
+        ${socialHTMLStr ? `
+        <div class="modal-social" style="display: flex; gap: 1rem; align-items: center; justify-content: center; margin-bottom: 1.5rem;">
+            ${socialHTMLStr}
+        </div>
+        ` : ''}
+
         <div class="modal-skills-title">ความสามารถ (Skills)</div>
         <div class="modal-skills">
             ${(skills || []).length > 0 

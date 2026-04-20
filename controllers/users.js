@@ -42,13 +42,13 @@ const login = (req, res) => {
 
 // Add user
 const addUser = async (req, res) => {
-  const { username, password, email, major, gender, age, photo, bio, skills } = req.body;
+  const { username, password, email, major, gender, age, photo, bio, skills, line_url, facebook_url, instagram_url } = req.body;
 
   try {
     const result = await pool.query(
       `INSERT INTO users 
-       (username, password, email, major, gender, age, photo, bio, skills, visible)
-       VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10) RETURNING *`,
+       (username, password, email, major, gender, age, photo, bio, skills, visible, line_url, facebook_url, instagram_url)
+       VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13) RETURNING *`,
       [
         username,
         password,
@@ -59,7 +59,10 @@ const addUser = async (req, res) => {
         photo || 'default.png',
         bio || '',
         skills || '[]', 
-        true
+        true,
+        line_url || '',
+        facebook_url || '',
+        instagram_url || ''
       ]
     );
 
@@ -76,7 +79,7 @@ const addUser = async (req, res) => {
 const getUsers = async (req, res) => {
   try {
     const result = await pool.query(
-      'SELECT id, username, email, major, gender, age, photo, bio, skills FROM users WHERE visible=true ORDER BY age'
+      'SELECT id, username, email, major, gender, age, photo, bio, skills, line_url, facebook_url, instagram_url FROM users WHERE visible=true ORDER BY age'
     );
     res.json(result.rows);
   } catch (err) {
@@ -89,7 +92,7 @@ const searchUsers = async (req, res) => {
   const { keyword, gender, major } = req.query;
 
   try {
-    let query = 'SELECT id, username, email, major, gender, age, photo, bio, skills FROM users WHERE visible=true';
+    let query = 'SELECT id, username, email, major, gender, age, photo, bio, skills, line_url, facebook_url, instagram_url FROM users WHERE visible=true';
     let params = [];
 
     if (keyword) {
@@ -117,13 +120,13 @@ const searchUsers = async (req, res) => {
 // Update user
 const updateUser = async (req, res) => {
   const { id } = req.params;
-  const { username, email, major, gender, age, photo, bio, skills } = req.body;
+  const { username, email, major, gender, age, photo, bio, skills, line_url, facebook_url, instagram_url } = req.body;
 
   try {
     const result = await pool.query(
-      `UPDATE users SET username=$1, email=$2, major=$3, gender=$4, age=$5, photo=$6, bio=$7, skills=$8
-       WHERE id=$9 RETURNING *`,
-      [username, email, major, gender, age, photo, bio, skills || '[]', id]
+      `UPDATE users SET username=$1, email=$2, major=$3, gender=$4, age=$5, photo=$6, bio=$7, skills=$8, line_url=$9, facebook_url=$10, instagram_url=$11
+       WHERE id=$12 RETURNING *`,
+      [username, email, major, gender, age, photo, bio, skills || '[]', line_url || '', facebook_url || '', instagram_url || '', id]
     );
 
     if (result.rows.length === 0) {

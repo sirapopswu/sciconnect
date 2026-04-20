@@ -8,6 +8,9 @@ pool.query(`
   ALTER TABLE users ALTER COLUMN age TYPE VARCHAR(255); 
   ALTER TABLE users ALTER COLUMN photo TYPE TEXT; 
   ALTER TABLE users ADD COLUMN IF NOT EXISTS student_id VARCHAR(255);
+  ALTER TABLE users ADD COLUMN IF NOT EXISTS line_url VARCHAR(255);
+  ALTER TABLE users ADD COLUMN IF NOT EXISTS facebook_url VARCHAR(255);
+  ALTER TABLE users ADD COLUMN IF NOT EXISTS instagram_url VARCHAR(255);
   
   -- Migrate primary key to student_id if needed
   DO $$ 
@@ -41,7 +44,7 @@ app.get('/', (req, res) => {
 app.get('/api/users', async (req, res) => {
   try {
     const result = await pool.query(
-      'SELECT id, username, student_id, LEFT(student_id, 2) AS generation, email, major, gender, age, photo FROM users WHERE visible=true ORDER BY id DESC'
+      'SELECT id, username, student_id, LEFT(student_id, 2) AS generation, email, major, gender, age, photo, line_url, facebook_url, instagram_url FROM users WHERE visible=true ORDER BY id DESC'
     );
     res.json(result.rows);
   } catch (err) {
@@ -53,7 +56,7 @@ app.get('/api/users', async (req, res) => {
 app.get('/api/users/search', async (req, res) => {
   const { keyword, gender, major, age, gen } = req.query;
   try {
-    let query = 'SELECT id, username, email, major, gender, age, LEFT(student_id, 2) AS generation, photo, bio, skills FROM users WHERE visible=true';
+    let query = 'SELECT id, username, email, major, gender, age, LEFT(student_id, 2) AS generation, photo, bio, skills, line_url, facebook_url, instagram_url FROM users WHERE visible=true';
     let params = [];
 
     if (keyword) {
@@ -90,7 +93,7 @@ app.get('/api/users/:id', async (req, res) => {
   const { id } = req.params;
   try {
     const result = await pool.query(
-      'SELECT id, username, student_id, LEFT(student_id, 2) AS generation, email, major, gender, age, photo, bio, skills, visible FROM users WHERE id=$1',
+      'SELECT id, username, student_id, LEFT(student_id, 2) AS generation, email, major, gender, age, photo, bio, skills, visible, line_url, facebook_url, instagram_url FROM users WHERE id=$1',
       [id]
     );
     if (result.rows.length === 0) return res.status(404).json({ message: 'User not found' });
@@ -102,7 +105,7 @@ app.get('/api/users/:id', async (req, res) => {
 
 // POST add user
 app.post('/api/users', async (req, res) => {
-  const { username, student_id, password, email, major, gender, age, photo } = req.body;
+  const { username, student_id, password, email, major, gender, age, photo, line_url, facebook_url, instagram_url } = req.body;
   if (!username) return res.status(400).json({ message: 'Missing username' });
   if (!password) return res.status(400).json({ message: 'Missing password' });
   if (!student_id) return res.status(400).json({ message: 'Missing student_id' });
@@ -110,9 +113,9 @@ app.post('/api/users', async (req, res) => {
 
   try {
     const result = await pool.query(
-      `INSERT INTO users (id, username, student_id, password, email, major, gender, age, photo, visible)
-       VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10) RETURNING *`,
-      [student_id, username, student_id, password, email, major, gender, age, photo || 'default.png', true]
+      `INSERT INTO users (id, username, student_id, password, email, major, gender, age, photo, visible, line_url, facebook_url, instagram_url)
+       VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13) RETURNING *`,
+      [student_id, username, student_id, password, email, major, gender, age, photo || 'default.png', true, line_url || '', facebook_url || '', instagram_url || '']
     );
     res.status(201).json({ success: true, user: result.rows[0] });
   } catch (err) {
@@ -146,13 +149,13 @@ app.post('/api/users/login', async (req, res) => {
 // PUT update user
 app.put('/api/users/:id', async (req, res) => {
   const { id } = req.params;
-  const { username, student_id, password, email, major, gender, age, photo, bio, skills } = req.body;
+  const { username, student_id, password, email, major, gender, age, photo, bio, skills, line_url, facebook_url, instagram_url } = req.body;
 
   try {
     const result = await pool.query(
-      `UPDATE users SET username=$1, student_id=$2, password=$3, email=$4, major=$5, gender=$6, age=$7, photo=$8, bio=$9, skills=$10
-       WHERE id=$11 RETURNING *`,
-      [username, student_id, password, email, major, gender, age, photo, bio, skills || '[]', id]
+      `UPDATE users SET username=$1, student_id=$2, password=$3, email=$4, major=$5, gender=$6, age=$7, photo=$8, bio=$9, skills=$10, line_url=$11, facebook_url=$12, instagram_url=$13
+       WHERE id=$14 RETURNING *`,
+      [username, student_id, password, email, major, gender, age, photo, bio, skills || '[]', line_url || '', facebook_url || '', instagram_url || '', id]
     );
 
     if (result.rows.length === 0) return res.status(404).json({ message: 'User not found' });
