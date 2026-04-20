@@ -132,7 +132,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (dMajor) {
                     const majorMapping = {
                         'cs': 'COMPUTER SCIENCE<br>วิทยาการคอมพิวเตอร์',
-                        'math': 'MATH-STAT<br>คณิตศาสตร์-สถิติ',
+                        'math': 'MATH-STAT<br>คณิตศาสตร์และสถิติ',
                         'bio': 'BIOLOGY<br>ชีววิทยา',
                         'chem': 'CHEMISTRY<br>เคมี',
                         'gen': 'GENERAL SCIENCE<br>วิทยาศาสตร์ทั่วไป',
@@ -141,7 +141,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         'phy': 'PHYSICS<br>ฟิสิกส์'
                     };
                     const abbrev = (user.major || '').toLowerCase();
-                    dMajor.textContent = majorMapping[abbrev] || abbrev.toUpperCase();
+                    dMajor.innerHTML = majorMapping[abbrev] || abbrev.toUpperCase();
                 }
                 if (dEmail) dEmail.textContent = user.email || '';
                 if (dGender) dGender.textContent = user.gender || '-';
