@@ -14,16 +14,20 @@ Backend ของโปรเจกต์ SciConnect ใช้ **Express.js** �
 
 CREATE TABLE IF NOT EXISTS users (
     id SERIAL PRIMARY KEY,
-    username VARCHAR(50) UNIQUE NOT NULL,
+    username VARCHAR(500) UNIQUE NOT NULL,
     password VARCHAR(255) NOT NULL,
-    email VARCHAR(100) UNIQUE,
-    major VARCHAR(50),
-    gender VARCHAR(10),
+    email VARCHAR(100) UNIQUE NOT NULL,
+    major VARCHAR(100),
+    gender VARCHAR(100),
     age INT,
     photo VARCHAR(255),
     bio TEXT,
-    skills JSON DEFAULT '[]',       
-    visible BOOLEAN DEFAULT TRUE
+    skills JSONB DEFAULT '[]',
+    visible BOOLEAN DEFAULT TRUE,
+    line_url VARCHAR(255),
+    facebook_url VARCHAR(255),
+    instagram_url VARCHAR(255),
+    created_at TIMESTAMP DEFAULT NOW()
 );
 
 ## Connection Example (`db/connection.js`)
