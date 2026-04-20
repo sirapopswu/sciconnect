@@ -12,7 +12,7 @@ Backend ของโปรเจกต์ SciConnect ใช้ **Express.js** �
 **Database Name:** `sciconnect-server`  
 **Table:** `users`
 
-**CREATE TABLE IF NOT EXISTS users (
+CREATE TABLE IF NOT EXISTS users (
     id SERIAL PRIMARY KEY,
     username VARCHAR(500) UNIQUE NOT NULL,
     password VARCHAR(255) NOT NULL,
@@ -29,8 +29,9 @@ Backend ของโปรเจกต์ SciConnect ใช้ **Express.js** �
     instagram_url VARCHAR(255),
     created_at TIMESTAMP DEFAULT NOW()
 );.
+
 โค้ดเพิ่มจากอันเก่า
-**ALTER TABLE users
+ALTER TABLE users
     ADD COLUMN line_url VARCHAR(255),
     ADD COLUMN facebook_url VARCHAR(255),
     ADD COLUMN instagram_url VARCHAR(255);
