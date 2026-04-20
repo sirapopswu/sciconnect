@@ -79,7 +79,7 @@
 
                 // ใช้ studentid แทน username ซึ่งตอนสมัครถูกแมปไปที่ username
                 const displayId = data.user ? (data.user.username || data.user.id) : data.role;
-                await showAlert(`ยินดีต้อนรับ นิสิตรหัส ${displayId}`, 'success', 'เข้าสู่ระบบสำเร็จ');
+                await showAlert(`ยินดีต้อนรับ ${displayId}`, 'success', 'เข้าสู่ระบบสำเร็จ');
                 window.location.href = 'home.html';
             } else {
                 await showAlert(data.message || 'อีเมลหรือรหัสผ่านไม่ถูกต้อง', 'error', 'เกิดข้อผิดพลาด');

@@ -91,6 +91,26 @@ document.addEventListener('DOMContentLoaded', () => {
             // Hide .btn-signin elements
             signinBtns.forEach(btn => btn.style.display = 'none');
 
+            // Personalize Navbar Logo
+            const logo = document.querySelector('.logo');
+            const logoText = document.querySelector('.logo-text');
+            if (logo && logoText) {
+                // Wrap logo-text and add username
+                logo.classList.add('logo-logged-in');
+                const wrapper = document.createElement('div');
+                wrapper.className = 'logo-text-wrapper';
+                
+                // Move logoText inside wrapper
+                logoText.parentNode.insertBefore(wrapper, logoText);
+                wrapper.appendChild(logoText);
+                
+                // Add username span
+                const userDisplay = document.createElement('span');
+                userDisplay.className = 'nav-user-name';
+                userDisplay.textContent = user.username || user.studentId;
+                wrapper.appendChild(userDisplay);
+            }
+
             // Populate profile data if on profile page
             if (window.location.pathname.includes('profile.html')) {
                 const dUsername = document.getElementById('displayUsername');
@@ -109,7 +129,20 @@ document.addEventListener('DOMContentLoaded', () => {
 
                 if (dUsername) dUsername.textContent = user.username || 'Admin';
                 if (dGen) dGen.textContent = derivedGen;
-                if (dMajor) dMajor.textContent = (user.major || '').toUpperCase();
+                if (dMajor) {
+                    const majorMapping = {
+                        'cs': 'COMPUTER SCIENCE<br>วิทยาการคอมพิวเตอร์',
+                        'math': 'MATH-STAT<br>คณิตศาสตร์-สถิติ',
+                        'bio': 'BIOLOGY<br>ชีววิทยา',
+                        'chem': 'CHEMISTRY<br>เคมี',
+                        'gen': 'GENERAL SCIENCE<br>วิทยาศาสตร์ทั่วไป',
+                        'mat': 'MATERIAL SCIENCE<br>วัสดุศาสตร์',
+                        'micro': 'MICROBIOLOGY<br>จุลชีววิทยา',
+                        'phy': 'PHYSICS<br>ฟิสิกส์'
+                    };
+                    const abbrev = (user.major || '').toLowerCase();
+                    dMajor.textContent = majorMapping[abbrev] || abbrev.toUpperCase();
+                }
                 if (dEmail) dEmail.textContent = user.email || '';
                 if (dGender) dGender.textContent = user.gender || '-';
                 if (dAge) dAge.textContent = user.age || '-';
