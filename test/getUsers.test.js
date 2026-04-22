@@ -23,7 +23,7 @@ describe('User Controllers - getUsers', () => {
     pool.query.mockResolvedValueOnce(mockResult);
 
     await getUsers(req, res);
-    expect(pool.query).toHaveBeenCalledWith('SELECT id, username, email, major, gender, age, photo, bio, skills FROM users WHERE visible=true ORDER BY age');
+    expect(pool.query).toHaveBeenCalledWith('SELECT id, username, email, major, gender, age, photo, bio, skills, line_url, facebook_url, instagram_url FROM users WHERE visible=true ORDER BY age');
     expect(res.json).toHaveBeenCalledWith(mockResult.rows);
   });
 

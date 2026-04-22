@@ -19,7 +19,7 @@ describe('User Controllers - addUser', () => {
   });
 
   it('should add a user successfully', async () => {
-    req.body = { username: 'testuser', password: '123', email: 'a@a.com', gender: 'M', age: 20 };
+    req.body = { username: 'testuser', password: '123', student_id: '65000000', email: 'a@a.com', gender: 'M', age: 20 };
     const mockResult = { rows: [{ id: 1, username: 'testuser' }] };
     pool.query.mockResolvedValueOnce(mockResult);
 
@@ -30,7 +30,7 @@ describe('User Controllers - addUser', () => {
   });
 
   it('should return 400 if username or email is duplicate (code 23505)', async () => {
-    req.body = { username: 'dupuser' };
+    req.body = { username: 'dupuser', password: '123', student_id: '65000000', gender: 'M' };
     const error = new Error('Duplicate error');
     error.code = '23505';
     pool.query.mockRejectedValueOnce(error);
@@ -41,7 +41,7 @@ describe('User Controllers - addUser', () => {
   });
 
   it('should return 500 on other database errors', async () => {
-    req.body = { username: 'erruser' };
+    req.body = { username: 'erruser', password: '123', student_id: '65000000', gender: 'M' };
     const error = new Error('Database is down');
     pool.query.mockRejectedValueOnce(error);
 

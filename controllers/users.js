@@ -42,16 +42,25 @@ const login = (req, res) => {
 
 // Add user
 const addUser = async (req, res) => {
-  const { username, password, email, major, gender, age, photo, bio, skills, line_url, facebook_url, instagram_url } = req.body;
+  const { username, password, student_id, email, major, gender, age, photo, bio, skills, line_url, facebook_url, instagram_url } = req.body;
+
+  if (!username) return res.status(400).json({ message: 'Missing username' });
+  if (!password) return res.status(400).json({ message: 'Missing password' });
+  if (!student_id) return res.status(400).json({ message: 'Missing student_id' });
+  if (!gender) return res.status(400).json({ message: 'Missing gender' });
+
+  const generation = student_id.substring(0, 2);
 
   try {
     const result = await pool.query(
       `INSERT INTO users 
-       (username, password, email, major, gender, age, photo, bio, skills, visible, line_url, facebook_url, instagram_url)
-       VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13) RETURNING *`,
+       (username, password, student_id, generation, email, major, gender, age, photo, bio, skills, visible, line_url, facebook_url, instagram_url)
+       VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15) RETURNING *`,
       [
         username,
         password,
+        student_id,
+        generation,
         email,
         major,
         gender,
