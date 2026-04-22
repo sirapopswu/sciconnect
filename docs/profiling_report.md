@@ -1,13 +1,9 @@
 # รายงานผลการวิเคราะห์ประสิทธิภาพ (Profiling Report)
 **Project:** SciConnect
 
-การทำ Profiling เป็นกระบวนการวิเคราะห์ประสิทธิภาพและคุณภาพของระบบ โดยแบ่งออกเป็น 2 ส่วนหลักคือ **Static Profiling** (การวิเคราะห์โครงสร้างโค้ดโดยไม่ได้รันโปรแกรม) และ **Dynamic Profiling** (การวัดประสิทธิภาพขณะโปรแกรมทำงาน)
-
 ---
 
 ## 1. Static Profiling (การวิเคราะห์เชิงโครงสร้าง)
-
-Static Profiling คือการตรวจสอบคุณภาพโค้ด โครงสร้าง และความซับซ้อน (Cyclomatic Complexity) เพื่อหาจุดที่อาจเป็นปัญหาคอขวดหรือโค้ดที่ดูแลรักษายาก
 
 ### 1.1 Code Metrics & Complexity
 - **`public/app.js` (Frontend Logic):** 
@@ -28,8 +24,6 @@ Static Profiling คือการตรวจสอบคุณภาพโค
 ---
 
 ## 2. Dynamic Profiling (การวิเคราะห์ขณะรันไทม์)
-
-Dynamic Profiling เป็นการวัดประสิทธิภาพขณะที่ระบบทำงานจริง (Runtime) เช่น การกิน CPU, Memory (RAM) และระยะเวลาในการตอบสนอง (Response Time)
 
 ### 2.1 Backend Performance (Node.js API)
 จากการจำลองโหลดด้วยเครื่องมือทำ Load Testing / Node.js Profiler:
