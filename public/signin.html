@@ -74,8 +74,15 @@
             const data = await res.json();
 
             if (res.ok) {
-                // บันทึกข้อมูล user ลง localStorage
-                localStorage.setItem('user', JSON.stringify(data.user || { role: data.role }));
+                // บันทึกข้อมูล user ลง localStorage พร้อมเพิ่ม email ให้ Admin เพื่อใช้เช็คสิทธิ์ข้ามหน้า
+                localStorage.setItem('user', JSON.stringify(data.user || { role: data.role, email: email }));
+
+                // เช็คถ้าเป็น Admin ตามโจทย์ให้ไปยังหน้า admin.html
+                if (email === 'admin@gmail.com' && password === 'hardcode') {
+                    await showAlert('ยินดีต้อนรับผู้ดูแลระบบ (Admin)', 'success', 'เข้าสู่ระบบสำเร็จ');
+                    window.location.href = 'admin.html';
+                    return;
+                }
 
                 // ใช้ studentid แทน username ซึ่งตอนสมัครถูกแมปไปที่ username
                 const displayId = data.user ? (data.user.username || data.user.id) : data.role;

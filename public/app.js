@@ -48,7 +48,7 @@ if (signupForm) {
 }
 
 // --- Authentication State & Profile Management ---
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', async () => {
     // Inject Profile Modal to body
     injectProfileModal();
 
@@ -91,6 +91,16 @@ document.addEventListener('DOMContentLoaded', () => {
             // Hide .btn-signin elements
             signinBtns.forEach(btn => btn.style.display = 'none');
 
+            // --- Admin Dashboard Link Injection ---
+            if (user.role === 'admin' || user.email === 'admin@gmail.com') {
+                const navLinksList = document.querySelector('.nav-links');
+                if (navLinksList && !document.querySelector('.admin-nav-item')) {
+                    const adminLi = document.createElement('li');
+                    adminLi.className = 'admin-nav-item';
+                    adminLi.innerHTML = '<a href="admin.html" style="color: #ef4444; font-weight: bold; background: #fee2e2; border-radius: 9999px; padding: 0.5rem 1rem; display: flex; align-items: center; gap: 4px;"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><line x1="3" y1="9" x2="21" y2="9"></line><line x1="9" y1="21" x2="9" y2="9"></line></svg> Control Admin</a>';
+                    navLinksList.appendChild(adminLi);
+                }
+            }
             // Personalize Navbar Logo
             const logo = document.querySelector('.logo');
             const logoText = document.querySelector('.logo-text');
@@ -113,6 +123,26 @@ document.addEventListener('DOMContentLoaded', () => {
 
             // Populate profile data if on profile page
             if (window.location.pathname.includes('profile.html')) {
+                const queryParams = new URLSearchParams(window.location.search);
+                const targetId = queryParams.get('id');
+                const loggedInUser = user; 
+                
+                if (targetId && String(targetId) !== String(user.id) && String(targetId) !== String(user.student_id)) {
+                    try {
+                        const targetRes = await fetch(`http://localhost:3000/api/users/${targetId}`);
+                        if (targetRes.ok) {
+                            user = await targetRes.json();
+                            // Hide privacy toggle and edit/logout buttons when viewing someone else
+                            const privacyBox = document.querySelector('.profile-privacy-box');
+                            const actionBtns = document.querySelector('.profile-actions');
+                            if (privacyBox) privacyBox.style.display = 'none';
+                            if (actionBtns) actionBtns.style.display = 'none';
+                        }
+                    } catch (e) {
+                        console.error("Failed to fetch target user profile", e);
+                    }
+                }
+
                 const dUsername = document.getElementById('displayUsername');
                 const dMajor = document.getElementById('displayMajor');
                 const dBio = document.getElementById('displayBio');
@@ -236,8 +266,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
                 // Show Student ID only if owner (on private profile page)
                 if (dStudentId && privateBox && window.location.pathname.includes('profile.html')) {
-                    dStudentId.textContent = user.student_id || user.username;
-                    privateBox.style.display = 'block';
+                    if (String(loggedInUser.id) === String(user.id) || String(loggedInUser.student_id) === String(user.student_id) || loggedInUser.role === 'admin') {
+                        dStudentId.textContent = user.student_id || user.username;
+                        privateBox.style.display = 'block';
+                    } else {
+                        privateBox.style.display = 'none';
+                    }
                 }
             }
         }
