@@ -10,7 +10,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600&family=Outfit:wght@400;600;700;800&display=swap" rel="stylesheet">
 </head>
-<body class="auth-bg" style="padding: 0; flex-direction: column;">
+<body class="auth-bg">
     <nav class="navbar">
         <div class="nav-container">
             <a href="home.html" class="logo logo-logged-in">
@@ -45,16 +45,16 @@
         </div>
     </nav>
 
-    <main class="main-content" style="padding: 2rem 0; width: 100%; display: flex; justify-content: center; align-items: center; flex: 1;">
-        <div class="edit-container" style="max-width: 1000px; width: 95%;">
-            <div class="edit-header">
-                <h2>ตั้งค่าและแก้ไขโปรไฟล์</h2>
+    <main class="main-content" style="padding: 4rem 1rem; flex: 1; display: flex; align-items: center; justify-content: center;">
+        <div class="edit-container">
+            <div class="edit-header" style="text-align: center; margin-bottom: 3rem;">
+                <h2 style="font-size: 2.5rem; font-weight: 800; color: #1e293b;">ตั้งค่าและแก้ไขโปรไฟล์</h2>
                 <p style="color: #64748b; margin-top: 0.5rem; font-size: 1.1rem;">ปรับปรุงข้อมูลของคุณเพื่อรู้จักเพื่อนร่วมคณะได้มากขึ้น</p>
             </div>
             
             <form id="editProfileFormPage" class="edit-form premium-card">
                 
-                <div class="edit-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem;">
+                <div class="edit-grid" style="display: grid; grid-template-columns: 1fr 1.2fr; gap: 3rem;">
                     <!-- Left Column: Basic Info -->
                     <div class="edit-column">
                         <div class="edit-section">
@@ -148,6 +148,8 @@
                 </div>
             </form>
         </div>
+    </main>
+
     <footer class="footer">
         <div class="footer-container">
             <div class="footer-column">

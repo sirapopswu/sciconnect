@@ -81,6 +81,7 @@ ul {
     display: flex;
     flex-direction: column;
     justify-content: center;
+    line-height: 1;
     transition: all 0.3s ease;
 }
 
@@ -91,11 +92,11 @@ ul {
 }
 
 .nav-user-name {
-    font-size: 0.7rem;
+    font-size: 0.65rem;
     color: #64748b;
-    font-weight: 500;
-    margin-top: -2px;
-    opacity: 0.9;
+    font-weight: 600;
+    margin-top: 0;
+    opacity: 0.8;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -1731,20 +1732,26 @@ input:checked + .slider:before {
 
 /* --- Floating Edit Window (Modal) --- */
 .edit-container {
-    max-width: 900px;
-    margin: 2rem auto;
+    max-width: 1200px; /* Increased width for two columns */
+    margin: 0 auto;
     position: relative;
+    width: 95%;
+}
+
+.edit-form.premium-card {
     background: white;
     padding: 3rem;
     border-radius: 2rem;
     box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.1);
-    border-top: 10px solid var(--primary);
+    border: 1px solid #f1f5f9;
 }
 
 .auth-bg {
-    background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+    background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
     min-height: 100vh;
-    display: block; /* Overriding previous flex if any */
+    display: flex;
+    flex-direction: column;
+    align-items: stretch; /* Ensure children like footer take full width */
 }
 
 /* --- Theme Variables and Classes for Major Coloring --- */
@@ -1946,6 +1953,8 @@ input:checked + .slider:before {
     color: var(--white);
     padding: 5rem 2rem 2rem;
     margin-top: 5rem;
+    width: 100%;
+    border-radius: 0; /* Ensure it's not a box */
 }
 
 .footer-container {
