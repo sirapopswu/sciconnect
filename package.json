@@ -6,8 +6,8 @@
   "scripts": {
     "test": "jest",
     "build": "echo \"No build step required\"",
-    "lint": "eslint .",
-    "lint:fix": "eslint . --fix"
+    "lint": "eslint . -f unix",
+    "lint:fix": "eslint . --fix -f unix"
   },
   "repository": {
     "type": "git",
