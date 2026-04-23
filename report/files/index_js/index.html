@@ -44,11 +44,11 @@
   <div class="row">
     <div class="col-md-6">
       <h2 class="header">Maintainability <a href="http://blogs.msdn.com/b/codeanalysis/archive/2007/11/20/maintainability-index-range-and-meaning.aspx"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="A value between 0 and 100 that represents the relative ease of maintaining the code. A high value means better maintainability." data-original-title="Maintainability Index"  data-container="body"></i></a></h2>
-      <p class="stat">56.87</p>
+      <p class="stat">99.63</p>
     </div>
     <div class="col-md-6">
       <h2 class="header">Lines of code <i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="Source Lines of Code / Logical Lines of Code" data-original-title="SLOC/LSLOC" data-container="body"></i></h2>
-      <p class="stat">307</p>
+      <p class="stat">31</p>
     </div>
   </div>
   <div class="row historical">
@@ -62,11 +62,11 @@
   <div class="row">
     <div class="col-md-6">
       <h2 class="header">Difficulty  <a href="http://en.wikipedia.org/wiki/Halstead_complexity_measures"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="The difficulty measure is related to the difficulty of the program to write or understand." data-original-title="Difficulty" data-container="body"></i></a></h2>
-      <p class="stat">47.92</p>
+      <p class="stat">9.21</p>
     </div>
     <div class="col-md-6">
       <h2 class="header">Estimated Errors  <a href="http://en.wikipedia.org/wiki/Halstead_complexity_measures"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="Halstead's delivered bugs is an estimate for the number of errors in the implementation." data-original-title="Delivered Bugs" data-container="body"></i></a></h2>
-      <p class="stat">2.56</p>
+      <p class="stat">0.24</p>
     </div>
   </div>
 </div>
@@ -92,33 +92,8 @@
     <textarea id="file-source" class="col-md-12">const express = require(&quot;express&quot;);
 const cors = require(&quot;cors&quot;);
 const path = require(&quot;path&quot;);
-const pool = require(&quot;./db/connection&quot;); // เชื่อม PostgreSQL จริง
-
-// Auto-migrate DB schema if needed
-pool
-  .query(
-    `
-  ALTER TABLE users ALTER COLUMN age TYPE VARCHAR(255); 
-  ALTER TABLE users ALTER COLUMN photo TYPE TEXT; 
-  ALTER TABLE users ADD COLUMN IF NOT EXISTS student_id VARCHAR(255);
-  ALTER TABLE users ADD COLUMN IF NOT EXISTS line_url VARCHAR(255);
-  ALTER TABLE users ADD COLUMN IF NOT EXISTS facebook_url VARCHAR(255);
-  ALTER TABLE users ADD COLUMN IF NOT EXISTS instagram_url VARCHAR(255);
-  
-  -- Migrate primary key to student_id if needed
-  DO $$ 
-  BEGIN 
-    IF (SELECT data_type FROM information_schema.columns WHERE table_name = &#039;users&#039; AND column_name = &#039;id&#039;) = &#039;integer&#039; THEN 
-      ALTER TABLE users RENAME COLUMN id TO id_old;
-      ALTER TABLE users ADD COLUMN id VARCHAR(255) UNIQUE;
-      UPDATE users SET id = student_id;
-      ALTER TABLE users DROP CONSTRAINT IF EXISTS users_pkey CASCADE;
-      ALTER TABLE users ADD PRIMARY KEY (id);
-    END IF;
-  END $$;
-`,
-  )
-  .catch((e) =&gt; console.log(&quot;Migration note:&quot;, e.message));
+const { runMigration } = require(&#039;./db/migration&#039;);
+const userRoutes = require(&#039;./routes/user.route&#039;);
 
 const app = express();
 app.use(cors());
@@ -133,261 +108,10 @@ app.get(&quot;/&quot;, (req, res) =&gt; {
 });
 
 // API routes
+app.use(&quot;/api/users&quot;, userRoutes);
 
-
-// GET all visible users
-app.get(&quot;/api/users&quot;, async (req, res) =&gt; {
-  try {
-    const result = await pool.query(
-      &quot;SELECT id, username, student_id, LEFT(student_id, 2) AS generation, email, major, gender, age, photo, line_url, facebook_url, instagram_url FROM users WHERE visible=true ORDER BY id DESC&quot;,
-    );
-    res.json(result.rows);
-  } catch (err) {
-    res.status(500).json({ message: err.message });
-  }
-});
-
-// GET all users (including invisible, for admin)
-app.get(&quot;/api/users/all&quot;, async (req, res) =&gt; {
-  try {
-    const result = await pool.query(
-      &quot;SELECT id, username, student_id, LEFT(student_id, 2) AS generation, email, major, gender, age, photo, visible, line_url, facebook_url, instagram_url FROM users ORDER BY id DESC&quot;,
-    );
-    res.json(result.rows);
-  } catch (err) {
-    res.status(500).json({ message: err.message });
-  }
-});
-
-// GET search/filter users
-app.get(&quot;/api/users/search&quot;, async (req, res) =&gt; {
-  const { keyword, gender, major, age, gen } = req.query;
-  try {
-    let query =
-      &quot;SELECT id, username, email, major, gender, age, LEFT(student_id, 2) AS generation, photo, bio, skills, line_url, facebook_url, instagram_url FROM users WHERE visible=true&quot;;
-    let params = [];
-
-    if (keyword) {
-      params.push(`%${keyword}%`);
-      query += ` AND (LOWER(username) LIKE LOWER($${params.length}) OR LOWER(bio) LIKE LOWER($${params.length}))`;
-    }
-    if (gender) {
-      params.push(gender);
-      query += ` AND gender=$${params.length}`;
-    }
-    if (major) {
-      params.push(major);
-      query += ` AND major=$${params.length}`;
-    }
-    if (age) {
-      params.push(age);
-      query += ` AND age=$${params.length}`;
-    }
-    if (gen) {
-      params.push(gen);
-      query += ` AND LEFT(student_id, 2) = $${params.length}`;
-    }
-
-    query += &quot; ORDER BY id DESC&quot;;
-    const result = await pool.query(query, params);
-    res.json(result.rows);
-  } catch (err) {
-    res.status(500).json({ message: err.message });
-  }
-});
-
-// GET single user by id
-app.get(&quot;/api/users/:id&quot;, async (req, res) =&gt; {
-  const { id } = req.params;
-  try {
-    const result = await pool.query(
-      &quot;SELECT id, username, student_id, LEFT(student_id, 2) AS generation, email, major, gender, age, photo, bio, skills, visible, line_url, facebook_url, instagram_url FROM users WHERE id=$1&quot;,
-      [id],
-    );
-    if (result.rows.length === 0)
-      return res.status(404).json({ message: &quot;User not found&quot; });
-    res.json(result.rows[0]);
-  } catch (err) {
-    res.status(500).json({ message: err.message });
-  }
-});
-
-// POST add user
-app.post(&quot;/api/users&quot;, async (req, res) =&gt; {
-  const {
-    username,
-    student_id,
-    password,
-    email,
-    major,
-    gender,
-    age,
-    photo,
-    line_url,
-    facebook_url,
-    instagram_url,
-  } = req.body;
-  if (!username) return res.status(400).json({ message: &quot;Missing username&quot; });
-  if (!password) return res.status(400).json({ message: &quot;Missing password&quot; });
-  if (!student_id)
-    return res.status(400).json({ message: &quot;Missing student_id&quot; });
-  if (!gender) return res.status(400).json({ message: &quot;Missing gender&quot; });
-
-  try {
-    const result = await pool.query(
-      `INSERT INTO users (id, username, student_id, password, email, major, gender, age, photo, visible, line_url, facebook_url, instagram_url)
-       VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13) RETURNING *`,
-      [
-        student_id,
-        username,
-        student_id,
-        password,
-        email,
-        major,
-        gender,
-        age,
-        photo || &quot;default.png&quot;,
-        true,
-        line_url || &quot;&quot;,
-        facebook_url || &quot;&quot;,
-        instagram_url || &quot;&quot;,
-      ],
-    );
-    res.status(201).json({ success: true, user: result.rows[0] });
-  } catch (err) {
-    if (err.code === &quot;23505&quot;)
-      return res
-        .status(400)
-        .json({ success: false, message: &quot;Username หรือ Email ถูกใช้แล้ว&quot; });
-    res.status(500).json({ success: false, message: err.message });
-  }
-});
-
-// POST login
-app.post(&quot;/api/users/login&quot;, async (req, res) =&gt; {
-  const { email, password } = req.body;
-
-  // admin hardcode
-  if (email === &quot;admin@gmail.com&quot; &amp;&amp; password === &quot;hardcode&quot;) {
-    return res.json({
-      success: true,
-      user: {
-        id: &quot;admin&quot;,
-        username: &quot;Admin&quot;,
-        email: &quot;admin@gmail.com&quot;,
-        role: &quot;admin&quot;,
-        major: &quot;admin&quot;,
-        visible: true,
-      },
-    });
-  }
-
-  try {
-    const userExist = await pool.query(&quot;SELECT * FROM users WHERE email=$1&quot;, [
-      email,
-    ]);
-    if (userExist.rows.length === 0)
-      return res
-        .status(401)
-        .json({ success: false, message: &quot;ไม่พบอีเมลนี้ในระบบ&quot; });
-
-    const user = userExist.rows[0];
-    if (user.password !== password)
-      return res
-        .status(401)
-        .json({ success: false, message: &quot;รหัสไม่ถูกต้อง&quot; });
-
-    res.json({ success: true, user });
-  } catch (err) {
-    res.status(500).json({ success: false, message: err.message });
-  }
-});
-
-// PUT update user
-app.put(&quot;/api/users/:id&quot;, async (req, res) =&gt; {
-  const { id } = req.params;
-  const {
-    username,
-    student_id,
-    password,
-    email,
-    major,
-    gender,
-    age,
-    photo,
-    bio,
-    skills,
-    line_url,
-    facebook_url,
-    instagram_url,
-  } = req.body;
-
-  try {
-    const result = await pool.query(
-      `UPDATE users SET username=$1, student_id=$2, password=$3, email=$4, major=$5, gender=$6, age=$7, photo=$8, bio=$9, skills=$10, line_url=$11, facebook_url=$12, instagram_url=$13
-       WHERE id=$14 RETURNING *`,
-      [
-        username,
-        student_id,
-        password,
-        email,
-        major,
-        gender,
-        age,
-        photo,
-        bio,
-        skills || &quot;[]&quot;,
-        line_url || &quot;&quot;,
-        facebook_url || &quot;&quot;,
-        instagram_url || &quot;&quot;,
-        id,
-      ],
-    );
-
-    if (result.rows.length === 0)
-      return res.status(404).json({ message: &quot;User not found&quot; });
-    res.json({ success: true, user: result.rows[0] });
-  } catch (err) {
-    res.status(500).json({ message: err.message });
-  }
-});
-
-// PATCH set user visibility
-app.patch(&quot;/api/users/:id/visibility&quot;, async (req, res) =&gt; {
-  const { id } = req.params;
-  const { visible } = req.body;
-
-  try {
-    const result = await pool.query(
-      &quot;UPDATE users SET visible=$1 WHERE id=$2 RETURNING *&quot;,
-      [visible !== undefined ? visible : true, id],
-    );
-    if (result.rows.length === 0)
-      return res.status(404).json({ message: &quot;User not found&quot; });
-    res.json({ success: true, user: result.rows[0] });
-  } catch (err) {
-    res.status(500).json({ message: err.message });
-  }
-});
-
-
-// DELETE user
-app.delete(&quot;/api/users/:id&quot;, async (req, res) =&gt; {
-  const { id } = req.params;
-  try {
-    const result = await pool.query(
-      &quot;DELETE FROM users WHERE id=$1 RETURNING *&quot;,
-      [id],
-    );
-    if (result.rows.length === 0)
-      return res
-        .status(404)
-        .json({ success: false, message: &quot;User not found&quot; });
-    res.json({ success: true, message: &quot;User deleted successfully&quot; });
-  } catch (err) {
-    res.status(500).json({ success: false, message: err.message });
-  }
-});
+// Auto-migrate DB schema if needed
+runMigration();
 
 const PORT = process.env.PORT || 3000;
 if (require.main === module) {
