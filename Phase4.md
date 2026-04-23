@@ -387,6 +387,30 @@ VIDEO LINK RETROSPECTIVE (WEEK 3) : https://youtu.be/vYX8VEisZUs
 # Phase 4
 
 # Website screenshot
+## หน้าหลักของ Website
+<img width="1715" height="882" alt="Screenshot 2026-04-23 110030" src="https://github.com/user-attachments/assets/3070b6d5-8543-4901-be7c-a85d2ec5bb5d" />
+
+## หน้า SignIn
+<img width="1311" height="657" alt="Screenshot 2026-04-23 110200" src="https://github.com/user-attachments/assets/172c4aac-ea9f-48ee-aed4-cdb69019352b" />
+
+## หน้า SignUp
+<img width="867" height="878" alt="Screenshot 2026-04-23 110233" src="https://github.com/user-attachments/assets/a75f2728-0db0-4775-b999-ed34f92ac3c9" />
+
+## หน้า Major-Connect
+<img width="1580" height="675" alt="Screenshot 2026-04-23 110509" src="https://github.com/user-attachments/assets/9bf2e438-e28e-4f56-a973-12a703e47076" />
+
+## หน้า User Profile 
+<img width="931" height="880" alt="Screenshot 2026-04-23 110617" src="https://github.com/user-attachments/assets/8190e18d-8662-48e5-9455-ceab536132e5" />
+
+## หน้า Edit Profile
+<img width="870" height="880" alt="Screenshot 2026-04-23 110717" src="https://github.com/user-attachments/assets/cd5840b6-6dc7-40bb-a629-c33fb558cb1a" />
+
+## หน้า Search Filter
+<img width="980" height="636" alt="Screenshot 2026-04-23 110905" src="https://github.com/user-attachments/assets/7d2aa015-8168-4196-b09c-399bf8ee6f65" />
+
+## หน้า Admin จัดการระบบ
+<img width="1897" height="867" alt="Screenshot 2026-04-23 105846" src="https://github.com/user-attachments/assets/38daa09b-dfa0-4c47-b64c-19ba19b432f9" />
+
 
 # UI testcases
 
