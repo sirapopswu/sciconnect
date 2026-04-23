@@ -1,12 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const { login, addUser, getUsers } = require('../../controllers/users');
-
-router.post('/login', login);
-router.post('/', addUser);
-router.get('/', getUsers);
-
-module.exports = router;
+const { login, addUser, getUsers, searchUsers, updateUser } = require('../../controllers/users');
 
 // Login
 router.post('/login', login);
@@ -22,8 +16,5 @@ router.get('/search', searchUsers);
 
 // Update user
 router.put('/:id', updateUser);
-
-// Set visibility
-router.patch('/:id/visibility', setVisibility);
 
 module.exports = router;

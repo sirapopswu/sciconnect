@@ -23,7 +23,7 @@ function runMigration() {
     END IF;
   END $$;
 `
-  ).catch((e) => console.log("Migration note:", e.message));
+  ).catch((e) => console.log('Migration note:', e.message));
 }
 
 module.exports = { runMigration };

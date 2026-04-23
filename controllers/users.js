@@ -3,30 +3,30 @@ const pool = require('../db/connection');
 
 //Login (fix)
 const login = (req, res) => {
-  const { email, password } = req.body
+  const { email, password } = req.body;
 
   if (!email || !password) {
     return res.status(400).json({
       message: 'Email and password are required'
-    })
+    });
   }
 
   const users = [
     { id: 1, email: 'test@test.com', password: '1234' }
-  ]
+  ];
 
-  const user = users.find(u => u.email === email)
+  const user = users.find(u => u.email === email);
 
   if (!user) {
     return res.status(404).json({
       message: 'User not found'
-    })
+    });
   }
 
   if (user.password !== password) {
     return res.status(401).json({
       message: 'Invalid password'
-    })
+    });
   }
 
   return res.status(200).json({
@@ -35,8 +35,8 @@ const login = (req, res) => {
       id: user.id,
       email: user.email
     }
-  })
-}
+  });
+};
 
 // module.exports = { login }
 
@@ -102,7 +102,7 @@ const searchUsers = async (req, res) => {
   
   try {
     let query = 'SELECT id, username, email, major, gender, age, photo, bio, skills, line_url, facebook_url, instagram_url FROM users WHERE visible=true';
-    let params = [];
+    const params = [];
 
     if (keyword) {
       params.push(`%${keyword}%`);

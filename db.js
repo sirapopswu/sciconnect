@@ -1,11 +1,11 @@
 const { Pool } = require('pg');
 
 const pool = new Pool({
-    user: 'postgres',           // username ของกอล์ฟ
-    host: 'localhost',
-    database: 'sciconnect',     // ชื่อ Database
-    // password: '1234',   // password ของกอล์ฟ
-    port: 5432,
+  user: process.env.DB_USER || 'postgres',
+  host: process.env.DB_HOST || 'localhost',
+  database: process.env.DB_NAME || 'sciconnect',
+  password: process.env.DB_PASSWORD || '',
+  port: parseInt(process.env.DB_PORT, 10) || 5432,
 });
 
 module.exports = pool;

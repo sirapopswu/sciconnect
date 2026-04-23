@@ -1,10 +1,9 @@
 // server.js
 const express = require('express');
-const bodyParser = require('body-parser');
-const { login, addUser, getUsers, updateUser } = require('../controllers/users');
+const { login, addUser, getUsers, updateUser } = require('./controllers/users');
 
 const app = express();
-app.use(bodyParser.json());
+app.use(express.json());
 
 // Routes
 app.post('/login', login);
@@ -13,9 +12,7 @@ app.get('/users', getUsers);
 app.put('/users/:id', updateUser);
 
 // Start server
-const PORT = 3000;
+const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => console.log(`Server running at http://localhost:${PORT}`));
 
-
-console.log('login:', login)
-console.log('type:', typeof login)
+module.exports = app;
