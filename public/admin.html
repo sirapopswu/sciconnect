@@ -213,7 +213,28 @@
         </div>
 
         <div class="admin-card">
-            <h3 style="margin-bottom: 1.5rem; color: var(--primary);">User Management</h3>
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; flex-wrap: wrap; gap: 1rem;">
+                <h3 style="color: var(--primary); margin: 0;">User Management</h3>
+                
+                <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
+                    <input type="text" id="adminSearchName" placeholder="ชื่อ / Username..." style="padding: 0.5rem; border: 1px solid #cbd5e1; border-radius: 0.5rem; outline: none; width: 150px;">
+                    <input type="text" id="adminSearchId" placeholder="เลขนิสิต..." style="padding: 0.5rem; border: 1px solid #cbd5e1; border-radius: 0.5rem; outline: none; width: 120px;">
+                    <select id="adminSearchMajor" style="padding: 0.5rem; border: 1px solid #cbd5e1; border-radius: 0.5rem; outline: none; width: 120px;">
+                        <option value="">ทุกสาขา</option>
+                        <option value="cs">Com-Sci</option>
+                        <option value="math">Math-Stat</option>
+                        <option value="bio">Biology</option>
+                        <option value="chem">Chemistry</option>
+                        <option value="gen">Gen-Sci</option>
+                        <option value="mat">Mat-Sci</option>
+                        <option value="micro">Micro-Bio</option>
+                        <option value="phy">Physics</option>
+                    </select>
+                    <input type="text" id="adminSearchGen" placeholder="รุ่น" style="padding: 0.5rem; border: 1px solid #cbd5e1; border-radius: 0.5rem; outline: none; width: 70px;">
+                    <button onclick="applyAdminSearch()" style="padding: 0.5rem 1rem; background: var(--primary); color: white; border: none; border-radius: 0.5rem; cursor: pointer; font-weight: 500;">ค้นหา</button>
+                    <button onclick="resetAdminSearch()" style="padding: 0.5rem 1rem; background: #e2e8f0; color: #475569; border: none; border-radius: 0.5rem; cursor: pointer; font-weight: 500;">ล้าง</button>
+                </div>
+            </div>
             <table class="admin-table">
                 <thead>
                     <tr>
@@ -221,7 +242,7 @@
                         <th>Major</th>
                         <th>Email</th>
                         <th>Gender</th>
-                        <th>Age</th>
+                        <th>Gen</th>
                         <th>Status</th>
                         <th>Actions</th>
                     </tr>
@@ -277,12 +298,39 @@
         }
 
         function filterTable(majorFilter) {
-            if (majorFilter === 'all') {
-                renderTable(allUsers);
-            } else {
-                const filtered = allUsers.filter(u => u.major === majorFilter);
-                renderTable(filtered);
-            }
+            document.getElementById('adminSearchMajor').value = majorFilter === 'all' ? '' : majorFilter;
+            applyAdminSearch();
+        }
+
+        function applyAdminSearch() {
+            const nameVal = document.getElementById('adminSearchName').value.toLowerCase();
+            const idVal = document.getElementById('adminSearchId').value.toLowerCase();
+            const majorVal = document.getElementById('adminSearchMajor').value;
+            const genVal = document.getElementById('adminSearchGen').value;
+
+            const filtered = allUsers.filter(u => {
+                const uName = (u.username || '').toLowerCase();
+                const uId = (u.student_id || '').toLowerCase();
+                const uMajor = u.major || '';
+                const uGen = u.generation || (u.student_id ? u.student_id.substring(0,2) : '');
+
+                if (nameVal && !uName.includes(nameVal) && !(u.bio || '').toLowerCase().includes(nameVal)) return false;
+                if (idVal && !uId.includes(idVal)) return false;
+                if (majorVal && uMajor !== majorVal) return false;
+                if (genVal && uGen !== genVal) return false;
+
+                return true;
+            });
+
+            renderTable(filtered);
+        }
+
+        function resetAdminSearch() {
+            document.getElementById('adminSearchName').value = '';
+            document.getElementById('adminSearchId').value = '';
+            document.getElementById('adminSearchMajor').value = '';
+            document.getElementById('adminSearchGen').value = '';
+            renderTable(allUsers);
         }
 
         function renderTable(users) {
@@ -317,7 +365,7 @@
                         <td><span style="text-transform: uppercase; font-size: 0.9em; font-weight: 600;">${user.major}</span></td>
                         <td>${user.email}</td>
                         <td>${user.gender || '-'}</td>
-                        <td>${user.age || '-'}</td>
+                        <td><span style="font-family: monospace; font-weight: 500;">${user.generation || (user.student_id ? user.student_id.substring(0,2) : '-')}</span></td>
                         <td>
                             ${user.visible ? 
                                 '<span class="badge badge-active">Visible</span>' : 
