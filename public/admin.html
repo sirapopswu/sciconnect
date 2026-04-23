@@ -1,358 +1,522 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="th">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Admin Dashboard - SciConnect</title>
-    <link rel="stylesheet" href="css/style.css">
-    
+    <link rel="stylesheet" href="css/style.css" />
+
     <!-- Google Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600&family=Outfit:wght@400;600;700;800&display=swap" rel="stylesheet">
-    
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600&family=Outfit:wght@400;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+
     <style>
-        .admin-header {
-            margin-bottom: 2rem;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
+      .admin-header {
+        margin-bottom: 2rem;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
 
-        .admin-title {
-            font-size: 2rem;
-            font-weight: 700;
-            color: var(--primary);
-        }
+      .admin-title {
+        font-size: 2rem;
+        font-weight: 700;
+        color: var(--primary);
+      }
 
-        .admin-card {
-            background: var(--white);
-            border-radius: 1.5rem;
-            padding: 2rem;
-            box-shadow: 0 10px 25px -5px rgba(0,0,0,0.05);
-            overflow-x: auto;
-        }
+      .admin-card {
+        background: var(--white);
+        border-radius: 1.5rem;
+        padding: 2rem;
+        box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05);
+        overflow-x: auto;
+      }
 
-        .admin-table {
-            width: 100%;
-            border-collapse: collapse;
-            text-align: left;
-        }
+      .admin-table {
+        width: 100%;
+        border-collapse: collapse;
+        text-align: left;
+      }
 
-        .admin-table th, .admin-table td {
-            padding: 1rem;
-            border-bottom: 1px solid #f1f5f9;
-        }
+      .admin-table th,
+      .admin-table td {
+        padding: 1rem;
+        border-bottom: 1px solid #f1f5f9;
+      }
 
-        .admin-table th {
-            font-weight: 600;
-            color: #64748b;
-            background: #f8fafc;
-        }
+      .admin-table th {
+        font-weight: 600;
+        color: #64748b;
+        background: #f8fafc;
+      }
 
-        .admin-table tr:hover {
-            background: #f8fafc;
-        }
+      .admin-table tr:hover {
+        background: #f8fafc;
+      }
 
-        .admin-avatar {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            object-fit: cover;
-            border: 2px solid var(--primary);
-        }
+      .admin-avatar {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        object-fit: cover;
+        border: 2px solid var(--primary);
+      }
 
-        .user-info {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-        }
+      .user-info {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+      }
 
-        .badge {
-            padding: 0.25rem 0.75rem;
-            border-radius: 9999px;
-            font-size: 0.8rem;
-            font-weight: 600;
-        }
+      .badge {
+        padding: 0.25rem 0.75rem;
+        border-radius: 9999px;
+        font-size: 0.8rem;
+        font-weight: 600;
+      }
 
-        .badge-active {
-            background: #dcfce7;
-            color: #166534;
-        }
+      .badge-active {
+        background: #dcfce7;
+        color: #166534;
+      }
 
-        .action-btns {
-            display: flex;
-            gap: 0.5rem;
-        }
-        
-        .btn-action {
-            background: none;
-            border: none;
-            cursor: pointer;
-            padding: 0.5rem;
-            border-radius: 0.5rem;
-            transition: all 0.2s;
-            color: #64748b;
-        }
+      .action-btns {
+        display: flex;
+        gap: 0.5rem;
+      }
 
-        .btn-action:hover {
-            background: #f1f5f9;
-            color: var(--primary);
-        }
+      .btn-action {
+        background: none;
+        border: none;
+        cursor: pointer;
+        padding: 0.5rem;
+        border-radius: 0.5rem;
+        transition: all 0.2s;
+        color: #64748b;
+      }
 
-        .btn-danger:hover {
-            background: #fee2e2;
-            color: #ef4444;
-        }
+      .btn-action:hover {
+        background: #f1f5f9;
+        color: var(--primary);
+      }
 
-        /* Stat cards */
-        .stat-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 1.5rem;
-            margin-bottom: 2rem;
-        }
+      .btn-danger:hover {
+        background: #fee2e2;
+        color: #ef4444;
+      }
 
-        .stat-card {
-            background: white;
-            padding: 1.5rem;
-            border-radius: 1rem;
-            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);
-            border-left: 4px solid var(--highlight);
-        }
-        
-        .stat-title {
-            color: #64748b;
-            font-size: 0.9rem;
-            font-weight: 500;
-            margin-bottom: 0.5rem;
-        }
+      /* Stat cards */
+      .stat-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 1.5rem;
+        margin-bottom: 2rem;
+      }
 
-        .stat-value {
-            font-size: 2rem;
-            font-weight: 700;
-            color: var(--primary);
-        }
+      .stat-card {
+        background: white;
+        padding: 1.5rem;
+        border-radius: 1rem;
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+        border-left: 4px solid var(--highlight);
+      }
+
+      .stat-title {
+        color: #64748b;
+        font-size: 0.9rem;
+        font-weight: 500;
+        margin-bottom: 0.5rem;
+      }
+
+      .stat-value {
+        font-size: 2rem;
+        font-weight: 700;
+        color: var(--primary);
+      }
     </style>
-</head>
+  </head>
 
-<body>
+  <body>
     <!-- Navbar -->
     <nav class="navbar">
-        <div class="nav-container">
-            <a href="home.html" class="logo logo-logged-in">
-                <span class="logo-icon">
-                    <svg class="sci-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <circle cx="12" cy="12" r="3"></circle>
-                        <ellipse cx="12" cy="12" rx="10" ry="4" transform="rotate(45 12 12)"></ellipse>
-                        <ellipse cx="12" cy="12" rx="10" ry="4" transform="rotate(-45 12 12)"></ellipse>
-                    </svg>
-                </span>
-                <div class="logo-text-wrapper">
-                    <span class="logo-text">Sci<span class="logo-highlight">Connect</span></span>
-                    <span class="nav-user-name">Welcome, Admin</span>
-                </div>
-            </a>
-            
-            <ul class="nav-links">
-                <li><a href="home.html">Home</a></li>
-                <li><a href="admin.html" class="active">Dashboard</a></li>
-            </ul>
-            
-            <div class="nav-action">
-                <button onclick="logoutAdmin()" class="btn-signin" style="background:#fef2f2; color:#ef4444;">Logout</button>
-            </div>
+      <div class="nav-container">
+        <a href="home.html" class="logo logo-logged-in">
+          <span class="logo-icon">
+            <svg
+              class="sci-svg"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+            >
+              <circle cx="12" cy="12" r="3"></circle>
+              <ellipse
+                cx="12"
+                cy="12"
+                rx="10"
+                ry="4"
+                transform="rotate(45 12 12)"
+              ></ellipse>
+              <ellipse
+                cx="12"
+                cy="12"
+                rx="10"
+                ry="4"
+                transform="rotate(-45 12 12)"
+              ></ellipse>
+            </svg>
+          </span>
+          <div class="logo-text-wrapper">
+            <span class="logo-text"
+              >Sci<span class="logo-highlight">Connect</span></span
+            >
+            <span class="nav-user-name">Welcome, Admin</span>
+          </div>
+        </a>
+
+        <ul class="nav-links">
+          <li><a href="home.html">Home</a></li>
+          <li><a href="admin.html" class="active">Dashboard</a></li>
+        </ul>
+
+        <div class="nav-action">
+          <button
+            onclick="logoutAdmin()"
+            class="btn-signin"
+            style="background: #fef2f2; color: #ef4444"
+          >
+            Logout
+          </button>
         </div>
+      </div>
     </nav>
 
     <main class="main-content">
-        <div class="admin-header">
-            <div>
-                <h1 class="admin-title">Admin Dashboard</h1>
-                <p style="color: #64748b;">Manage students and platform settings</p>
-            </div>
+      <div class="admin-header">
+        <div>
+          <h1 class="admin-title">Admin Dashboard</h1>
+          <p style="color: #64748b">Manage students and platform settings</p>
         </div>
+      </div>
 
-        <div class="stat-grid">
-            <div class="stat-card" style="cursor: pointer;" onclick="filterTable('all')">
-                <div class="stat-title">Total Users</div>
-                <div class="stat-value" id="totalUsers">0</div>
-            </div>
-            <div class="stat-card" style="border-left-color: #3b82f6; cursor: pointer;" onclick="filterTable('cs')">
-                <div class="stat-title">Com-Sci</div>
-                <div class="stat-value" id="csUsers">0</div>
-            </div>
-            <div class="stat-card" style="border-left-color: #10b981; cursor: pointer;" onclick="filterTable('math')">
-                <div class="stat-title">Math-Stat</div>
-                <div class="stat-value" id="mathUsers">0</div>
-            </div>
-            <div class="stat-card" style="border-left-color: #22c55e; cursor: pointer;" onclick="filterTable('bio')">
-                <div class="stat-title">Biology</div>
-                <div class="stat-value" id="bioUsers">0</div>
-            </div>
-            <div class="stat-card" style="border-left-color: #8b5cf6; cursor: pointer;" onclick="filterTable('chem')">
-                <div class="stat-title">Chemistry</div>
-                <div class="stat-value" id="chemUsers">0</div>
-            </div>
-            <div class="stat-card" style="border-left-color: #f59e0b; cursor: pointer;" onclick="filterTable('gen')">
-                <div class="stat-title">Gen-Sci</div>
-                <div class="stat-value" id="genUsers">0</div>
-            </div>
-            <div class="stat-card" style="border-left-color: #ec4899; cursor: pointer;" onclick="filterTable('mat')">
-                <div class="stat-title">Mat-Sci</div>
-                <div class="stat-value" id="matUsers">0</div>
-            </div>
-            <div class="stat-card" style="border-left-color: #14b8a6; cursor: pointer;" onclick="filterTable('micro')">
-                <div class="stat-title">Micro-Bio</div>
-                <div class="stat-value" id="microUsers">0</div>
-            </div>
-            <div class="stat-card" style="border-left-color: #eab308; cursor: pointer;" onclick="filterTable('phy')">
-                <div class="stat-title">Physics</div>
-                <div class="stat-value" id="phyUsers">0</div>
-            </div>
+      <div class="stat-grid">
+        <div
+          class="stat-card"
+          style="cursor: pointer"
+          onclick="filterTable('all')"
+        >
+          <div class="stat-title">Total Users</div>
+          <div class="stat-value" id="totalUsers">0</div>
         </div>
+        <div
+          class="stat-card"
+          style="border-left-color: #3b82f6; cursor: pointer"
+          onclick="filterTable('cs')"
+        >
+          <div class="stat-title">Com-Sci</div>
+          <div class="stat-value" id="csUsers">0</div>
+        </div>
+        <div
+          class="stat-card"
+          style="border-left-color: #10b981; cursor: pointer"
+          onclick="filterTable('math')"
+        >
+          <div class="stat-title">Math-Stat</div>
+          <div class="stat-value" id="mathUsers">0</div>
+        </div>
+        <div
+          class="stat-card"
+          style="border-left-color: #22c55e; cursor: pointer"
+          onclick="filterTable('bio')"
+        >
+          <div class="stat-title">Biology</div>
+          <div class="stat-value" id="bioUsers">0</div>
+        </div>
+        <div
+          class="stat-card"
+          style="border-left-color: #8b5cf6; cursor: pointer"
+          onclick="filterTable('chem')"
+        >
+          <div class="stat-title">Chemistry</div>
+          <div class="stat-value" id="chemUsers">0</div>
+        </div>
+        <div
+          class="stat-card"
+          style="border-left-color: #f59e0b; cursor: pointer"
+          onclick="filterTable('gen')"
+        >
+          <div class="stat-title">Gen-Sci</div>
+          <div class="stat-value" id="genUsers">0</div>
+        </div>
+        <div
+          class="stat-card"
+          style="border-left-color: #ec4899; cursor: pointer"
+          onclick="filterTable('mat')"
+        >
+          <div class="stat-title">Mat-Sci</div>
+          <div class="stat-value" id="matUsers">0</div>
+        </div>
+        <div
+          class="stat-card"
+          style="border-left-color: #14b8a6; cursor: pointer"
+          onclick="filterTable('micro')"
+        >
+          <div class="stat-title">Micro-Bio</div>
+          <div class="stat-value" id="microUsers">0</div>
+        </div>
+        <div
+          class="stat-card"
+          style="border-left-color: #eab308; cursor: pointer"
+          onclick="filterTable('phy')"
+        >
+          <div class="stat-title">Physics</div>
+          <div class="stat-value" id="phyUsers">0</div>
+        </div>
+      </div>
 
-        <div class="admin-card">
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; flex-wrap: wrap; gap: 1rem;">
-                <h3 style="color: var(--primary); margin: 0;">User Management</h3>
-                
-                <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
-                    <input type="text" id="adminSearchName" placeholder="ชื่อ / Username..." style="padding: 0.5rem; border: 1px solid #cbd5e1; border-radius: 0.5rem; outline: none; width: 150px;">
-                    <input type="text" id="adminSearchId" placeholder="เลขนิสิต..." style="padding: 0.5rem; border: 1px solid #cbd5e1; border-radius: 0.5rem; outline: none; width: 120px;">
-                    <select id="adminSearchMajor" style="padding: 0.5rem; border: 1px solid #cbd5e1; border-radius: 0.5rem; outline: none; width: 120px;">
-                        <option value="">ทุกสาขา</option>
-                        <option value="cs">Com-Sci</option>
-                        <option value="math">Math-Stat</option>
-                        <option value="bio">Biology</option>
-                        <option value="chem">Chemistry</option>
-                        <option value="gen">Gen-Sci</option>
-                        <option value="mat">Mat-Sci</option>
-                        <option value="micro">Micro-Bio</option>
-                        <option value="phy">Physics</option>
-                    </select>
-                    <input type="text" id="adminSearchGen" placeholder="รุ่น" style="padding: 0.5rem; border: 1px solid #cbd5e1; border-radius: 0.5rem; outline: none; width: 70px;">
-                    <button onclick="applyAdminSearch()" style="padding: 0.5rem 1rem; background: var(--primary); color: white; border: none; border-radius: 0.5rem; cursor: pointer; font-weight: 500;">ค้นหา</button>
-                    <button onclick="resetAdminSearch()" style="padding: 0.5rem 1rem; background: #e2e8f0; color: #475569; border: none; border-radius: 0.5rem; cursor: pointer; font-weight: 500;">ล้าง</button>
-                </div>
-            </div>
-            <table class="admin-table">
-                <thead>
-                    <tr>
-                        <th>User</th>
-                        <th>Major</th>
-                        <th>Email</th>
-                        <th>Gender</th>
-                        <th>Gen</th>
-                        <th>Status</th>
-                        <th>Actions</th>
-                    </tr>
-                </thead>
-                <tbody id="userTableBody">
-                    <tr>
-                        <td colspan="7" style="text-align: center;">Loading users...</td>
-                    </tr>
-                </tbody>
-            </table>
+      <div class="admin-card">
+        <div
+          style="
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            flex-wrap: wrap;
+            gap: 1rem;
+          "
+        >
+          <h3 style="color: var(--primary); margin: 0">User Management</h3>
+
+          <div style="display: flex; gap: 0.5rem; flex-wrap: wrap">
+            <input
+              type="text"
+              id="adminSearchName"
+              placeholder="ชื่อ / Username..."
+              style="
+                padding: 0.5rem;
+                border: 1px solid #cbd5e1;
+                border-radius: 0.5rem;
+                outline: none;
+                width: 150px;
+              "
+            />
+            <input
+              type="text"
+              id="adminSearchId"
+              placeholder="เลขนิสิต..."
+              style="
+                padding: 0.5rem;
+                border: 1px solid #cbd5e1;
+                border-radius: 0.5rem;
+                outline: none;
+                width: 120px;
+              "
+            />
+            <select
+              id="adminSearchMajor"
+              style="
+                padding: 0.5rem;
+                border: 1px solid #cbd5e1;
+                border-radius: 0.5rem;
+                outline: none;
+                width: 120px;
+              "
+            >
+              <option value="">ทุกสาขา</option>
+              <option value="cs">Com-Sci</option>
+              <option value="math">Math-Stat</option>
+              <option value="bio">Biology</option>
+              <option value="chem">Chemistry</option>
+              <option value="gen">Gen-Sci</option>
+              <option value="mat">Mat-Sci</option>
+              <option value="micro">Micro-Bio</option>
+              <option value="phy">Physics</option>
+            </select>
+            <input
+              type="text"
+              id="adminSearchGen"
+              placeholder="รุ่น"
+              style="
+                padding: 0.5rem;
+                border: 1px solid #cbd5e1;
+                border-radius: 0.5rem;
+                outline: none;
+                width: 70px;
+              "
+            />
+            <button
+              onclick="applyAdminSearch()"
+              style="
+                padding: 0.5rem 1rem;
+                background: var(--primary);
+                color: white;
+                border: none;
+                border-radius: 0.5rem;
+                cursor: pointer;
+                font-weight: 500;
+              "
+            >
+              ค้นหา
+            </button>
+            <button
+              onclick="resetAdminSearch()"
+              style="
+                padding: 0.5rem 1rem;
+                background: #e2e8f0;
+                color: #475569;
+                border: none;
+                border-radius: 0.5rem;
+                cursor: pointer;
+                font-weight: 500;
+              "
+            >
+              ล้าง
+            </button>
+          </div>
         </div>
+        <table class="admin-table">
+          <thead>
+            <tr>
+              <th>User</th>
+              <th>Major</th>
+              <th>Email</th>
+              <th>Gender</th>
+              <th>Gen</th>
+              <th>Status</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody id="userTableBody">
+            <tr>
+              <td colspan="7" style="text-align: center">Loading users...</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
     </main>
 
     <script>
-        // Check if user is Admin (mock)
-        document.addEventListener("DOMContentLoaded", () => {
-            const userData = localStorage.getItem("user");
-            if(userData) {
-                const user = JSON.parse(userData);
-                // In a real app we check role === 'admin'
-                // If they are not admin we kick them out (simulated here)
-                if(user.email !== 'admin@gmail.com') {
-                    // alert("Access Denied: Admin only.");
-                    // window.location.href = "home.html";
-                }
-            }
-            fetchUsersList();
+      // Check if user is Admin (mock)
+      document.addEventListener("DOMContentLoaded", () => {
+        const userData = localStorage.getItem("user");
+        if (userData) {
+          const user = JSON.parse(userData);
+          // In a real app we check role === 'admin'
+          // If they are not admin we kick them out (simulated here)
+          if (user.email !== "admin@gmail.com") {
+            // alert("Access Denied: Admin only.");
+            // window.location.href = "home.html";
+          }
+        }
+        fetchUsersList();
+      });
+
+      let allUsers = [];
+
+      async function fetchUsersList() {
+        try {
+          const res = await fetch("/api/users/all");
+          allUsers = await res.json();
+
+          // Update stats
+          document.getElementById("totalUsers").textContent = allUsers.length;
+          document.getElementById("csUsers").textContent =
+            allUsers.filter((u) => u.major === "cs").length || 0;
+          document.getElementById("mathUsers").textContent =
+            allUsers.filter((u) => u.major === "math").length || 0;
+          document.getElementById("bioUsers").textContent =
+            allUsers.filter((u) => u.major === "bio").length || 0;
+          document.getElementById("chemUsers").textContent =
+            allUsers.filter((u) => u.major === "chem").length || 0;
+          document.getElementById("genUsers").textContent =
+            allUsers.filter((u) => u.major === "gen").length || 0;
+          document.getElementById("matUsers").textContent =
+            allUsers.filter((u) => u.major === "mat").length || 0;
+          document.getElementById("microUsers").textContent =
+            allUsers.filter((u) => u.major === "micro").length || 0;
+          document.getElementById("phyUsers").textContent =
+            allUsers.filter((u) => u.major === "phy").length || 0;
+
+          renderTable(allUsers);
+        } catch (err) {
+          console.error("Error fetching users for admin:", err);
+          document.getElementById("userTableBody").innerHTML =
+            '<tr><td colspan="7" style="text-align: center; color: red;">Failed to load users. Please ensure server is running.</td></tr>';
+        }
+      }
+
+      function filterTable(majorFilter) {
+        document.getElementById("adminSearchMajor").value =
+          majorFilter === "all" ? "" : majorFilter;
+        applyAdminSearch();
+      }
+
+      function applyAdminSearch() {
+        const nameVal = document
+          .getElementById("adminSearchName")
+          .value.toLowerCase();
+        const idVal = document
+          .getElementById("adminSearchId")
+          .value.toLowerCase();
+        const majorVal = document.getElementById("adminSearchMajor").value;
+        const genVal = document.getElementById("adminSearchGen").value;
+
+        const filtered = allUsers.filter((u) => {
+          const uName = (u.username || "").toLowerCase();
+          const uId = (u.student_id || "").toLowerCase();
+          const uMajor = u.major || "";
+          const uGen =
+            u.generation || (u.student_id ? u.student_id.substring(0, 2) : "");
+
+          if (
+            nameVal &&
+            !uName.includes(nameVal) &&
+            !(u.bio || "").toLowerCase().includes(nameVal)
+          )
+            return false;
+          if (idVal && !uId.includes(idVal)) return false;
+          if (majorVal && uMajor !== majorVal) return false;
+          if (genVal && uGen !== genVal) return false;
+
+          return true;
         });
 
-        let allUsers = [];
+        renderTable(filtered);
+      }
 
-        async function fetchUsersList() {
-            try {
-                const res = await fetch('/api/users/all');
-                allUsers = await res.json();
-                
-                // Update stats
-                document.getElementById('totalUsers').textContent = allUsers.length;
-                document.getElementById('csUsers').textContent = allUsers.filter(u => u.major === 'cs').length || 0;
-                document.getElementById('mathUsers').textContent = allUsers.filter(u => u.major === 'math').length || 0;
-                document.getElementById('bioUsers').textContent = allUsers.filter(u => u.major === 'bio').length || 0;
-                document.getElementById('chemUsers').textContent = allUsers.filter(u => u.major === 'chem').length || 0;
-                document.getElementById('genUsers').textContent = allUsers.filter(u => u.major === 'gen').length || 0;
-                document.getElementById('matUsers').textContent = allUsers.filter(u => u.major === 'mat').length || 0;
-                document.getElementById('microUsers').textContent = allUsers.filter(u => u.major === 'micro').length || 0;
-                document.getElementById('phyUsers').textContent = allUsers.filter(u => u.major === 'phy').length || 0;
+      function resetAdminSearch() {
+        document.getElementById("adminSearchName").value = "";
+        document.getElementById("adminSearchId").value = "";
+        document.getElementById("adminSearchMajor").value = "";
+        document.getElementById("adminSearchGen").value = "";
+        renderTable(allUsers);
+      }
 
-                renderTable(allUsers);
-            } catch (err) {
-                console.error("Error fetching users for admin:", err);
-                document.getElementById('userTableBody').innerHTML = '<tr><td colspan="7" style="text-align: center; color: red;">Failed to load users. Please ensure server is running.</td></tr>';
-            }
+      function renderTable(users) {
+        const tbody = document.getElementById("userTableBody");
+        tbody.innerHTML = "";
+
+        if (users.length === 0) {
+          tbody.innerHTML =
+            '<tr><td colspan="7" style="text-align: center;">No users found.</td></tr>';
+          return;
         }
 
-        function filterTable(majorFilter) {
-            document.getElementById('adminSearchMajor').value = majorFilter === 'all' ? '' : majorFilter;
-            applyAdminSearch();
-        }
+        users.forEach((user) => {
+          const tr = document.createElement("tr");
 
-        function applyAdminSearch() {
-            const nameVal = document.getElementById('adminSearchName').value.toLowerCase();
-            const idVal = document.getElementById('adminSearchId').value.toLowerCase();
-            const majorVal = document.getElementById('adminSearchMajor').value;
-            const genVal = document.getElementById('adminSearchGen').value;
+          // User icon mapping
+          let userImg = user.photo || "default.png";
+          if (!userImg.startsWith("http") && !userImg.startsWith("data:")) {
+            // Use a literal ui-avatars as a fallback
+            userImg = `https://ui-avatars.com/api/?name=${encodeURIComponent(user.username)}&background=random`;
+          }
 
-            const filtered = allUsers.filter(u => {
-                const uName = (u.username || '').toLowerCase();
-                const uId = (u.student_id || '').toLowerCase();
-                const uMajor = u.major || '';
-                const uGen = u.generation || (u.student_id ? u.student_id.substring(0,2) : '');
-
-                if (nameVal && !uName.includes(nameVal) && !(u.bio || '').toLowerCase().includes(nameVal)) return false;
-                if (idVal && !uId.includes(idVal)) return false;
-                if (majorVal && uMajor !== majorVal) return false;
-                if (genVal && uGen !== genVal) return false;
-
-                return true;
-            });
-
-            renderTable(filtered);
-        }
-
-        function resetAdminSearch() {
-            document.getElementById('adminSearchName').value = '';
-            document.getElementById('adminSearchId').value = '';
-            document.getElementById('adminSearchMajor').value = '';
-            document.getElementById('adminSearchGen').value = '';
-            renderTable(allUsers);
-        }
-
-        function renderTable(users) {
-            const tbody = document.getElementById('userTableBody');
-            tbody.innerHTML = '';
-            
-            if(users.length === 0) {
-                tbody.innerHTML = '<tr><td colspan="7" style="text-align: center;">No users found.</td></tr>';
-                return;
-            }
-
-                users.forEach(user => {
-                    const tr = document.createElement('tr');
-                    
-                    // User icon mapping
-                    let userImg = user.photo || 'default.png';
-                    if(!userImg.startsWith('http') && !userImg.startsWith('data:')) {
-                        // Use a literal ui-avatars as a fallback
-                        userImg = `https://ui-avatars.com/api/?name=${encodeURIComponent(user.username)}&background=random`;
-                    }
-
-                    tr.innerHTML = `
+          tr.innerHTML = `
                         <td>
                             <div class="user-info">
                                 <img src="${userImg}" alt="Avatar" class="admin-avatar">
@@ -364,12 +528,13 @@
                         </td>
                         <td><span style="text-transform: uppercase; font-size: 0.9em; font-weight: 600;">${user.major}</span></td>
                         <td>${user.email}</td>
-                        <td>${user.gender || '-'}</td>
-                        <td><span style="font-family: monospace; font-weight: 500;">${user.generation || (user.student_id ? user.student_id.substring(0,2) : '-')}</span></td>
+                        <td>${user.gender || "-"}</td>
+                        <td><span style="font-family: monospace; font-weight: 500;">${user.generation || (user.student_id ? user.student_id.substring(0, 2) : "-")}</span></td>
                         <td>
-                            ${user.visible ? 
-                                '<span class="badge badge-active">Visible</span>' : 
-                                '<span class="badge" style="background:#f1f5f9; color:#64748b;">Hidden</span>'
+                            ${
+                              user.visible
+                                ? '<span class="badge badge-active">Visible</span>'
+                                : '<span class="badge" style="background:#f1f5f9; color:#64748b;">Hidden</span>'
                             }
                         </td>
                         <td>
@@ -383,31 +548,33 @@
                             </div>
                         </td>
                     `;
-                    tbody.appendChild(tr);
-                });
-        }
+          tbody.appendChild(tr);
+        });
+      }
 
-        async function deleteUser(id, name) {
-            if(confirm(`ยืนยันการลบผู้ใช้ "${name}" คอร์สนี้ไม่สามารถย้อนกลับได้นะ?`)){
-                try {
-                    const res = await fetch(`/api/users/${id}`, { method: 'DELETE' });
-                    const result = await res.json();
-                    if(result.success) {
-                        alert('ลบผู้ใช้สำเร็จ!');
-                        fetchUsersList(); // reload table
-                    } else {
-                        alert('เกิดข้อผิดพลาดในการลบ: ' + result.message);
-                    }
-                } catch (e) {
-                    alert('Error: ' + e.message);
-                }
+      async function deleteUser(id, name) {
+        if (
+          confirm(`ยืนยันการลบผู้ใช้ "${name}" คอร์สนี้ไม่สามารถย้อนกลับได้นะ?`)
+        ) {
+          try {
+            const res = await fetch(`/api/users/${id}`, { method: "DELETE" });
+            const result = await res.json();
+            if (result.success) {
+              alert("ลบผู้ใช้สำเร็จ!");
+              fetchUsersList(); // reload table
+            } else {
+              alert("เกิดข้อผิดพลาดในการลบ: " + result.message);
             }
+          } catch (e) {
+            alert("Error: " + e.message);
+          }
         }
+      }
 
-        function logoutAdmin() {
-            localStorage.removeItem('user');
-            window.location.href = 'home.html';
-        }
+      function logoutAdmin() {
+        localStorage.removeItem("user");
+        window.location.href = "home.html";
+      }
     </script>
-</body>
+  </body>
 </html>
