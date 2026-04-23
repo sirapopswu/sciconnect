@@ -43,6 +43,7 @@ app.get("/", (req, res) => {
 
 // API routes
 
+<<<<<<< Updated upstream
 // GET all visible users
 app.get("/api/users", async (req, res) => {
   try {
@@ -277,6 +278,10 @@ app.patch("/api/users/:id/visibility", async (req, res) => {
     res.status(500).json({ message: err.message });
   }
 });
+=======
+const userRoutes = require('./routes/user.route');
+app.use('/api/users', userRoutes);
+>>>>>>> Stashed changes
 
 // DELETE user
 app.delete("/api/users/:id", async (req, res) => {

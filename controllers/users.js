@@ -99,7 +99,7 @@ const getUsers = async (req, res) => {
 // Search / Filter users
 const searchUsers = async (req, res) => {
   const { keyword, gender, major } = req.query;
-
+  
   try {
     let query = 'SELECT id, username, email, major, gender, age, photo, bio, skills, line_url, facebook_url, instagram_url FROM users WHERE visible=true';
     let params = [];
