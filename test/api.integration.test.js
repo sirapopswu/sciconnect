@@ -57,7 +57,17 @@ describe('API Integration Tests (index.js)', () => {
         .send({ email: 'admin@gmail.com', password: 'hardcode' });
       
       expect(res.status).toBe(200);
-      expect(res.body).toEqual({ success: true, role: 'admin' });
+      expect(res.body).toEqual({
+        success: true,
+        user: {
+          id: 'admin',
+          username: 'Admin',
+          email: 'admin@gmail.com',
+          role: 'admin',
+          major: 'admin',
+          visible: true,
+        }
+      });
       // Admin login should not hit the database because it returns early
       expect(pool.query).not.toHaveBeenCalled(); 
     });
