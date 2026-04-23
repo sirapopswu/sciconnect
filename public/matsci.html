@@ -13,9 +13,22 @@
 <body>
     <nav class="navbar">
         <div class="nav-container">
-            <a href="home.html" class="logo">
-                <span class="logo-icon"><svg class="sci-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"></circle><ellipse cx="12" cy="12" rx="10" ry="4" transform="rotate(45 12 12)"></ellipse><ellipse cx="12" cy="12" rx="10" ry="4" transform="rotate(-45 12 12)"></ellipse></svg></span>
-                <span class="logo-text">Sci<span class="logo-highlight">Connect</span></span>
+            <a href="home.html" class="logo logo-logged-in">
+                <span class="logo-icon">
+                    <svg class="sci-svg" width="32" height="32" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <circle cx="50" cy="50" r="9" fill="currentColor" />
+                        <ellipse cx="50" cy="50" rx="45" ry="18" stroke="currentColor" stroke-width="5" />
+                        <ellipse cx="50" cy="50" rx="45" ry="18" stroke="currentColor" stroke-width="5" transform="rotate(60 50 50)" />
+                        <ellipse cx="50" cy="50" rx="45" ry="18" stroke="currentColor" stroke-width="5" transform="rotate(120 50 50)" />
+                        <circle cx="95" cy="50" r="5" fill="currentColor" />
+                        <circle cx="27.5" cy="89" r="5" fill="currentColor" />
+                        <circle cx="27.5" cy="11" r="5" fill="currentColor" />
+                    </svg>
+                </span>
+                <div class="logo-text-wrapper">
+                    <span class="logo-text">Sci<span class="logo-highlight">Connect</span></span>
+                    <span class="nav-user-name"></span>
+                </div>
             </a>
             <ul class="nav-links">
                 <li><a href="home.html">Home</a></li>
@@ -45,10 +58,37 @@
         <div class="members-grid">
             <!-- Dynamic student cards will be injected here by app.js -->
             <div style="grid-column: 1/-1; text-align: center; padding: 3rem; color: #64748b;">
-                <svg class="sci-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"></circle><ellipse cx="12" cy="12" rx="10" ry="4" transform="rotate(45 12 12)"></ellipse><ellipse cx="12" cy="12" rx="10" ry="4" transform="rotate(-45 12 12)"></ellipse></svg> กำลังดึงข้อมูลเพื่อนๆ สาขา MATERIAL SCIENCE...
+                <svg class="sci-svg" width="48" height="48" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <circle cx="50" cy="50" r="9" fill="currentColor" />
+                    <ellipse cx="50" cy="50" rx="45" ry="18" stroke="currentColor" stroke-width="5" />
+                    <ellipse cx="50" cy="50" rx="45" ry="18" stroke="currentColor" stroke-width="5" transform="rotate(60 50 50)" />
+                    <ellipse cx="50" cy="50" rx="45" ry="18" stroke="currentColor" stroke-width="5" transform="rotate(120 50 50)" />
+                    <circle cx="95" cy="50" r="5" fill="currentColor" />
+                    <circle cx="27.5" cy="89" r="5" fill="currentColor" />
+                    <circle cx="27.5" cy="11" r="5" fill="currentColor" />
+                </svg> กำลังดึงข้อมูลเพื่อนๆ สาขา MATERIAL SCIENCE...
             </div>
         </div>
     </main>
+    
+    <footer class="footer">
+        <div class="footer-container">
+            <div class="footer-column">
+                <h3>SciConnect</h3>
+                <p>แพลตฟอร์มเชื่อมต่อสังคมออนไลน์สำหรับนิสิตคณะวิทยาศาสตร์ <br>เชื่อมต่อชาววิทย์ ให้ใกล้ชิดกว่าที่เคย</p>
+            </div>
+            <div class="footer-column">
+                <h3>Admin Contact</h3>
+                <p>Sirapop Boonkosum 📧 Email : sirapop.boonkosum@g.swu.ac.th</p>
+                <p>Panapat Khuankaikaew 📧 Email : panapat.khuankaikaew@g.swu.ac.th</p>
+                <p>Warakorn Sangtong 📧 Email : warakorn.sangtong@g.swu.ac.th</p>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2026 SciConnect – Faculty of Science, Srinakharinwirot University. All rights reserved.</p>
+        </div>
+    </footer>
+
     <script src="app.js"></script>
 </body>
 </html>

@@ -318,6 +318,46 @@ document.addEventListener("DOMContentLoaded", async () => {
           }
         }
       }
+
+      // --- Admin Profile Specific Simplification ---
+      if (
+        window.location.pathname.includes("profile.html") &&
+        (user.role === "admin" || user.email === "admin@gmail.com")
+      ) {
+        const toHideSelectors = [
+          "#privateIdBox",
+          ".profile-info-grid",
+          ".profile-bio-box",
+          ".profile-skills-box",
+          "#displaySocialBox",
+          ".profile-privacy-box",
+          ".btn-edit",
+          "#displayGen",
+        ];
+        toHideSelectors.forEach((selector) => {
+          const el = document.querySelector(selector);
+          if (el) el.style.display = "none";
+        });
+
+        const dMajor = document.getElementById("displayMajor");
+        if (dMajor) {
+          dMajor.style.margin = "3rem 0";
+          dMajor.style.fontSize = "2.5rem";
+          dMajor.style.textAlign = "center";
+        }
+
+        const actionBtns = document.querySelector(".profile-actions");
+        if (actionBtns) {
+          actionBtns.style.justifyContent = "center";
+          actionBtns.style.marginTop = "1rem";
+        }
+
+        const profileCard = document.getElementById("profileCard");
+        if (profileCard) {
+          profileCard.style.paddingTop = "3rem";
+          profileCard.style.paddingBottom = "3rem";
+        }
+      }
     }
   } else {
     // Not logged in. If on profile.html, redirect
@@ -1210,17 +1250,15 @@ function showAlert(message, type = "info", title = "แจ้งเตือน"
   msgEl.textContent = message;
 
   btn.className = "alert-btn";
-  let icon = "✨";
+  let iconHTML = "";
   if (type === "success") {
-    icon = "✅";
-    btn.classList.add("alert-btn-success");
+    iconHTML = `<svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="#1e293b" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>`;
   } else if (type === "error") {
-    icon = "❌";
-    btn.classList.add("alert-btn-error");
+    iconHTML = `<svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="#1e293b" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="15" y1="9" x2="9" y2="15"></line><line x1="9" y1="9" x2="15" y2="15"></line></svg>`;
   } else {
-    icon = "ℹ️";
+    iconHTML = `<svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="#1e293b" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>`;
   }
-  iconEl.textContent = icon;
+  iconEl.innerHTML = iconHTML;
 
   backdrop.classList.add("active");
   document.body.style.overflow = "hidden";

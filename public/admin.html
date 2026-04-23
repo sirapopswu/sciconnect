@@ -148,26 +148,22 @@
           <span class="logo-icon">
             <svg
               class="sci-svg"
-              viewBox="0 0 24 24"
+              width="32"
+              height="32"
+              viewBox="0 0 100 100"
               fill="none"
-              stroke="currentColor"
-              stroke-width="2"
+              xmlns="http://www.w3.org/2000/svg"
             >
-              <circle cx="12" cy="12" r="3"></circle>
-              <ellipse
-                cx="12"
-                cy="12"
-                rx="10"
-                ry="4"
-                transform="rotate(45 12 12)"
-              ></ellipse>
-              <ellipse
-                cx="12"
-                cy="12"
-                rx="10"
-                ry="4"
-                transform="rotate(-45 12 12)"
-              ></ellipse>
+              <!-- Nucleus -->
+              <circle cx="50" cy="50" r="9" fill="currentColor" />
+              <!-- Orbitals -->
+              <ellipse cx="50" cy="50" rx="45" ry="18" stroke="currentColor" stroke-width="5" />
+              <ellipse cx="50" cy="50" rx="45" ry="18" stroke="currentColor" stroke-width="5" transform="rotate(60 50 50)" />
+              <ellipse cx="50" cy="50" rx="45" ry="18" stroke="currentColor" stroke-width="5" transform="rotate(120 50 50)" />
+              <!-- Electrons -->
+              <circle cx="95" cy="50" r="5" fill="currentColor" />
+              <circle cx="27.5" cy="89" r="5" fill="currentColor" />
+              <circle cx="27.5" cy="11" r="5" fill="currentColor" />
             </svg>
           </span>
           <div class="logo-text-wrapper">
@@ -206,26 +202,26 @@
       <div class="stat-grid">
         <div
           class="stat-card"
-          style="cursor: pointer"
+          style="border-left-color: #fef08a; cursor: pointer"
           onclick="filterTable('all')"
         >
-          <div class="stat-title">Total Users</div>
+          <div class="stat-title">TOTAL USERS</div>
           <div class="stat-value" id="totalUsers">0</div>
         </div>
         <div
           class="stat-card"
-          style="border-left-color: #3b82f6; cursor: pointer"
+          style="border-left-color: #ef4444; cursor: pointer"
           onclick="filterTable('cs')"
         >
-          <div class="stat-title">Com-Sci</div>
+          <div class="stat-title">COMPUTER SCIENCE</div>
           <div class="stat-value" id="csUsers">0</div>
         </div>
         <div
           class="stat-card"
-          style="border-left-color: #10b981; cursor: pointer"
+          style="border-left-color: #64748b; cursor: pointer"
           onclick="filterTable('math')"
         >
-          <div class="stat-title">Math-Stat</div>
+          <div class="stat-title">MATH-STAT</div>
           <div class="stat-value" id="mathUsers">0</div>
         </div>
         <div
@@ -233,7 +229,7 @@
           style="border-left-color: #22c55e; cursor: pointer"
           onclick="filterTable('bio')"
         >
-          <div class="stat-title">Biology</div>
+          <div class="stat-title">BIOLOGY</div>
           <div class="stat-value" id="bioUsers">0</div>
         </div>
         <div
@@ -241,39 +237,39 @@
           style="border-left-color: #8b5cf6; cursor: pointer"
           onclick="filterTable('chem')"
         >
-          <div class="stat-title">Chemistry</div>
+          <div class="stat-title">CHEMISTRY</div>
           <div class="stat-value" id="chemUsers">0</div>
         </div>
         <div
           class="stat-card"
-          style="border-left-color: #f59e0b; cursor: pointer"
+          style="border-left-color: #ec4899; cursor: pointer"
           onclick="filterTable('gen')"
         >
-          <div class="stat-title">Gen-Sci</div>
+          <div class="stat-title">GENERAL SCIENCE</div>
           <div class="stat-value" id="genUsers">0</div>
         </div>
         <div
           class="stat-card"
-          style="border-left-color: #ec4899; cursor: pointer"
+          style="border-left-color: #eab308; cursor: pointer"
           onclick="filterTable('mat')"
         >
-          <div class="stat-title">Mat-Sci</div>
+          <div class="stat-title">MATERIAL SCIENCE</div>
           <div class="stat-value" id="matUsers">0</div>
         </div>
         <div
           class="stat-card"
-          style="border-left-color: #14b8a6; cursor: pointer"
+          style="border-left-color: #3730a3; cursor: pointer"
           onclick="filterTable('micro')"
         >
-          <div class="stat-title">Micro-Bio</div>
+          <div class="stat-title">MICROBIOLOGY</div>
           <div class="stat-value" id="microUsers">0</div>
         </div>
         <div
           class="stat-card"
-          style="border-left-color: #eab308; cursor: pointer"
+          style="border-left-color: #0f172a; cursor: pointer"
           onclick="filterTable('phy')"
         >
-          <div class="stat-title">Physics</div>
+          <div class="stat-title">PHYSICS</div>
           <div class="stat-value" id="phyUsers">0</div>
         </div>
       </div>
@@ -576,5 +572,23 @@
         window.location.href = "home.html";
       }
     </script>
+
+    <footer class="footer">
+        <div class="footer-container">
+            <div class="footer-column">
+                <h3>SciConnect</h3>
+                <p>แพลตฟอร์มเชื่อมต่อสังคมออนไลน์สำหรับนิสิตคณะวิทยาศาสตร์ <br>เชื่อมต่อชาววิทย์ ให้ใกล้ชิดกว่าที่เคย</p>
+            </div>
+            <div class="footer-column">
+                <h3>Admin Contact</h3>
+                <p>Sirapop Boonkosum 📧 Email : sirapop.boonkosum@g.swu.ac.th</p>
+                <p>Panapat Khuankaikaew 📧 Email : panapat.khuankaikaew@g.swu.ac.th</p>
+                <p>Warakorn Sangtong 📧 Email : warakorn.sangtong@g.swu.ac.th</p>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2026 SciConnect – Faculty of Science, Srinakharinwirot University. All rights reserved.</p>
+        </div>
+    </footer>
   </body>
 </html>

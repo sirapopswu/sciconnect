@@ -115,7 +115,7 @@ ul {
     width: 100%;
     height: 100%;
     stroke: currentColor;
-    animation: rotate 12s linear infinite;
+    animation: rotate 15s linear infinite;
 }
 
 .logo-highlight {
@@ -979,7 +979,6 @@ ul {
 
 .auth-icon {
     font-size: 4rem;
-    animation: rotate 15s linear infinite;
     display: inline-block;
 }
 
@@ -1076,12 +1075,17 @@ ul {
     background: #ef4444; 
     color: white;
     flex: 1;
-    padding: 0.75rem;
+    padding: 0.85rem;
     border: none;
-    border-radius: 9999px;
-    font-weight: 600;
+    border-radius: 12px;
+    font-weight: 700;
+    font-size: 1rem;
     cursor: pointer;
     transition: 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Kanit', sans-serif !important;
 }
 .auth-btn-signin:hover { background: #dc2626; transform: translateY(-2px); box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);}
 
@@ -1089,13 +1093,19 @@ ul {
     background: #10b981; 
     color: white;
     flex: 1;
-    padding: 0.75rem;
+    padding: 0.85rem;
     border: none;
-    border-radius: 9999px;
-    font-weight: 600;
+    border-radius: 12px;
+    font-weight: 700;
+    font-size: 1rem;
     text-align: center;
     cursor: pointer;
     transition: 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    font-family: 'Kanit', sans-serif !important;
 }
 .auth-btn-signup:hover { background: #059669; transform: translateY(-2px); box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);}
 /* 19. Floating Share Button */
@@ -2197,29 +2207,27 @@ input:checked + .slider:before {
 }
 
 .alert-btn {
-    background: #1e293b;
-    color: white;
-    border: none;
+    background: white;
+    color: #1e293b;
+    border: 2px solid #1e293b;
     padding: 0.75rem 2rem;
-    border-radius: 0.75rem;
+    border-radius: 12px;
     font-size: 1rem;
-    font-weight: 600;
+    font-weight: 700;
     cursor: pointer;
     transition: all 0.2s ease;
     width: 100%;
+    font-family: 'Kanit', sans-serif;
 }
 
 .alert-btn:hover {
-    background: #0f172a;
+    background: #1e293b;
+    color: white;
     transform: translateY(-2px);
-    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
-.alert-btn-success { background: #10b981; }
-.alert-btn-success:hover { background: #059669; }
-
-.alert-btn-error { background: #ef4444; }
-.alert-btn-error:hover { background: #dc2626; }
+/* Success/Error overrides removed for monochrome look */
 
 /* --- Password Toggle System --- */
 .password-wrapper {
