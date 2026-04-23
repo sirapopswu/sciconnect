@@ -15,7 +15,7 @@ exports.searchUsers = async (req, res) => {
   const { keyword, gender, major, age, gen } = req.query;
   try {
     let query = 'SELECT id, username, email, major, gender, age, LEFT(student_id, 2) AS generation, photo, bio, skills, line_url, facebook_url, instagram_url FROM users WHERE visible=true';
-    let params = [];
+    const params = [];
 
     if (keyword) {
       params.push(`%${keyword}%`);
@@ -87,11 +87,11 @@ exports.loginUser = async (req, res) => {
     return res.json({
       success: true,
       user: {
-        id: "admin",
-        username: "Admin",
-        email: "admin@gmail.com",
-        role: "admin",
-        major: "admin",
+        id: 'admin',
+        username: 'Admin',
+        email: 'admin@gmail.com',
+        role: 'admin',
+        major: 'admin',
         visible: true,
       },
     });
@@ -147,7 +147,7 @@ exports.setUserVisibility = async (req, res) => {
 exports.getAllUsersAdmin = async (req, res) => {
   try {
     const result = await pool.query(
-      "SELECT id, username, student_id, LEFT(student_id, 2) AS generation, email, major, gender, age, photo, visible, line_url, facebook_url, instagram_url FROM users ORDER BY id DESC",
+      'SELECT id, username, student_id, LEFT(student_id, 2) AS generation, email, major, gender, age, photo, visible, line_url, facebook_url, instagram_url FROM users ORDER BY id DESC',
     );
     res.json(result.rows);
   } catch (err) {
@@ -159,14 +159,14 @@ exports.deleteUser = async (req, res) => {
   const { id } = req.params;
   try {
     const result = await pool.query(
-      "DELETE FROM users WHERE id=$1 RETURNING *",
+      'DELETE FROM users WHERE id=$1 RETURNING *',
       [id],
     );
     if (result.rows.length === 0)
       return res
         .status(404)
-        .json({ success: false, message: "User not found" });
-    res.json({ success: true, message: "User deleted successfully" });
+        .json({ success: false, message: 'User not found' });
+    res.json({ success: true, message: 'User deleted successfully' });
   } catch (err) {
     res.status(500).json({ success: false, message: err.message });
   }

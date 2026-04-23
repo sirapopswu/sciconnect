@@ -97,7 +97,7 @@ describe('API Integration Tests (index.js)', () => {
       expect(res.body).toEqual({ success: true, user: updatedUser });
       expect(pool.query).toHaveBeenCalledWith(
         'UPDATE users SET visible=$1 WHERE id=$2 RETURNING *',
-        [false, "1"]
+        [false, '1']
       );
     });
 

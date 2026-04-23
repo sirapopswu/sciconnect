@@ -6,7 +6,8 @@
   "scripts": {
     "test": "jest",
     "build": "echo \"No build step required\"",
-    "lint": "echo \"No linting required\""
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix"
   },
   "repository": {
     "type": "git",
@@ -27,7 +28,9 @@
     "pg": "^8.20.0"
   },
   "devDependencies": {
+    "@eslint/js": "^10.0.1",
     "cypress": "^15.14.0",
+    "eslint": "^10.2.1",
     "jest": "^30.3.0",
     "supertest": "^7.2.2",
     "webpack": "^5.106.2",
