@@ -54,9 +54,10 @@ const addUser = async (req, res) => {
   try {
     const result = await pool.query(
       `INSERT INTO users 
-       (username, password, student_id, generation, email, major, gender, age, photo, bio, skills, visible, line_url, facebook_url, instagram_url)
-       VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15) RETURNING *`,
+       (id, username, password, student_id, generation, email, major, gender, age, photo, bio, skills, visible, line_url, facebook_url, instagram_url)
+       VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,$16) RETURNING *`,
       [
+        student_id,
         username,
         password,
         student_id,

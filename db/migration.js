@@ -10,6 +10,7 @@ function runMigration() {
   ALTER TABLE users ADD COLUMN IF NOT EXISTS line_url VARCHAR(255);
   ALTER TABLE users ADD COLUMN IF NOT EXISTS facebook_url VARCHAR(255);
   ALTER TABLE users ADD COLUMN IF NOT EXISTS instagram_url VARCHAR(255);
+  ALTER TABLE users ADD COLUMN IF NOT EXISTS generation VARCHAR(255);
   
   -- Migrate primary key to student_id if needed
   DO $$ 
